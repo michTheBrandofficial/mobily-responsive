@@ -43,6 +43,12 @@ export const prefixWithSlash = (str: string): string => {
   return str.startsWith('/') ? str : `/${str}`
 }
 
+export const blobToBinary = async (blob: Blob) => {
+  const buffer = await blob.arrayBuffer();
+
+  return new Uint8Array(buffer);
+};
+
 export const prefixWithProtocol = (url: string) => {
   url = url || 'localhost:3000';
   switch (true) {

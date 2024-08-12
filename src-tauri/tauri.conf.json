@@ -15,6 +15,17 @@
       "window": {
         "all": false,
         "setDecorations": true
+      },
+      "fs": {
+        "all": false,
+        "createDir": true,
+        "exists": true,
+        "writeFile": true,
+        "readFile": true,
+        "scope": ["$APPLOCALDATA/**/**"]
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {

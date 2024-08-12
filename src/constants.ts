@@ -1,3 +1,4 @@
+import { BaseDirectory } from "@tauri-apps/api/fs";
 import { signal } from "nixix/primitives";
 import { Device } from "./device-mapping";
 
@@ -12,3 +13,11 @@ export const [deviceFrameHeightClass, setDeviceFrameHeightClass] =
 
 export const defaultSelectedDevice: Device =
   (localStorage.getItem("lastUsedDevice") as Device) || "iphone-14-pro-max";
+
+export const AppLocalData = BaseDirectory.AppLocalData
+
+export const dataDir = `./MobilyResponsiveData`
+
+export const FSOptions = {
+  dir: AppLocalData
+} as const;

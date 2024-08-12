@@ -1,32 +1,81 @@
 import Sidebar from "@/components/sidebar";
-import { prefixWithSlash, px } from "@/lib/utils";
+import { handleDirCreation } from "@/lib/file-handle";
+import { blobToBinary, prefixWithSlash, px } from "@/lib/utils";
+import { BaseDirectory, exists, readTextFile, writeBinaryFile, writeFile } from "@tauri-apps/api/fs";
 import { removeNode } from "nixix";
 import { effect, reaction, signal } from "nixix/primitives";
 import { Container, VStack } from "nixix/view-components";
+import { dataDir, FSOptions } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { $setBasePhoneConfig } from "./stores/base-phone-config";
 import { $device } from "./stores/device";
 import { $setDeviceSettings } from "./stores/device-settings";
 import { $setIphoneConfig } from "./stores/iphone-config";
 
-const fetchIcon = async (icons: App.WebManifest['icons'], iframeOrigin: string) => {
-  const icon192or512 = icons.find(value => {
-    return ['192x192', '512x512', '180x180'].includes(value.sizes)
-  })?.src
-  return new Promise<string>((resolve, reject) => {
+const fetchIconBlob = async (icons: App.WebManifest['icons'], iframeOrigin: string) => {
+  return new Promise<Blob>((resolve, reject) => {
+    const icon192or512 = icons.find(value => {
+      return ['192x192', '512x512', '180x180'].includes(value.sizes)
+    })?.src
     if (icon192or512)
       fetch(`${iframeOrigin}${prefixWithSlash(icon192or512)}`).then(async (val) => {
         if (val.ok) {
-          const blob = await val.blob()
-          const url = URL.createObjectURL(blob);
-          resolve(url)
+          resolve(await val.blob())
         }
       })
     else reject(`No app icon found for ${iframeOrigin}`)
   })
 }
 
-function setupPWAConfig(src: string) {
+const storeAppHomeScreenData = async (name: string, blob: Blob, origin: string) => {
+  // unique name using the short_name from the webmanifest combined with a base64 string formed from the origin
+  const iconFileName = `${name.replace(' ', '')}-${btoa(origin).replace('=', '')}`
+  const iconFilePath = `${dataDir}/AppIcons/${iconFileName}.png` as const;
+  const binary = await blobToBinary(blob);
+  await writeBinaryFile(
+    {
+      contents: binary,
+      path: iconFilePath,
+    }, FSOptions
+  );
+  const iconsJsonFilePath = `${dataDir}/icons.json`;
+  if (await exists(iconsJsonFilePath, FSOptions)) {
+    const jsonFile = await readTextFile(iconsJsonFilePath, FSOptions);
+    const fileAsJsonObject: App.HomeScreenIconMapping = JSON.parse(jsonFile);
+    if (iconFileName in fileAsJsonObject) return;
+    else {
+      fileAsJsonObject[iconFileName] = {
+        name,
+        icon: iconFilePath,
+        origin,
+      }
+      await writeFile(
+        {
+          contents: JSON.stringify(fileAsJsonObject),
+          path: `${dataDir}/icons.json`,
+        }, FSOptions
+      );
+    }
+  } else {
+    await writeFile(
+      {
+        contents: JSON.stringify({
+          [iconFileName]: {
+            name,
+            icon: iconFilePath,
+            origin,
+          }
+        }),
+        path: `${dataDir}/icons.json`,
+      },
+      {
+        dir: BaseDirectory.AppLocalData,
+      },
+    );
+  }
+}
+
+const setupPWAConfig = (src: string) => {
   const { origin: iframeOrigin } = new URL(src);
   fetch(`${iframeOrigin}/manifest.json`)
     .then(async val => {
@@ -49,9 +98,11 @@ function setupPWAConfig(src: string) {
         $setDeviceSettings({
           theme_color: 'transparent'
         })
-        const icon_url = await fetchIcon(icons, iframeOrigin).then(url => url).catch(err => console.warn(err));
-        icon_url;
-        short_name;
+        const icon_blob = await fetchIconBlob(icons, iframeOrigin)
+          .then(blob => blob)
+          .catch(err => console.warn(err));
+        if (icon_blob)
+          storeAppHomeScreenData(short_name, icon_blob, iframeOrigin)
       }
     })
     .catch(err => console.warn(err))
@@ -65,6 +116,9 @@ const View: Nixix.FC = (): someView => {
   const [iframeSrc] = signal<string>(
     localStorage.getItem("iframeSrc") || "http://localhost:3000",
   );
+
+  // setup data dir if it is not created;
+  effect(handleDirCreation)
 
   effect(() => {
     // subscribed

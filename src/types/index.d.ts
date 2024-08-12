@@ -30,6 +30,14 @@ declare global {
       }[];
       short_name: string;
     };
+
+    type HomeScreenIconMapping = {
+      [index: string]: {
+        name: string;
+        icon: string;
+        origin: string;
+      };
+    };
   }
 
   namespace Helpers {
