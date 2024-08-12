@@ -1,14 +1,14 @@
 import Iframe from "@/components/iframe";
 import Wrapper from "@/components/wrapper";
 import { pick, px } from "@/lib/utils";
-import { containerStyles } from "@/src/constants";
-import { $deviceSettings } from "@/src/stores/device-settings";
-import { $iphoneConfig, setupResizeEffect } from "@/src/stores/iphone-config";
 import { callRef } from "nixix/primitives";
 import { Container } from "nixix/view-components";
+import VirtualHomeButton from "~/components/virtual-home-button";
+import { containerStyles } from "~/constants";
+import { $deviceSettings } from "~/stores/device-settings";
+import { $iphoneConfig, setupResizeEffect } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
-import VirtualHomeButton from "./svg/virtual-home-button";
 
 type Props = App.DeviceProps;
 

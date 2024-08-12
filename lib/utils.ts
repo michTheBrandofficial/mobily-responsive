@@ -39,6 +39,10 @@ export const noop = () => undefined;
 
 export const isLocalHost = (url: string) => url.includes('localhost');
 
+export const prefixWithSlash = (str: string): string => {
+  return str.startsWith('/') ? str : `/${str}`
+}
+
 export const prefixWithProtocol = (url: string) => {
   url = url || 'localhost:3000';
   switch (true) {

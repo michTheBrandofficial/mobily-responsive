@@ -20,9 +20,16 @@ declare global {
     };
 
     type WebManifest = {
-      display: 'fullscreen' | (string & {});
+      display: "fullscreen" | (string & {});
       theme_color: string;
-    }
+      icons: {
+        src: string;
+        sizes: "192x192" | "512x512" | "180x180";
+        type: string;
+        purpose: string;
+      }[];
+      short_name: string;
+    };
   }
 
   namespace Helpers {

@@ -1,14 +1,14 @@
 import Wrapper from "@/components/wrapper";
 import { pick, px } from "@/lib/utils";
-import { containerStyles } from "@/src/constants";
-import { deviceScreen } from "@/src/stores/device-screen";
-import { $deviceSettings } from "@/src/stores/device-settings";
-import { $iphoneConfig, setupResizeEffect } from "@/src/stores/iphone-config";
 import { callRef, concat } from "nixix/primitives";
 import { Container } from "nixix/view-components";
+import VirtualHomeButton from "~/components/virtual-home-button";
+import { containerStyles } from "~/constants";
+import { deviceScreen } from "~/stores/device-screen";
+import { $deviceSettings } from "~/stores/device-settings";
+import { $iphoneConfig, setupResizeEffect } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
-import VirtualHomeButton from "./svg/virtual-home-button";
 
 type Props = App.DeviceProps
 
@@ -44,7 +44,7 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   return (
     <Wrapper bind:ref={wrapperRef} >
       <DeviceFrame />
-      <Container className={concat`${deviceScreen} tws-h-auto tws-w-auto`} style={{
+      <Container className={concat`tws-h-auto tws-w-auto ${deviceScreen} tws-transition-[background] tws-duration-300 tws-ease-[ease] `} style={{
         ...pick($iphoneConfig, 'width', 'height'),
         ...containerStyles,
         clipPath: $iphoneConfig.clothoidRadius,
