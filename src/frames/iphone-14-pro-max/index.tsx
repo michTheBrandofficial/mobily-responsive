@@ -1,3 +1,4 @@
+import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
 import { pick, px } from "@/lib/utils";
 import { callRef, concat } from "nixix/primitives";
@@ -57,6 +58,7 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           zIndex: 400,
           backgroundColor: $deviceSettings.theme_color 
         }} />
+        <HomeScreen />
         {/* <Iframe src={iframeSrc || 'http://localhost:3000'} /> */}
       </Container>
       <VirtualHomeButton style={{

@@ -4,7 +4,7 @@ interface StatusBarProps extends App.SVGProps {
 }
 
 
-const StatusBar: Nixix.FC<StatusBarProps> = ({ className, foreground = '#f3f4f6', bPercentage = 'transparent', ...rest }): someView => {
+const StatusBar: Nixix.FC<StatusBarProps> = ({ className, foreground = '#030712', bPercentage = '#e2e8f0', ...rest }): someView => {
   return (
     <svg
       {...rest} className={className + ' tws-h-fit'}

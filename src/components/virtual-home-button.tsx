@@ -4,7 +4,7 @@ type VirtualHomeButtonProps = JSX.IntrinsicElements['div'] & {
   bgColor?: /*dark*/'#030712' | /*light*/'#f3f4f6'
 }
 
-const VirtualHomeButton: Nixix.FC<VirtualHomeButtonProps> = ({className = '', bgColor = '#f3f4f6', style, ...rest}): someView => {
+const VirtualHomeButton: Nixix.FC<VirtualHomeButtonProps> = ({className = '', bgColor = '#030712', style, ...rest}): someView => {
   return (
     <div className={className} {...rest} style={{
       height: px(4),

@@ -10,12 +10,12 @@ import { $setDeviceSettings } from "./stores/device-settings";
 import { $setIphoneConfig } from "./stores/iphone-config";
 
 const fetchIcon = async (icons: App.WebManifest['icons'], iframeOrigin: string) => {
-  const icon192Or512 = icons.find(value => {
+  const icon192or512 = icons.find(value => {
     return ['192x192', '512x512', '180x180'].includes(value.sizes)
   })?.src
   return new Promise<string>((resolve, reject) => {
-    if (icon192Or512)
-      fetch(`${iframeOrigin}${prefixWithSlash(icon192Or512)}`).then(async (val) => {
+    if (icon192or512)
+      fetch(`${iframeOrigin}${prefixWithSlash(icon192or512)}`).then(async (val) => {
         if (val.ok) {
           const blob = await val.blob()
           const url = URL.createObjectURL(blob);
@@ -45,15 +45,16 @@ function setupPWAConfig(src: string) {
             return prev;
           })
         }
+        isFullScreen ? 'transparent' : (theme_color || 'white')
         $setDeviceSettings({
-          theme_color: isFullScreen ? 'transparent' : (theme_color || 'white')
+          theme_color: 'transparent'
         })
-        fetchIcon(icons, iframeOrigin).then(url => {
-          console.log(url)
-        }).catch(err => console.warn(err))
+        const icon_url = await fetchIcon(icons, iframeOrigin).then(url => url).catch(err => console.warn(err));
+        icon_url;
+        short_name;
       }
     })
-    .catch(err => console.error(err))
+    .catch(err => console.warn(err))
 }
 
 /**
