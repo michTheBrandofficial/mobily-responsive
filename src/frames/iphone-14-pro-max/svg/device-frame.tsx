@@ -20,7 +20,7 @@ const DeviceFrame: Nixix.FC<App.SVGProps> = ({ className }): someView => {
 <path d="M103.534 973.664H109.879V967.943H103.534V973.664Z" fill="black" fill-opacity="0.666667"/>
 <path d="M4.94727 865.171V871.527H12.0305V865.171H4.94727Z" fill="black" fill-opacity="0.666667"/>
 <path d="M475.052 865.171V871.527H467.968V865.171H475.052Z" fill="black" fill-opacity="0.666667"/>
-<rect x="25" y="22" width="430" height="932" rx="59" fill="white"/>
+<rect x="25" y="22" width="430" height="932" rx="59" fill="black"/>
 <defs>
 <linearGradient id="paint0_linear_311_735" x1="1.33301" y1="206.353" x2="11.9997" y2="206.353" gradientUnits="userSpaceOnUse">
 <stop stop-color="#474643"/>

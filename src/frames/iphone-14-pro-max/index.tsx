@@ -1,10 +1,10 @@
-import Iframe from "@/components/iframe";
 import Wrapper from "@/components/wrapper";
 import { pick, px } from "@/lib/utils";
 import { containerStyles } from "@/src/constants";
+import { deviceScreen } from "@/src/stores/device-screen";
 import { $deviceSettings } from "@/src/stores/device-settings";
 import { $iphoneConfig, setupResizeEffect } from "@/src/stores/iphone-config";
-import { callRef } from "nixix/primitives";
+import { callRef, concat } from "nixix/primitives";
 import { Container } from "nixix/view-components";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
@@ -31,7 +31,7 @@ const clothoidRadiusRatio = 43 / testingDimensions.w;
 const deviceBarRatios = [15 / testingDimensions.h, 20 / testingDimensions.h] as const
 
 const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
-  const wrapperRef = callRef<HTMLElement>()
+  const wrapperRef = callRef<HTMLElement>();
   setupResizeEffect(wrapperRef, {
     deviceBarRatios,
     deviceHeightRatio,
@@ -44,27 +44,27 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   return (
     <Wrapper bind:ref={wrapperRef} >
       <DeviceFrame />
-      <Container className='tws-bg-transparent tws-h-auto tws-w-auto' style={{
+      <Container className={concat`${deviceScreen} tws-h-auto tws-w-auto`} style={{
         ...pick($iphoneConfig, 'width', 'height'),
         ...containerStyles,
         clipPath: $iphoneConfig.clothoidRadius,
         paddingTop: $iphoneConfig.safeAreaInset,
-        backgroundColor: "white"
       }} >
         <StatusBar style={{
           width: $iphoneConfig.width,
           position: 'absolute',
           top: px(0),
           zIndex: 400,
-          backgroundColor: $deviceSettings.theme_color
+          backgroundColor: $deviceSettings.theme_color 
         }} />
-        <Iframe src={iframeSrc || 'http://localhost:3000'} />
+        {/* <Iframe src={iframeSrc || 'http://localhost:3000'} /> */}
       </Container>
       <VirtualHomeButton style={{
         width: $iphoneConfig.virtualHomeButtonWidth,
         position: 'absolute',
         bottom: $iphoneConfig.deviceBarRatios.bottom,
-        zIndex: 400
+        zIndex: 400,
+        backgroundColor: '#080808'
       }} />
     </Wrapper>
   )

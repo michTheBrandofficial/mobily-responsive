@@ -1,7 +1,7 @@
 import Sidebar from "@/components/sidebar";
 import { px } from "@/lib/utils";
 import { removeNode } from "nixix";
-import { effect, reaction, signal } from "nixix/primitives";
+import { reaction, signal } from "nixix/primitives";
 import { Container, VStack } from "nixix/view-components";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { $setBasePhoneConfig } from "./stores/base-phone-config";
@@ -9,7 +9,7 @@ import { $device } from "./stores/device";
 import { $setDeviceSettings } from "./stores/device-settings";
 import { $setIphoneConfig } from "./stores/iphone-config";
 
-function setupPWAConfig(src: string) {
+export function setupPWAConfig(src: string) {
   const { origin: iframeOrigin } = new URL(src);
     fetch(`${iframeOrigin}/manifest.json`)
       .then(async val => {
@@ -43,12 +43,12 @@ const View: Nixix.FC = (): someView => {
     localStorage.getItem("iframeSrc") || "http://localhost:3000",
   );
 
-  effect(() => {
-    // subscribed
-    const src = iframeSrc.value;
-    localStorage.setItem("iframeSrc", src);
-    setupPWAConfig(src)
-  });
+  // effect(() => {
+  //   // subscribed
+  //   const src = iframeSrc.value;
+  //   localStorage.setItem("iframeSrc", src);
+  //   setupPWAConfig(src)
+  // });
 
   return (
     <VStack
@@ -76,7 +76,7 @@ const View: Nixix.FC = (): someView => {
             refetchFrame();
             reaction(() => {
               refetchFrame();
-              setupPWAConfig(iframeSrc.value)
+              // setupPWAConfig(iframeSrc.value)
             }, [$device]);
           }}
         ></Container>
