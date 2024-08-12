@@ -1,0 +1,36 @@
+{
+  "name": "mobily-responsive",
+  "displayName": "Mobily Responsive",
+  "description": "A Tool For Simulating Popular Devices",
+  "version": "0.1.0",
+  "author": "Charles Ikechukwu <michthebrand@gmail.com>",
+  "publisher": "michthebrand",
+  "repository": {
+    "url": "https://github.com/mobily-responsive/public"
+  },
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "check": "tsc",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "type": "module",
+  "dependencies": {
+    "@tauri-apps/api": "^1.5.6",
+    "clsx": "^2.1.1",
+    "nixix": "latest",
+    "tailwind-merge": "^2.3.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.14",
+    "@types/node": "^20.14.11",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.2",
+    "vite": "^5.3.2",
+    "vite-jsconfig-paths": "^2.0.1"
+  }
+}
