@@ -12,38 +12,54 @@ import Iframe from './iframe'
 
 const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
   const appScreenRef = callRef<HTMLDivElement>()
-  // reaction for animation;
+  const newIconSize = homeScreenIconScale * 64;
+  // leave this animation here for reversal;
+  let animation: Animation | null = null;
   reaction(() => {
-    const shouldLaunch = deviceScreen.value === 'app-screen';
-    const appScreen = appScreenRef.current
+    const isAppScreenOpen = deviceScreen.value === 'app-screen';
+    const appScreenEl = appScreenRef.current
     const [xCoordinate, yCoordinate] = useIconCoordinates().iconCoordinates;
-    if (shouldLaunch && appScreen) {
-      const newIconSize = homeScreenIconScale * 64;
-      // set the scale now, so we get an accurate bounding client
-      // gotten from device height times 96 (being the scale for)
-      appScreen.style.scale = `${newIconSize / 391.421875} ${newIconSize / 846.5}`
-      const { x, y } = appScreen.getBoundingClientRect();
-      appScreen.animate([
-        {
-          opacity: 0,
-          translate: `${px(xCoordinate - x)} ${px(yCoordinate - y)}`
-        }, 
-        {
-          offset: .5,
-          opacity: .5,
-          scale: '.3',
-          translate: `4%`
-        },
-        {
-          opacity: 1,
-          scale: '1',
-          translate: `0px`
+    if (appScreenEl) {
+      if (!isAppScreenOpen)
+        // animation has already been played first time
+        animation?.reverse()
+      else {
+        // set the scale now, so we get an accurate bounding client
+        // gotten from device height times 96 (being the scale for)
+        appScreenEl.style.scale = `${newIconSize / 391.421875} ${newIconSize / 846.5}`;
+        const { x, y } = appScreenEl.getBoundingClientRect();
+        const animationKeyFrames: Keyframe[] =
+          [
+            {
+              opacity: 0,
+              scale: 0,
+              translate: `${px(xCoordinate - x)} ${px(yCoordinate - y)}`
+            },
+            {
+              offset: .3,
+              opacity: .3,
+              scale: '.7',
+              translate: `4%`
+            },
+            {
+              offset: .7,
+              opacity: .5,
+              scale: '.7',
+              translate: `4%`
+            },
+            {
+              opacity: 1,
+              scale: '1',
+              translate: `0px`
+            }
+          ];
+        const animationOptions: KeyframeAnimationOptions = {
+          duration: 200,
+          fill: 'forwards',
+          easing: 'ease'
         }
-      ], {
-        duration: 200,
-        fill: 'forwards',
-        easing: 'ease'
-      })  
+        animation = appScreenEl.animate(animationKeyFrames, animationOptions)
+      }
     }
   }, [deviceScreen])
   return (
@@ -60,7 +76,7 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
       scale: `0`,
       paddingTop: $iphoneConfig.safeAreaInset
     }} >
-      <Iframe src={iframeSrc}  />
+      <Iframe src={iframeSrc} />
       <VirtualHomeButton style={{
         width: $iphoneConfig.virtualHomeButtonWidth,
         position: 'absolute',

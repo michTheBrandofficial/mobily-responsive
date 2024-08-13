@@ -49,6 +49,8 @@ export const blobToBinary = async (blob: Blob) => {
   return new Uint8Array(buffer);
 };
 
+export const toReversed = (arr: any[]) => structuredClone(arr).reverse()
+
 export const prefixWithProtocol = (url: string) => {
   url = url || 'localhost:3000';
   switch (true) {
