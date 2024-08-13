@@ -1,12 +1,12 @@
 import Tools from '@/assets/images/tools icon.png'
 import { px } from '@/lib/utils'
-import { dataDir, FSOptions } from '@/src/constants'
-import { setDeviceScreen } from '@/src/stores/device-screen'
 import { readBinaryFile, readTextFile } from '@tauri-apps/api/fs'
 import Nixix from 'nixix'
 import { For } from 'nixix/hoc'
 import { signal, Signal, store } from 'nixix/primitives'
 import { Container, HStack, VStack } from 'nixix/view-components'
+import { dataDir, FSOptions } from '~/constants'
+import { setDeviceScreen } from '~/stores/device-screen'
 import DockIcons from './icons/dock-icons'
 
 const AppIcon = ({ iframeSrc, icon: { icon, name, origin }, untitled }: {
@@ -22,14 +22,13 @@ const AppIcon = ({ iframeSrc, icon: { icon, name, origin }, untitled }: {
   return (
     <Container on:click={() => {
       shouldLaunch.value = true
-      setDeviceScreen
-      iframeSrc;
-      origin
+      setDeviceScreen('app-screen')
+      iframeSrc.value = origin;
     }} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
       {!untitled ? (
         <img src={icon} alt={name} data-launch={shouldLaunch} className='tws-w-16 tws-h-16 tws-rounded-[inherit] tws-transition-transform tws-duration-500 data-[launch=true]:tws-scale-150 ' />
       ) : (
-        <Container data-launch={shouldLaunch} className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] tws-transition-transform tws-duration-500 data-[launch=true]:tws-scale-150 '>
+        <Container data-launch={shouldLaunch} className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] tws-transition-transform tws-duration-100 tws-ease-[ease] data-[launch=true]:tws-scale-150 '>
           <img src={Tools} alt={'Untitled'} className='tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] ' />
         </Container>
       )}

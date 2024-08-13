@@ -1,14 +1,11 @@
-import Wallpaper from '@/assets/images/iphone home screen 2.jpg';
+import Wallpaper from '@/assets/images/iphone home screen.jpg';
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
-import { pick, px } from "@/lib/utils";
-import { Show } from "nixix/hoc";
+import { percentage, pick, px } from "@/lib/utils";
 import { callRef } from "nixix/primitives";
 import { Container } from "nixix/view-components";
-import VirtualHomeButton from "~/components/virtual-home-button";
 import { containerStyles } from "~/constants";
-import { deviceScreen } from "~/stores/device-screen";
 import { $deviceSettings } from "~/stores/device-settings";
 import { $iphoneConfig, setupResizeEffect } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
@@ -32,7 +29,7 @@ const virtualHomeButtonRatio = 120 / testingDimensions.h;
 
 const clothoidRadiusRatio = 43 / testingDimensions.w;
 
-const deviceBarRatios = [15 / testingDimensions.h, 20 / testingDimensions.h] as const
+const deviceBarRatios = [15 / testingDimensions.h, 5 / testingDimensions.h] as const
 
 const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   const wrapperRef = callRef<HTMLElement>();
@@ -44,8 +41,8 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     virtualHomeButtonRatio,
     safeAreaInsetRatio
   })
+  console.log($iphoneConfig.safeAreaInset)
 
-  const whenClause = () => deviceScreen.value === 'app-screen'
   return (
     <Wrapper bind:ref={wrapperRef} >
       <DeviceFrame />
@@ -53,29 +50,26 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
         ...pick($iphoneConfig, 'width', 'height'),
         ...containerStyles,
         clipPath: $iphoneConfig.clothoidRadius,
-        paddingTop: $iphoneConfig.safeAreaInset,
         background: `url(${Wallpaper})`,
         backgroundSize: 'cover'
       }} >
-        <StatusBar style={{
-          width: $iphoneConfig.width,
-          position: 'absolute',
-          top: px(0),
-          zIndex: 400,
-          backgroundColor: $deviceSettings.theme_color
-        }} />
-        <HomeScreen iframeSrc={iframeSrc} />
-        <AppScreen iframeSrc={iframeSrc} clipPath={$iphoneConfig.clothoidRadius} />
+        <Container style={{
+          paddingTop: $iphoneConfig.safeAreaInset,
+          width: percentage(100),
+          height: percentage(100),
+          position: 'relative'
+        }} >
+          <StatusBar style={{
+            width: $iphoneConfig.width,
+            position: 'absolute',
+            top: px(0),
+            zIndex: 900,
+            backgroundColor: $deviceSettings.theme_color
+          }} />
+          <HomeScreen iframeSrc={iframeSrc} />
+          <AppScreen iframeSrc={iframeSrc} />
+        </Container>
       </Container>
-      <Show when={whenClause} >
-        <VirtualHomeButton style={{
-          width: $iphoneConfig.virtualHomeButtonWidth,
-          position: 'absolute',
-          bottom: $iphoneConfig.deviceBarRatios.bottom,
-          zIndex: 400,
-          backgroundColor: '#080808'
-        }} />
-      </Show>
     </Wrapper>
   )
 }

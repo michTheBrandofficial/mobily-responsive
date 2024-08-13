@@ -1,4 +1,4 @@
-import { deviceFrameHeightClass } from "@/src/constants";
+import { deviceFrameHeightClass } from "~/constants";
 
 const DeviceFrame: Nixix.FC<App.SVGProps> = ({ className }): someView => {
   const resizeClass = deviceFrameHeightClass + ' tws-w-auto tws-max-h-[975px] tws-relative '

@@ -1,11 +1,11 @@
 import Iframe from "@/components/iframe";
 import Wrapper from "@/components/wrapper";
 import { pick, px } from "@/lib/utils";
-import { containerStyles } from "@/src/constants";
-import { $deviceSettings } from "@/src/stores/device-settings";
-import { $iphoneConfig, setupResizeEffect } from "@/src/stores/iphone-config";
 import { callRef } from "nixix/primitives";
 import { Container } from "nixix/view-components";
+import { containerStyles } from "~/constants";
+import { $deviceSettings } from "~/stores/device-settings";
+import { $iphoneConfig, setupResizeEffect } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
 
@@ -48,7 +48,7 @@ const Iphone5S: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           width: $iphoneConfig.width,
           position: 'absolute',
           top: px(0),
-          zIndex: 400,
+          zIndex: 900,
           backgroundColor: $deviceSettings.theme_color
         }} />
         <Iframe src={iframeSrc || 'http://localhost:3000'} />

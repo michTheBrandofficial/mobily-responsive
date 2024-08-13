@@ -1,6 +1,6 @@
-import { deviceScreen } from "@/src/stores/device-screen";
 import { Signal } from "nixix/primitives";
 import { Button, VStack } from "nixix/view-components";
+import { deviceScreen } from "~/stores/device-screen";
 import AppMenu from "./app-menu";
 import DeviceSelectButton from "./devce-select-button";
 import Home from "./icons/home";

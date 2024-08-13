@@ -1,5 +1,5 @@
-import { deviceFrameHeightClass } from "@/src/constants";
 import { concat } from "nixix/primitives";
+import { deviceFrameHeightClass } from "~/constants";
 
 
 const DeviceFrame: Nixix.FC<App.SVGProps> = ({ className, ...rest }): someView => {

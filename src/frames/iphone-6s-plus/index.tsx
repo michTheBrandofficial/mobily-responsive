@@ -48,7 +48,7 @@ const Iphone6SPlus: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           width: $iphoneConfig.width,
           position: 'absolute',
           top: px(0),
-          zIndex: 400,
+          zIndex: 900,
           backgroundColor: $deviceSettings.theme_color
         }} />
         <Iframe src={iframeSrc || 'http://localhost:3000'} />

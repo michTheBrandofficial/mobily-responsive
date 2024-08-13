@@ -1,11 +1,11 @@
 import Iframe from "@/components/iframe";
 import Wrapper from "@/components/wrapper";
 import { pick, px } from "@/lib/utils";
-import { containerStyles } from "@/src/constants";
-import { $basePhoneConfig, setupResizeEffect } from '@/src/stores/base-phone-config';
-import { $deviceSettings } from "@/src/stores/device-settings";
 import { callRef } from "nixix/primitives";
 import { Container } from "nixix/view-components";
+import { containerStyles } from "~/constants";
+import { $basePhoneConfig, setupResizeEffect } from '~/stores/base-phone-config';
+import { $deviceSettings } from "~/stores/device-settings";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
 import VirtualHomeButton from "./svg/virtual-home-button";
@@ -54,7 +54,7 @@ const SamsungS205G: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           width: $basePhoneConfig.width,
           position: 'absolute',
           top: px(0),
-          zIndex: 400,
+          zIndex: 900,
           backgroundColor: $deviceSettings.theme_color
         }} />
         <Iframe src={iframeSrc|| 'http://localhost:3000'} />

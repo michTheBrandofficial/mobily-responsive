@@ -7,7 +7,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
 
 const Wrapper: Nixix.FC<Props> = ({className, children, ...rest}): someView => {
   return (
-    <HStack  {...rest} className={cn('tws-flex tws-w-fit tws-h-fit tws-relative tws-items-center tws-justify-center ', className)} >{children}</HStack>
+    <HStack {...rest} className={cn('tws-flex tws-w-fit tws-h-fit tws-relative tws-items-center tws-justify-center ', className)} >{children}</HStack>
   )
 }
 

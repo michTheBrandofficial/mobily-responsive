@@ -1,18 +1,18 @@
-import {
-  DEVICE_MAPPING,
-  Device,
-  DeviceDisplayName,
-} from "@/src/device-mapping";
-import { $device, $setDevice } from "@/src/stores/device";
 import { For } from "nixix/hoc";
 import {
-  SetSignalDispatcher,
-  Signal,
-  reaction,
-  signal,
+    SetSignalDispatcher,
+    Signal,
+    reaction,
+    signal,
 } from "nixix/primitives";
 import { KeyboardEventHandler } from "nixix/types/eventhandlers";
 import { Container, VStack } from "nixix/view-components";
+import {
+    DEVICE_MAPPING,
+    Device,
+    DeviceDisplayName,
+} from "~/device-mapping";
+import { $device, $setDevice } from "~/stores/device";
 
 const [$displayName] = signal<DeviceDisplayName>(
   DEVICE_MAPPING[$device.value].displayName,

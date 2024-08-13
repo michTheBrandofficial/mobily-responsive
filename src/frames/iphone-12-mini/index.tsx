@@ -56,7 +56,7 @@ const Iphone12Mini: Nixix.FC<Props> = ({ iframeSrc }): someView => {
             width: $iphoneConfig.width,
             position: "absolute",
             top: px(-2),
-            zIndex: 400,
+            zIndex: 900,
             backgroundColor: $deviceSettings.theme_color
           }}
         />
@@ -67,7 +67,7 @@ const Iphone12Mini: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           width: $iphoneConfig.virtualHomeButtonWidth,
           position: "absolute",
           bottom: $iphoneConfig.deviceBarRatios.bottom,
-          zIndex: 400,
+          zIndex: 900,
         }}
       />
     </Wrapper>

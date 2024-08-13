@@ -1,5 +1,5 @@
-import { AppLocalData, dataDir } from "@/src/constants";
 import { createDir, exists } from "@tauri-apps/api/fs";
+import { AppLocalData, dataDir } from "~/constants";
 
 export const handleDirCreation = async () => {
   const makeDir = async (dirPath: string) => {
