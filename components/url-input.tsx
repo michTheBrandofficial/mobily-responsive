@@ -11,10 +11,11 @@ interface Props extends App.DeviceProps, FormHTMLAttributes<HTMLFormElement> {
 const UrlInput: Nixix.FC<Props> = ({ iframeSrc,"on:submit": onSubmit, display, ...rest }): someView => {
   const src = iframeSrc.value;
   const [url, setUrl] = signal<string>(src);
+  // set a reaction for changing the url
+  reaction(() => setUrl(iframeSrc.value), [iframeSrc])
   const submitForm: FormEventHandler<HTMLFormElement> = ({ currentTarget }) => {
     const data = new FormData(currentTarget);
     const newUrl = (data.get('url') as string) || url.value
-    setUrl(newUrl);
     onSubmit()
     iframeSrc.value = newUrl
   }

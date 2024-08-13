@@ -1,6 +1,8 @@
 import HomeScreen from "@/components/home-screen";
+import Iframe from "@/components/iframe";
 import Wrapper from "@/components/wrapper";
 import { pick, px } from "@/lib/utils";
+import { Show } from "nixix/hoc";
 import { callRef, concat } from "nixix/primitives";
 import { Container } from "nixix/view-components";
 import VirtualHomeButton from "~/components/virtual-home-button";
@@ -56,10 +58,14 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           position: 'absolute',
           top: px(0),
           zIndex: 400,
-          backgroundColor: $deviceSettings.theme_color 
+          backgroundColor: $deviceSettings.theme_color
         }} />
-        <HomeScreen />
-        {/* <Iframe src={iframeSrc || 'http://localhost:3000'} /> */}
+        <Show when={() => deviceScreen.value === 'tws-app-screen'} fallback={
+          <HomeScreen iframeSrc={iframeSrc} />
+
+        } >
+          <Iframe src={iframeSrc || 'http://localhost:3000'} />
+        </Show>
       </Container>
       <VirtualHomeButton style={{
         width: $iphoneConfig.virtualHomeButtonWidth,
