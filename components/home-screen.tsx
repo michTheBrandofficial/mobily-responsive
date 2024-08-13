@@ -5,9 +5,9 @@ import { useIconCoordinates } from '@/src/stores/icon-coordinates'
 import { readBinaryFile, readTextFile } from '@tauri-apps/api/fs'
 import Nixix from 'nixix'
 import { For } from 'nixix/hoc'
-import { callRef, signal, Signal, store } from 'nixix/primitives'
+import { callRef, Signal, store } from 'nixix/primitives'
 import { Container, HStack, VStack } from 'nixix/view-components'
-import { dataDir, FSOptions } from '~/constants'
+import { dataDir, FSOptions, homeScreenIconScale } from '~/constants'
 import DockIcons from './icons/dock-icons'
 
 /**
@@ -22,17 +22,23 @@ const HomeScreenIcon = ({ iframeSrc, icon: { icon, name, origin }, untitled }: {
   };
   untitled?: boolean
 }) => {
-  const [shouldLaunch] = signal<boolean>(false);
   const homeScreenIcon = callRef<HTMLDivElement>()
   return (
     <Container on:click={() => {
       const { x, y } = homeScreenIcon.current!.getBoundingClientRect()
       useIconCoordinates().setIconCoordinates([x, y])
-      // shouldLaunch.value = true
-      setDeviceScreen('app-screen')
+      setDeviceScreen('app-screen');
+      homeScreenIcon.current!.animate({
+        opacity: 0,
+        scale: homeScreenIconScale.toString(),
+        translate: `-30% 20%`
+      }, {
+        duration: 200,
+        easing: 'ease'
+      });
       // iframeSrc.value = origin;
     }} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
-      <Container bind:ref={homeScreenIcon} data-launch={shouldLaunch} className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] tws-transition-transform tws-duration-50 tws-ease-[ease] data-[launch=true]:tws-scale-150 '>
+      <Container bind:ref={homeScreenIcon} className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] '>
         {!untitled ? (
           <img src={icon} alt={name} className='tws-w-full tws-h-full tws-rounded-[inherit]  ' />
         ) : (
@@ -68,6 +74,21 @@ const HomeScreen: Nixix.FC<{
             )
           }}
         </For>
+        <HomeScreenIcon untitled iframeSrc={iframeSrc} icon={{
+          icon: '' as any,
+          name: 'Untitled',
+          origin: 'http://localhost:3000'
+        }} />
+        <HomeScreenIcon untitled iframeSrc={iframeSrc} icon={{
+          icon: '' as any,
+          name: 'Untitled',
+          origin: 'http://localhost:3000'
+        }} />
+        <HomeScreenIcon untitled iframeSrc={iframeSrc} icon={{
+          icon: '' as any,
+          name: 'Untitled',
+          origin: 'http://localhost:3000'
+        }} />
         <HomeScreenIcon untitled iframeSrc={iframeSrc} icon={{
           icon: '' as any,
           name: 'Untitled',

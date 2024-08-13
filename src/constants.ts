@@ -21,3 +21,5 @@ export const dataDir = `./MobilyResponsiveData`
 export const FSOptions = {
   dir: AppLocalData
 } as const;
+
+export const homeScreenIconScale = 1.4;
