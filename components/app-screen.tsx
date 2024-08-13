@@ -1,23 +1,17 @@
 import { percentage } from '@/lib/utils'
-import { deviceScreen } from '@/src/stores/device-screen'
-import { renderEffect, Signal } from 'nixix/primitives'
+import { Signal } from 'nixix/primitives'
 import { Container } from 'nixix/view-components'
 import Iframe from './iframe'
 
 
-const AppScreen = ({iframeSrc}: {iframeSrc: Signal<string>}) => {
+const AppScreen = ({iframeSrc, clipPath}: {iframeSrc: Signal<string>, clipPath: Signal<string>}) => {
   return (
-    <Container className='' bind:ref={({current}) => {
-      renderEffect(() => {
-        // subscribed
-        deviceScreen.value
-        current.classList.toggle('tws-hidden')
-      })
-    }} style={{
+    <Container style={{
       width: percentage(100),
       height: percentage(100),
+      clipPath: clipPath
     }} >
-      <Iframe src={iframeSrc} />
+      <Iframe src={iframeSrc}  />
     </Container>
   )
 }

@@ -5,9 +5,38 @@ import { setDeviceScreen } from '@/src/stores/device-screen'
 import { readBinaryFile, readTextFile } from '@tauri-apps/api/fs'
 import Nixix from 'nixix'
 import { For } from 'nixix/hoc'
-import { Signal, store } from 'nixix/primitives'
+import { signal, Signal, store } from 'nixix/primitives'
 import { Container, HStack, VStack } from 'nixix/view-components'
 import DockIcons from './icons/dock-icons'
+
+const AppIcon = ({ iframeSrc, icon: { icon, name, origin }, untitled }: {
+  iframeSrc: Signal<string>,
+  icon: {
+    name: string;
+    icon: string;
+    origin: string;
+  };
+  untitled?: boolean
+}) => {
+  const [shouldLaunch] = signal<boolean>(false);
+  return (
+    <Container on:click={() => {
+      shouldLaunch.value = true
+      setDeviceScreen
+      iframeSrc;
+      origin
+    }} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
+      {!untitled ? (
+        <img src={icon} alt={name} data-launch={shouldLaunch} className='tws-w-16 tws-h-16 tws-rounded-[inherit] tws-transition-transform tws-duration-500 data-[launch=true]:tws-scale-150 ' />
+      ) : (
+        <Container data-launch={shouldLaunch} className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] tws-transition-transform tws-duration-500 data-[launch=true]:tws-scale-150 '>
+          <img src={Tools} alt={'Untitled'} className='tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] ' />
+        </Container>
+      )}
+      <p className='tws-text-white tws-text-xs ' >{name}</p>
+    </Container>
+  )
+}
 
 const HomeScreen: Nixix.FC<{
   iframeSrc: Signal<string>
@@ -24,30 +53,20 @@ const HomeScreen: Nixix.FC<{
     setHomeScreenIcons(iconValues)
   })
   return (
-    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-16 tws-pb-5 tws-flex tws-flex-col tws-justify-between ">
+    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-16 tws-pb-4 tws-flex tws-flex-col tws-justify-between ">
       <HStack className='tws-h-fit tws-w-full tws-px-4 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between tws-gap-y-10 '>
         <For each={homeScreenIcons}>
-          {({ name, icon, origin }) => {
+          {(icon) => {
             return (
-              <Container on:click={() => {
-                setDeviceScreen('tws-app-screen')
-                iframeSrc.value = origin;
-              }} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
-                <img src={icon} alt={name} className='tws-w-16 tws-h-16 tws-rounded-[inherit] ' />
-                <p className='tws-text-white tws-text-xs ' >{name}</p>
-              </Container>
+              <AppIcon icon={icon} iframeSrc={iframeSrc} />
             )
           }}
         </For>
-        <Container on:click={() => {
-          setDeviceScreen('tws-app-screen')
-          iframeSrc.value = 'http://localhost:3000';
-        }} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
-          <Container className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit]'>
-            <img src={Tools} alt={'Untitled'} className='tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] ' />
-          </Container>
-          <p className='tws-text-white tws-text-xs ' >Untitled</p>
-        </Container>
+        <AppIcon untitled iframeSrc={iframeSrc} icon={{
+          icon: '' as any,
+          name: 'Untitled',
+          origin: 'http://localhost:3000'
+        }} />
       </HStack>
       <HStack className='tws-h-fit tws-w-full tws-bg-gray-300/40 tws-backdrop-blur-2xl tws-px-4 tws-py-4 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between ' style={{
         borderRadius: px(34)

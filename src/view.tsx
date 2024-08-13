@@ -96,7 +96,7 @@ const setupPWAConfig = (src: string) => {
           })
         }
         $setDeviceSettings({
-          theme_color: (isFullScreen || deviceScreen.value === 'tws-home-screen') ? 'transparent' : (theme_color || 'white') 
+          theme_color: (isFullScreen || deviceScreen.value === 'home-screen') ? 'transparent' : (theme_color || 'white') 
         })
         const icon_blob = await fetchIconBlob(icons, iframeOrigin)
           .then(blob => blob)
@@ -109,7 +109,7 @@ const setupPWAConfig = (src: string) => {
 }
 
 /**
- * @todo get rust backend to steal most dominant color and send back to js.
+ * @todo add field to the icons.json file in AppIcons
  */
 const View: Nixix.FC = (): someView => {
   const [iframeSrc] = signal<string>(

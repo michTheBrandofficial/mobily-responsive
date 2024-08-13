@@ -26,7 +26,7 @@ const Sidebar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
       </Button>
       <AppMenu />
       <Button
-        on:click={() => deviceScreen.value = "tws-home-screen"}
+        on:click={() => deviceScreen.value = "home-screen"}
         className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group tws-mt-auto "
       >
         <Home

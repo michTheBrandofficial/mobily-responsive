@@ -18,15 +18,6 @@
     width: 0px;
   }
 
-  .tws-home-screen {
-    background: url(../assets/images/iphone\ home\ screen.jpg);
-    background-size: cover;
-  }
-
-  .tws-app-screen {
-    background: white;
-  }
-
   .tws-grid-cols-4-64 {
     grid-template-columns: repeat(4, minmax(0, 64px));
   }

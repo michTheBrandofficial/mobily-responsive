@@ -1,3 +1,5 @@
+import { Container } from "nixix/view-components"
+
 const Phone = (): someView => {
   return (
     <svg width={64} height={64} viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -202,10 +204,18 @@ const FaceTime = (): someView => {
 const DockIcons = (): someView => {
   return (
     <>
-      <Phone />
-      <Settings />
-      <Photos />
-      <FaceTime />
+      <Container className="tws-rounded-[16px] ">
+        <Phone />
+      </Container>
+      <Container className="tws-rounded-[16px] ">
+        <Settings />
+      </Container>
+      <Container className="tws-rounded-[16px] ">
+        <Photos />
+      </Container>
+      <Container className="tws-rounded-[16px] ">
+        <FaceTime />
+      </Container>
     </>
   )
 }

@@ -1,9 +1,10 @@
+import Wallpaper from '@/assets/images/iphone home screen 2.jpg';
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
 import { pick, px } from "@/lib/utils";
 import { Show } from "nixix/hoc";
-import { callRef, concat } from "nixix/primitives";
+import { callRef } from "nixix/primitives";
 import { Container } from "nixix/view-components";
 import VirtualHomeButton from "~/components/virtual-home-button";
 import { containerStyles } from "~/constants";
@@ -44,15 +45,17 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     safeAreaInsetRatio
   })
 
-  const whenClause = () => deviceScreen.value === 'tws-app-screen'
+  const whenClause = () => deviceScreen.value === 'app-screen'
   return (
     <Wrapper bind:ref={wrapperRef} >
       <DeviceFrame />
-      <Container className={concat`tws-h-auto tws-w-auto ${deviceScreen} tws-transition-[background] tws-duration-300 tws-ease-[ease] `} style={{
+      <Container className={`tws-h-auto tws-w-auto tws-transition-[background] tws-duration-300 tws-ease-[ease] `} style={{
         ...pick($iphoneConfig, 'width', 'height'),
         ...containerStyles,
         clipPath: $iphoneConfig.clothoidRadius,
         paddingTop: $iphoneConfig.safeAreaInset,
+        background: `url(${Wallpaper})`,
+        backgroundSize: 'cover'
       }} >
         <StatusBar style={{
           width: $iphoneConfig.width,
@@ -62,7 +65,7 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           backgroundColor: $deviceSettings.theme_color
         }} />
         <HomeScreen iframeSrc={iframeSrc} />
-        <AppScreen iframeSrc={iframeSrc} />
+        <AppScreen iframeSrc={iframeSrc} clipPath={$iphoneConfig.clothoidRadius} />
       </Container>
       <Show when={whenClause} >
         <VirtualHomeButton style={{
