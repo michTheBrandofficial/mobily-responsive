@@ -1,7 +1,9 @@
+import { deviceScreen } from "@/src/stores/device-screen";
 import { Signal } from "nixix/primitives";
 import { Button, VStack } from "nixix/view-components";
 import AppMenu from "./app-menu";
 import DeviceSelectButton from "./devce-select-button";
+import Home from "./icons/home";
 import Reload from "./icons/reload";
 import UrlButton from "./url-button";
 
@@ -23,6 +25,16 @@ const Sidebar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
         />
       </Button>
       <AppMenu />
+      <Button
+        on:click={() => deviceScreen.value = "tws-home-screen"}
+        className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group tws-mt-auto "
+      >
+        <Home
+          className={"tws-stroke-none tws-fill-inherit "}
+          width={24}
+          height={24}
+        />
+      </Button>
       <UrlButton iframeSrc={iframeSrc} />
       <DeviceSelectButton />
     </VStack>

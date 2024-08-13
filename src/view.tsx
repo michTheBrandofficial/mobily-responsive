@@ -9,6 +9,7 @@ import { dataDir, FSOptions } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { $setBasePhoneConfig } from "./stores/base-phone-config";
 import { $device } from "./stores/device";
+import { deviceScreen } from "./stores/device-screen";
 import { $setDeviceSettings } from "./stores/device-settings";
 import { $setIphoneConfig } from "./stores/iphone-config";
 
@@ -94,9 +95,8 @@ const setupPWAConfig = (src: string) => {
             return prev;
           })
         }
-        isFullScreen ? 'transparent' : (theme_color || 'white')
         $setDeviceSettings({
-          theme_color: 'transparent'
+          theme_color: (isFullScreen || deviceScreen.value === 'tws-home-screen') ? 'transparent' : (theme_color || 'white') 
         })
         const icon_blob = await fetchIconBlob(icons, iframeOrigin)
           .then(blob => blob)
@@ -109,7 +109,6 @@ const setupPWAConfig = (src: string) => {
 }
 
 /**
- * @todo theme_color showing even on home screen bug
  * @todo get rust backend to steal most dominant color and send back to js.
  */
 const View: Nixix.FC = (): someView => {

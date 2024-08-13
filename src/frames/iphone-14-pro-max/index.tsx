@@ -1,5 +1,5 @@
+import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
-import Iframe from "@/components/iframe";
 import Wrapper from "@/components/wrapper";
 import { pick, px } from "@/lib/utils";
 import { Show } from "nixix/hoc";
@@ -61,12 +61,8 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           zIndex: 400,
           backgroundColor: $deviceSettings.theme_color
         }} />
-        <Show when={whenClause} fallback={
-          <HomeScreen iframeSrc={iframeSrc} />
-
-        } >
-          <Iframe src={iframeSrc || 'http://localhost:3000'} />
-        </Show>
+        <HomeScreen iframeSrc={iframeSrc} />
+        <AppScreen iframeSrc={iframeSrc} />
       </Container>
       <Show when={whenClause} >
         <VirtualHomeButton style={{

@@ -13,7 +13,7 @@ const UrlButton: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   return (
     <Button
       on:click={() => setDisplay(" tws-block ")}
-      className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group tws-mt-auto "
+      className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group "
     >
       <UrlLink
         className={"tws-stroke-none tws-fill-black "}
