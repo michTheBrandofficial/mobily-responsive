@@ -109,7 +109,8 @@ const setupPWAConfig = (src: string) => {
 }
 
 /**
- * @todo add field to the icons.json file in AppIcons
+ * @todo add field to the icons.json file in AppIcons;
+ * @todo test manifest fetching and theme_color with anom-project
  */
 const View: Nixix.FC = (): someView => {
   const [iframeSrc] = signal<string>(

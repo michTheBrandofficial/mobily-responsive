@@ -1,4 +1,4 @@
-import Wallpaper from '@/assets/images/iphone home screen.jpg';
+import Wallpaper from '@/assets/images/iphone home screen 2.jpg';
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
