@@ -41,7 +41,6 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     virtualHomeButtonRatio,
     safeAreaInsetRatio
   })
-  console.log($iphoneConfig.safeAreaInset)
 
   return (
     <Wrapper bind:ref={wrapperRef} >

@@ -1,15 +1,19 @@
 import Tools from '@/assets/images/tools icon.png'
 import { px } from '@/lib/utils'
+import { setDeviceScreen } from '@/src/stores/device-screen'
+import { useIconCoordinates } from '@/src/stores/icon-coordinates'
 import { readBinaryFile, readTextFile } from '@tauri-apps/api/fs'
 import Nixix from 'nixix'
 import { For } from 'nixix/hoc'
-import { signal, Signal, store } from 'nixix/primitives'
+import { callRef, signal, Signal, store } from 'nixix/primitives'
 import { Container, HStack, VStack } from 'nixix/view-components'
 import { dataDir, FSOptions } from '~/constants'
-import { setDeviceScreen } from '~/stores/device-screen'
 import DockIcons from './icons/dock-icons'
 
-const AppIcon = ({ iframeSrc, icon: { icon, name, origin }, untitled }: {
+/**
+ * @todo extract to file later on
+ */
+const HomeScreenIcon = ({ iframeSrc, icon: { icon, name, origin }, untitled }: {
   iframeSrc: Signal<string>,
   icon: {
     name: string;
@@ -19,19 +23,22 @@ const AppIcon = ({ iframeSrc, icon: { icon, name, origin }, untitled }: {
   untitled?: boolean
 }) => {
   const [shouldLaunch] = signal<boolean>(false);
+  const homeScreenIcon = callRef<HTMLDivElement>()
   return (
     <Container on:click={() => {
-      shouldLaunch.value = true
+      const { x, y } = homeScreenIcon.current!.getBoundingClientRect()
+      useIconCoordinates().setIconCoordinates([x, y])
+      // shouldLaunch.value = true
       setDeviceScreen('app-screen')
-      iframeSrc.value = origin;
+      // iframeSrc.value = origin;
     }} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
-      {!untitled ? (
-        <img src={icon} alt={name} data-launch={shouldLaunch} className='tws-w-16 tws-h-16 tws-rounded-[inherit] tws-transition-transform tws-duration-500 data-[launch=true]:tws-scale-150 ' />
-      ) : (
-        <Container data-launch={shouldLaunch} className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] tws-transition-transform tws-duration-100 tws-ease-[ease] data-[launch=true]:tws-scale-150 '>
+      <Container bind:ref={homeScreenIcon} data-launch={shouldLaunch} className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] tws-transition-transform tws-duration-50 tws-ease-[ease] data-[launch=true]:tws-scale-150 '>
+        {!untitled ? (
+          <img src={icon} alt={name} className='tws-w-full tws-h-full tws-rounded-[inherit]  ' />
+        ) : (
           <img src={Tools} alt={'Untitled'} className='tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] ' />
-        </Container>
-      )}
+        )}
+      </Container>
       <p className='tws-text-white tws-text-xs ' >{name}</p>
     </Container>
   )
@@ -57,11 +64,11 @@ const HomeScreen: Nixix.FC<{
         <For each={homeScreenIcons}>
           {(icon) => {
             return (
-              <AppIcon icon={icon} iframeSrc={iframeSrc} />
+              <HomeScreenIcon icon={icon} iframeSrc={iframeSrc} />
             )
           }}
         </For>
-        <AppIcon untitled iframeSrc={iframeSrc} icon={{
+        <HomeScreenIcon untitled iframeSrc={iframeSrc} icon={{
           icon: '' as any,
           name: 'Untitled',
           origin: 'http://localhost:3000'
