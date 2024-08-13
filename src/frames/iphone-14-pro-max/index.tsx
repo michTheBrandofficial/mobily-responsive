@@ -44,6 +44,7 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     safeAreaInsetRatio
   })
 
+  const whenClause = () => deviceScreen.value === 'tws-app-screen'
   return (
     <Wrapper bind:ref={wrapperRef} >
       <DeviceFrame />
@@ -60,20 +61,22 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           zIndex: 400,
           backgroundColor: $deviceSettings.theme_color
         }} />
-        <Show when={() => deviceScreen.value === 'tws-app-screen'} fallback={
+        <Show when={whenClause} fallback={
           <HomeScreen iframeSrc={iframeSrc} />
 
         } >
           <Iframe src={iframeSrc || 'http://localhost:3000'} />
         </Show>
       </Container>
-      <VirtualHomeButton style={{
-        width: $iphoneConfig.virtualHomeButtonWidth,
-        position: 'absolute',
-        bottom: $iphoneConfig.deviceBarRatios.bottom,
-        zIndex: 400,
-        backgroundColor: '#080808'
-      }} />
+      <Show when={whenClause} >
+        <VirtualHomeButton style={{
+          width: $iphoneConfig.virtualHomeButtonWidth,
+          position: 'absolute',
+          bottom: $iphoneConfig.deviceBarRatios.bottom,
+          zIndex: 400,
+          backgroundColor: '#080808'
+        }} />
+      </Show>
     </Wrapper>
   )
 }

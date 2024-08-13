@@ -1,3 +1,4 @@
+import Tools from '@/assets/images/tools icon.png'
 import { dataDir, FSOptions } from '@/src/constants'
 import { setDeviceScreen } from '@/src/stores/device-screen'
 import { readBinaryFile, readTextFile } from '@tauri-apps/api/fs'
@@ -36,6 +37,15 @@ const HomeScreen: Nixix.FC<{
             )
           }}
         </For>
+        <Container on:click={() => {
+          setDeviceScreen('tws-app-screen')
+          iframeSrc.value = 'http://localhost:3000';
+        }} className='tws-w-fit tws-h-fit tws-rounded-[13px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
+          <Container className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit]'>
+            <img src={Tools} alt={'Untitled'} className='tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] ' />
+          </Container>
+          <p className='tws-text-white tws-text-xs ' >Untitled</p>
+        </Container>
       </HStack>
     </VStack>
   )
