@@ -29,16 +29,18 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
           translate: `${px(xCoordinate - x)} ${px(yCoordinate - y)}`
         }, 
         {
+          offset: .5,
           opacity: .5,
           scale: '.3',
-          offset: .66667
+          translate: `4%`
         },
         {
           opacity: 1,
-          scale: '1'
+          scale: '1',
+          translate: `0px`
         }
       ], {
-        duration: 300,
+        duration: 200,
         fill: 'forwards',
         easing: 'ease'
       })  

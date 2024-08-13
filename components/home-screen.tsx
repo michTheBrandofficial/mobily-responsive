@@ -1,48 +1,53 @@
 import Tools from '@/assets/images/tools icon.png'
-import { px } from '@/lib/utils'
+import { percentage, px } from '@/lib/utils'
 import { setDeviceScreen } from '@/src/stores/device-screen'
 import { useIconCoordinates } from '@/src/stores/icon-coordinates'
 import { readBinaryFile, readTextFile } from '@tauri-apps/api/fs'
 import Nixix from 'nixix'
 import { For } from 'nixix/hoc'
-import { callRef, Signal, store } from 'nixix/primitives'
+import { callRef, Signal, Store, store } from 'nixix/primitives'
 import { Container, HStack, VStack } from 'nixix/view-components'
 import { dataDir, FSOptions, homeScreenIconScale } from '~/constants'
 import DockIcons from './icons/dock-icons'
 
+const numberIconsInRow = 4;
+
 /**
  * @todo extract to file later on
  */
-const HomeScreenIcon = ({ iframeSrc, icon: { icon, name, origin }, untitled }: {
+const HomeScreenIcon: Nixix.FC<{
   iframeSrc: Signal<string>,
-  icon: {
+  icon: Store<{
     name: string;
     icon: string;
     origin: string;
-  };
-  untitled?: boolean
-}) => {
-  const homeScreenIcon = callRef<HTMLDivElement>()
+  }>;
+}> = ({ iframeSrc, icon: { icon, name, origin }, key }) => {
+  const homeScreenIcon = callRef<HTMLDivElement>();
+  const isUntitled = icon.value === Tools;
+  const iconRowIndex = Number(key) % numberIconsInRow;
+  const isInFirstTwoIcons = [0, 1].includes(iconRowIndex)
   return (
     <Container on:click={() => {
       const { x, y } = homeScreenIcon.current!.getBoundingClientRect()
+      console.log(iconRowIndex)
       useIconCoordinates().setIconCoordinates([x, y])
       setDeviceScreen('app-screen');
       homeScreenIcon.current!.animate({
         opacity: 0,
         scale: homeScreenIconScale.toString(),
-        translate: `-30% 20%`
+        translate: `${percentage(isInFirstTwoIcons ? 30 : -30)} 7%`
       }, {
-        duration: 200,
+        duration: 100,
         easing: 'ease'
       });
-      // iframeSrc.value = origin;
+      iframeSrc.value = origin;
     }} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
       <Container bind:ref={homeScreenIcon} className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] '>
-        {!untitled ? (
-          <img src={icon} alt={name} className='tws-w-full tws-h-full tws-rounded-[inherit]  ' />
-        ) : (
+        {isUntitled ? (
           <img src={Tools} alt={'Untitled'} className='tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] ' />
+        ) : (
+          <img src={icon} alt={name} className='tws-w-full tws-h-full tws-rounded-[inherit]  ' />
         )}
       </Container>
       <p className='tws-text-white tws-text-xs ' >{name}</p>
@@ -62,38 +67,24 @@ const HomeScreen: Nixix.FC<{
       const val = await readBinaryFile(icon.icon, FSOptions).then(val => new Blob([val]))
       icon.icon = URL.createObjectURL(val)
     }
-    setHomeScreenIcons(iconValues)
+    // make this only one untitled
+    const untitledIcon: App.HomeScreenIconMapping[string] = {
+      name: 'Untitled',
+      origin: 'http://localhost:3000',
+      icon: Tools
+    }
+    setHomeScreenIcons([...iconValues, untitledIcon, untitledIcon, untitledIcon, untitledIcon])
   })
   return (
     <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-16 tws-pb-4 tws-flex tws-flex-col tws-justify-between ">
       <HStack className='tws-h-fit tws-w-full tws-px-4 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between tws-gap-y-10 '>
         <For each={homeScreenIcons}>
-          {(icon) => {
+          {(icon, i) => {
             return (
-              <HomeScreenIcon icon={icon} iframeSrc={iframeSrc} />
+              <HomeScreenIcon key={i} icon={icon} iframeSrc={iframeSrc} />
             )
           }}
         </For>
-        <HomeScreenIcon untitled iframeSrc={iframeSrc} icon={{
-          icon: '' as any,
-          name: 'Untitled',
-          origin: 'http://localhost:3000'
-        }} />
-        <HomeScreenIcon untitled iframeSrc={iframeSrc} icon={{
-          icon: '' as any,
-          name: 'Untitled',
-          origin: 'http://localhost:3000'
-        }} />
-        <HomeScreenIcon untitled iframeSrc={iframeSrc} icon={{
-          icon: '' as any,
-          name: 'Untitled',
-          origin: 'http://localhost:3000'
-        }} />
-        <HomeScreenIcon untitled iframeSrc={iframeSrc} icon={{
-          icon: '' as any,
-          name: 'Untitled',
-          origin: 'http://localhost:3000'
-        }} />
       </HStack>
       <HStack className='tws-h-fit tws-w-full tws-bg-gray-300/40 tws-backdrop-blur-2xl tws-px-4 tws-py-4 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between ' style={{
         borderRadius: px(34)
