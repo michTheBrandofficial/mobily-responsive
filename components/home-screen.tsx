@@ -1,16 +1,15 @@
 import Tools from '@/assets/images/tools icon.png'
-import { percentage, px } from '@/lib/utils'
-import { setDeviceScreen } from '@/src/stores/device-screen'
+import { px } from '@/lib/utils'
+import { deviceScreen, setDeviceScreen } from '@/src/stores/device-screen'
 import { useIconCoordinates } from '@/src/stores/icon-coordinates'
 import { readBinaryFile, readTextFile } from '@tauri-apps/api/fs'
 import Nixix from 'nixix'
 import { For } from 'nixix/hoc'
-import { callRef, Signal, Store, store } from 'nixix/primitives'
+import { callRef, reaction, Signal, Store, store } from 'nixix/primitives'
+import { MouseEventHandler } from 'nixix/types/eventhandlers'
 import { Container, HStack, VStack } from 'nixix/view-components'
 import { dataDir, FSOptions, homeScreenIconScale } from '~/constants'
 import DockIcons from './icons/dock-icons'
-
-const numberIconsInRow = 4;
 
 /**
  * @todo extract to file later on
@@ -20,30 +19,14 @@ const HomeScreenIcon: Nixix.FC<{
   icon: Store<{
     name: string;
     icon: string;
-    origin: string;
   }>;
-}> = ({ iframeSrc, icon: { icon, name, origin }, key }) => {
-  const homeScreenIcon = callRef<HTMLDivElement>();
+  'on:click': MouseEventHandler<HTMLDivElement>
+}> = ({ iframeSrc, icon: { icon, name }, ...rest }) => {
   const isUntitled = icon.value === Tools;
-  const iconRowIndex = Number(key) % numberIconsInRow;
-  const isInFirstTwoIcons = [0, 1].includes(iconRowIndex)
+
   return (
-    <Container on:click={() => {
-      const { x, y } = homeScreenIcon.current!.getBoundingClientRect()
-      console.log(iconRowIndex)
-      useIconCoordinates().setIconCoordinates([x, y])
-      setDeviceScreen('app-screen');
-      homeScreenIcon.current!.animate({
-        opacity: 0,
-        scale: homeScreenIconScale.toString(),
-        translate: `${percentage(isInFirstTwoIcons ? 30 : -30)} 7%`
-      }, {
-        duration: 100,
-        easing: 'ease'
-      });
-      iframeSrc.value = origin;
-    }} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
-      <Container bind:ref={homeScreenIcon} className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] '>
+    <Container on:click={rest['on:click']} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
+      <Container className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] '>
         {isUntitled ? (
           <img src={Tools} alt={'Untitled'} className='tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] ' />
         ) : (
@@ -55,10 +38,16 @@ const HomeScreenIcon: Nixix.FC<{
   )
 }
 
+const numberIconsInRow = 4;
+
 const HomeScreen: Nixix.FC<{
   iframeSrc: Signal<string>
 }> = ({ iframeSrc }) => {
   const [homeScreenIcons, setHomeScreenIcons] = store<App.HomeScreenIconMapping[string][]>([])
+  const homeScreenIcon = callRef<HTMLDivElement>();
+  let isInFirstTwoIcons = true
+  let animation: Animation | null = null;  
+
   // get new home screen icons
   readTextFile(`${dataDir}/icons.json`, FSOptions).then(async (val) => {
     const iconFileObject: App.HomeScreenIconMapping = JSON.parse(val);
@@ -75,13 +64,36 @@ const HomeScreen: Nixix.FC<{
     }
     setHomeScreenIcons([...iconValues, untitledIcon, untitledIcon, untitledIcon, untitledIcon])
   })
+  // animation for icons
+  reaction(() => {
+    if (deviceScreen.value === 'app-screen') {
+      const { x, y } = homeScreenIcon.current!.getBoundingClientRect()
+      useIconCoordinates().setIconCoordinates([x, y, isInFirstTwoIcons])
+      animation = homeScreenIcon.current!.animate(
+        {
+          offset: .333,
+          opacity: 1,
+          scale: homeScreenIconScale.toString(),
+          translate: `${px(isInFirstTwoIcons ? 30 : -30)} 30px`
+        }, {
+        duration: 300,
+        easing: 'ease',
+      });
+    } else animation?.reverse()
+  }, [deviceScreen])
   return (
     <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-16 tws-pb-4 tws-flex tws-flex-col tws-justify-between ">
       <HStack className='tws-h-fit tws-w-full tws-px-4 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between tws-gap-y-10 '>
         <For each={homeScreenIcons}>
           {(icon, i) => {
             return (
-              <HomeScreenIcon key={i} icon={icon} iframeSrc={iframeSrc} />
+              <HomeScreenIcon on:click={({currentTarget}) => {
+                homeScreenIcon.current = currentTarget!;
+                const iconRowIndex = Number(i) % numberIconsInRow;
+                isInFirstTwoIcons = [0, 1].includes(iconRowIndex);
+                setDeviceScreen('app-screen');
+                iframeSrc.value = icon.origin;
+              }} key={i} icon={icon} iframeSrc={iframeSrc} />
             )
           }}
         </For>
