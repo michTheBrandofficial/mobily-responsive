@@ -1,0 +1,15 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "${cwd}",
+      "script": "tauri:dev",
+      "group": "none",
+      "label": "pnpm: tauri:dev",
+      "detail": "tauri dev",
+      "problemMatcher": []
+    }
+  ]
+}
