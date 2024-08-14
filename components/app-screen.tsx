@@ -1,17 +1,19 @@
 import { percentage, px } from '@/lib/utils'
 import { homeScreenIconScale } from '@/src/constants'
+import { useDeviceSettings } from '@/src/stores/device-settings'
 import { useIconCoordinates } from '@/src/stores/icon-coordinates'
+import { useIphoneConfig } from '@/src/stores/iphone-config'
 import { callRef, reaction, Signal } from 'nixix/primitives'
 import { Container } from 'nixix/view-components'
 import VirtualHomeButton from '~/components/virtual-home-button'
-import { deviceScreen } from '~/stores/device-screen'
-import { $iphoneConfig } from '~/stores/iphone-config'
+import { useDeviceScreen } from '~/stores/device-screen'
 import Iframe from './iframe'
 
 '08140826381'
 
 const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
   const appScreenRef = callRef<HTMLDivElement>()
+  const { deviceScreen } = useDeviceScreen()
   const newIconSize = homeScreenIconScale * 64;
   let animation: Animation | null = null
   // leave this animation here for reversal;
@@ -63,11 +65,12 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
       } else animation?.reverse()
     }
   }, [deviceScreen])
+  const { iphoneConfig } = useIphoneConfig()
   return (
-    <Container bind:ref={appScreenRef} className='tws-flex tws-items-center tws-justify-center ' style={{
+    <Container bind:ref={appScreenRef} className=' ' style={{
       width: percentage(100),
       height: percentage(100),
-      clipPath: $iphoneConfig.clothoidRadius,
+      clipPath: iphoneConfig.clothoidRadius,
       position: 'absolute',
       zIndex: 800,
       backgroundColor: 'white',
@@ -75,16 +78,28 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
       left: px(0),
       opacity: 0,
       scale: `0`,
-      paddingTop: $iphoneConfig.safeAreaInset
+      paddingTop: iphoneConfig.safeAreaInset
     }} >
-      <Iframe src={iframeSrc} />
-      <VirtualHomeButton style={{
-        width: $iphoneConfig.virtualHomeButtonWidth,
+      <Container style={{
+        width: percentage(100),
+        height: iphoneConfig.safeAreaInset,
+        backgroundColor: useDeviceSettings().deviceSettings.theme_color,
         position: 'absolute',
-        bottom: $iphoneConfig.deviceBarRatios.bottom,
-        zIndex: 900,
-        backgroundColor: '#080808'
+        top: px(0),
       }} />
+      <Iframe src={iframeSrc} />
+      <Container className='tws-flex tws-items-center tws-justify-center' style={{
+        width: percentage(100),
+        height: 'fit-content',
+        position: 'absolute',
+        bottom: iphoneConfig.deviceBarRatios.bottom,
+        zIndex: 900,
+      }}>
+        <VirtualHomeButton style={{
+          width: iphoneConfig.virtualHomeButtonWidth,
+          backgroundColor: '#080808'
+        }} />
+      </Container>
     </Container>
   )
 }

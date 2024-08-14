@@ -11,7 +11,13 @@ export const iphoneConfig: IphoneConfig = {
   ...{}
 };
 
-export const [$iphoneConfig, $setIphoneConfig] = store<BasePhoneConfig>(iphoneConfig);
+export const useIphoneConfig = function () {
+ const [siphoneConfig, setIphoneConfig] = store<BasePhoneConfig>(iphoneConfig);
+  return () => ({
+    iphoneConfig: siphoneConfig,
+    setIphoneConfig
+  })
+}()
 
 type BaseIphoneConfigRatios<T = number> = {
   deviceWidthRatio: T,
@@ -36,7 +42,7 @@ export const setupResizeEffect = <E extends HTMLElement>(wrapperRef: MutableRefO
       const { width, height } = getDims(
         getComputedStyle(target!)
       )
-      $setIphoneConfig({
+      useIphoneConfig().setIphoneConfig({
         width: px(width - round(width * deviceWidthRatio)),
         height: px(height - round(height * deviceHeightRatio)),
         virtualHomeButtonWidth: px(round(height * virtualHomeButtonRatio)),

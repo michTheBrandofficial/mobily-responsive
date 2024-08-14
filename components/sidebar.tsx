@@ -1,6 +1,6 @@
 import { Signal } from "nixix/primitives";
 import { Button, VStack } from "nixix/view-components";
-import { deviceScreen } from "~/stores/device-screen";
+import { useDeviceScreen } from "~/stores/device-screen";
 import AppMenu from "./app-menu";
 import DeviceSelectButton from "./devce-select-button";
 import Home from "./icons/home";
@@ -26,7 +26,9 @@ const Sidebar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
       </Button>
       <AppMenu />
       <Button
-        on:click={() => deviceScreen.value = "home-screen"}
+        on:click={() => {
+          useDeviceScreen().setDeviceScreen('home-screen')
+        }}
         className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group tws-mt-auto "
       >
         <Home

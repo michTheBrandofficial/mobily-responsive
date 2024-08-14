@@ -1,17 +1,17 @@
 import Sidebar from "@/components/sidebar";
 import { handleDirCreation } from "@/lib/file-handle";
-import { blobToBinary, prefixWithSlash, px } from "@/lib/utils";
+import { blobToBinary, prefixWithSlash, px, wait } from "@/lib/utils";
 import { BaseDirectory, exists, readTextFile, writeBinaryFile, writeFile } from "@tauri-apps/api/fs";
 import { removeNode } from "nixix";
 import { effect, reaction, signal } from "nixix/primitives";
 import { Container, VStack } from "nixix/view-components";
 import { dataDir, FSOptions } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
-import { $setBasePhoneConfig } from "./stores/base-phone-config";
-import { $device } from "./stores/device";
-import { deviceScreen } from "./stores/device-screen";
-import { $setDeviceSettings } from "./stores/device-settings";
-import { $setIphoneConfig } from "./stores/iphone-config";
+import { useBasePhoneConfig } from "./stores/base-phone-config";
+import { useDevice } from "./stores/device";
+import { useDeviceScreen } from "./stores/device-screen";
+import { useDeviceSettings } from "./stores/device-settings";
+import { useIphoneConfig } from "./stores/iphone-config";
 
 const fetchIconBlob = async (icons: App.WebManifest['icons'], iframeOrigin: string) => {
   return new Promise<Blob>((resolve, reject) => {
@@ -86,17 +86,17 @@ const setupPWAConfig = (src: string) => {
         const { display, theme_color, short_name, icons } = manifest
         const isFullScreen = display === "fullscreen"
         if (isFullScreen) {
-          $setBasePhoneConfig(prev => {
+          useBasePhoneConfig().setBasePhoneConfig(prev => {
             prev.safeAreaInset = '0';
             return prev;
           })
-          $setIphoneConfig(prev => {
+          useIphoneConfig().setIphoneConfig(prev => {
             prev.safeAreaInset = '0';
             return prev;
           })
         }
-        $setDeviceSettings({
-          theme_color: (isFullScreen || deviceScreen.value === 'home-screen') ? 'transparent' : (theme_color || 'white') 
+        useDeviceSettings().setDeviceSettings({
+          theme_color: (isFullScreen || useDeviceScreen().deviceScreen.value === 'home-screen') ? 'transparent' : (theme_color || 'white')
         })
         const icon_blob = await fetchIconBlob(icons, iframeOrigin)
           .then(blob => blob)
@@ -109,23 +109,33 @@ const setupPWAConfig = (src: string) => {
 }
 
 /**
- * @todo add field to the icons.json file in AppIcons;
  * @todo test manifest fetching and theme_color with anom-project
  */
 const View: Nixix.FC = (): someView => {
   const [iframeSrc] = signal<string>(
     localStorage.getItem("iframeSrc") || "http://localhost:3000",
   );
+  const { deviceScreen } = useDeviceScreen()
 
   // setup data dir if it is not created;
   effect(handleDirCreation)
-
   effect(() => {
     // subscribed
     const src = iframeSrc.value;
+    if (!src) return;
     localStorage.setItem("iframeSrc", src);
     setupPWAConfig(src);
   });
+  reaction(() => {
+    if (deviceScreen.value === 'home-screen') {
+      iframeSrc.value = ''
+      wait(() =>
+        useDeviceSettings().setDeviceSettings(p => {
+          p.theme_color = 'transparent'
+          return p;
+        }), 400)
+    }
+  }, [deviceScreen])
 
   return (
     <VStack
@@ -144,8 +154,9 @@ const View: Nixix.FC = (): someView => {
       <VStack className="tws-h-full tws-w-full tws-pl-3 tws-flex tws-items-center min-[600px]:tws-pl-0 min-[600px]:tws-justify-center ">
         <Container
           bind:ref={({ current }) => {
+            const { device } = useDevice()
             function refetchFrame() {
-              const Device = DEVICE_MAPPING[$device.value].component;
+              const Device = DEVICE_MAPPING[device.value].component;
               const childNodes = current.childNodes;
               current.replaceChildren(<Device iframeSrc={iframeSrc} />);
               removeNode(childNodes as any);
@@ -154,7 +165,7 @@ const View: Nixix.FC = (): someView => {
             reaction(() => {
               refetchFrame();
               setupPWAConfig(iframeSrc.value)
-            }, [$device]);
+            }, [device]);
           }}
         ></Container>
       </VStack>

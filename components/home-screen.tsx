@@ -1,6 +1,6 @@
 import Tools from '@/assets/images/tools icon.png'
 import { px } from '@/lib/utils'
-import { deviceScreen, setDeviceScreen } from '@/src/stores/device-screen'
+import { useDeviceScreen } from '@/src/stores/device-screen'
 import { useIconCoordinates } from '@/src/stores/icon-coordinates'
 import { readBinaryFile, readTextFile } from '@tauri-apps/api/fs'
 import Nixix from 'nixix'
@@ -44,6 +44,7 @@ const HomeScreen: Nixix.FC<{
   iframeSrc: Signal<string>
 }> = ({ iframeSrc }) => {
   const [homeScreenIcons, setHomeScreenIcons] = store<App.HomeScreenIconMapping[string][]>([])
+  const { deviceScreen, setDeviceScreen } = useDeviceScreen()
   const homeScreenIcon = callRef<HTMLDivElement>();
   let isInFirstTwoIcons = true
   let animation: Animation | null = null;  
@@ -62,7 +63,7 @@ const HomeScreen: Nixix.FC<{
       origin: 'http://localhost:3000',
       icon: Tools
     }
-    setHomeScreenIcons([...iconValues, untitledIcon, untitledIcon, untitledIcon, untitledIcon])
+    setHomeScreenIcons([...iconValues, untitledIcon])
   })
   // animation for icons
   reaction(() => {

@@ -5,8 +5,8 @@ import { callRef } from "nixix/primitives";
 import { Container } from "nixix/view-components";
 import VirtualHomeButton from "~/components/virtual-home-button";
 import { containerStyles } from "~/constants";
-import { $deviceSettings } from "~/stores/device-settings";
-import { $iphoneConfig, setupResizeEffect } from "~/stores/iphone-config";
+import { useDeviceSettings } from "~/stores/device-settings";
+import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
 
@@ -31,6 +31,7 @@ const clothoidRadiusRatio = 36 / testingDimensions.w;
 
 const Iphone12Mini: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   const wrapperRef = callRef<HTMLElement>();
+  const { iphoneConfig } = useIphoneConfig()
   setupResizeEffect(wrapperRef, {
     deviceBarRatios,
     deviceHeightRatio,
@@ -44,29 +45,29 @@ const Iphone12Mini: Nixix.FC<Props> = ({ iframeSrc }): someView => {
       <DeviceFrame />
       <Container
         style={{
-          ...pick($iphoneConfig, "width", "height"),
+          ...pick(iphoneConfig, "width", "height"),
           ...containerStyles,
-          clipPath: $iphoneConfig.clothoidRadius,
-          paddingTop: $iphoneConfig.safeAreaInset,
+          clipPath: iphoneConfig.clothoidRadius,
+          paddingTop: iphoneConfig.safeAreaInset,
           backgroundColor: "white",
         }}
       >
         <StatusBar
           style={{
-            width: $iphoneConfig.width,
+            width: iphoneConfig.width,
             position: "absolute",
             top: px(-2),
             zIndex: 900,
-            backgroundColor: $deviceSettings.theme_color
+            backgroundColor: useDeviceSettings().deviceSettings.theme_color
           }}
         />
         <Iframe src={iframeSrc || "http://localhost:3000"} />
       </Container>
       <VirtualHomeButton
         style={{
-          width: $iphoneConfig.virtualHomeButtonWidth,
+          width: iphoneConfig.virtualHomeButtonWidth,
           position: "absolute",
-          bottom: $iphoneConfig.deviceBarRatios.bottom,
+          bottom: iphoneConfig.deviceBarRatios.bottom,
           zIndex: 900,
         }}
       />

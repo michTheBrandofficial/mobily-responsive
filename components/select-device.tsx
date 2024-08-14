@@ -1,21 +1,21 @@
 import { For } from "nixix/hoc";
 import {
-    SetSignalDispatcher,
-    Signal,
-    reaction,
-    signal,
+  SetSignalDispatcher,
+  Signal,
+  reaction,
+  signal,
 } from "nixix/primitives";
 import { KeyboardEventHandler } from "nixix/types/eventhandlers";
 import { Container, VStack } from "nixix/view-components";
 import {
-    DEVICE_MAPPING,
-    Device,
-    DeviceDisplayName,
+  DEVICE_MAPPING,
+  Device,
+  DeviceDisplayName,
 } from "~/device-mapping";
-import { $device, $setDevice } from "~/stores/device";
+import { useDevice } from "~/stores/device";
 
-const [$displayName] = signal<DeviceDisplayName>(
-  DEVICE_MAPPING[$device.value].displayName,
+const [displayName] = signal<DeviceDisplayName>(
+  DEVICE_MAPPING[useDevice().device.value].displayName,
 );
 
 interface SelectProps {
@@ -23,9 +23,10 @@ interface SelectProps {
 }
 
 const SelectContent: Nixix.FC<SelectProps> = ({ "on:select": onSelect }) => {
+  const {setDevice} = useDevice()
   const setDeviceValue = (value: Device) => () => {
-    $setDevice(value);
-    $displayName.value = DEVICE_MAPPING[value].displayName;
+    setDevice(value);
+    displayName.value = DEVICE_MAPPING[value].displayName;
     localStorage.setItem("lastUsedDevice", value);
     onSelect(value);
   };
@@ -59,7 +60,7 @@ const SelectContent: Nixix.FC<SelectProps> = ({ "on:select": onSelect }) => {
   return (
     <VStack className="tws-min-w-full tws-w-56 tws-min-h-56 tws-flex tws-flex-col tws-blue-bordered tws-rounded-xl ">
       <Container className="tws-w-full tws-py-2 tws-opacity-50 ">
-        {$displayName}
+        {displayName}
       </Container>
       <hr className="tws-border-gray-300 dark:tws-border-[#171717]/70  " />
       <VStack className="tws-flex tws-flex-col tws-rounded-b-[inherit] ">
@@ -90,6 +91,7 @@ interface Props {
 }
 
 const DeviceSelect: Nixix.FC<Props> = ({ display, setDisplay }): someView => {
+  const {device} = useDevice()
   return (
     <VStack
       className="tws-font-Rubik tws-font-medium tws-space-y-2 tws-relative tws-z-[700] tws-mt-auto tws-text-[#171717] dark:tws-text-stone-300 "
@@ -99,7 +101,7 @@ const DeviceSelect: Nixix.FC<Props> = ({ display, setDisplay }): someView => {
             display.value !== " tws-hidden " &&
             current
               .querySelector<HTMLDivElement>(
-                `div[data-value="${$device.value}"]`,
+                `div[data-value="${device.value}"]`,
               )
               ?.focus(),
           [display],

@@ -4,8 +4,8 @@ import { pick, px } from "@/lib/utils";
 import { callRef } from "nixix/primitives";
 import { Container } from "nixix/view-components";
 import { containerStyles } from "~/constants";
-import { $deviceSettings } from "~/stores/device-settings";
-import { $iphoneConfig, setupResizeEffect } from "~/stores/iphone-config";
+import { useDeviceSettings } from "~/stores/device-settings";
+import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
 
@@ -27,6 +27,7 @@ const borderRadiusRatio = 36 / testingDimensions.w;
 
 const Iphone5S: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   const wrapperRef = callRef<HTMLElement>()
+  const { iphoneConfig } = useIphoneConfig()
   setupResizeEffect(wrapperRef, {
     deviceBarRatios,
     deviceHeightRatio,
@@ -40,16 +41,16 @@ const Iphone5S: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     <Wrapper bind:ref={wrapperRef} >
       <DeviceFrame />
       <Container style={{
-        ...pick($iphoneConfig, 'width', 'height'),
+        ...pick(iphoneConfig, 'width', 'height'),
         ...containerStyles,
-        paddingTop: $iphoneConfig.safeAreaInset,
+        paddingTop: iphoneConfig.safeAreaInset,
       }} >
         <StatusBar style={{
-          width: $iphoneConfig.width,
+          width: iphoneConfig.width,
           position: 'absolute',
           top: px(0),
           zIndex: 900,
-          backgroundColor: $deviceSettings.theme_color
+          backgroundColor: useDeviceSettings().deviceSettings.theme_color
         }} />
         <Iframe src={iframeSrc || 'http://localhost:3000'} />
       </Container>

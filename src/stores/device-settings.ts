@@ -1,9 +1,14 @@
 import { store } from "nixix/primitives";
 
 type Settings = {
-  theme_color: 'white' | (string & {}) ;
+  theme_color: 'white' | 'transparent' | (string & {}) ;
 }
 
-export const [$deviceSettings, $setDeviceSettings] = store<Settings>({
-  theme_color: ''
-})
+export const useDeviceSettings = function () {
+  const [deviceSettings, setDeviceSettings] = store<Settings>({
+    theme_color: ''
+  });
+  return () => ({
+    deviceSettings, setDeviceSettings
+  })
+}()
