@@ -1,11 +1,11 @@
-import Iframe from "@/components/iframe";
+import Wallpaper from '@/assets/images/iphone home screen.jpg';
+import AppScreen from "@/components/app-screen";
+import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
-import { pick, px } from "@/lib/utils";
+import { percentage, pick, px } from "@/lib/utils";
 import { callRef } from "nixix/primitives";
 import { Container } from "nixix/view-components";
-import VirtualHomeButton from "~/components/virtual-home-button";
 import { containerStyles } from "~/constants";
-import { useDeviceSettings } from "~/stores/device-settings";
 import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
@@ -22,7 +22,7 @@ const safeAreaInsetRatio = 36 / testingDimensions.h;
 
 const deviceBarRatios = [
   18 / testingDimensions.h,
-  22 / testingDimensions.h,
+  6 / testingDimensions.h,
 ] as const;
 
 const virtualHomeButtonRatio = 120 / testingDimensions.h;
@@ -48,29 +48,27 @@ const Iphone12ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           ...pick(iphoneConfig, "width", "height"),
           ...containerStyles,
           clipPath: iphoneConfig.clothoidRadius,
-          paddingTop: iphoneConfig.safeAreaInset,
-          backgroundColor: "white",
-        }}
-      >
-        <StatusBar
-          style={{
-            width: iphoneConfig.width,
-            position: "absolute",
-            top: px(-4),
-            zIndex: 900,
-            backgroundColor: useDeviceSettings().deviceSettings.theme_color
-          }}
-        />
-        <Iframe src={iframeSrc || "http://localhost:3000"} />
+          background: `url(${Wallpaper})`,
+          backgroundSize: 'cover'
+        }} >
+          <Container style={{
+            paddingTop: iphoneConfig.safeAreaInset,
+            width: percentage(100),
+            height: percentage(100),
+            clipPath: 'inherit',
+            overflow: 'hidden',
+            position: 'relative'
+          }} >
+            <StatusBar style={{
+              width: iphoneConfig.width,
+              position: 'absolute',
+              top: px(0),
+              zIndex: 900,
+            }} />
+            <HomeScreen iframeSrc={iframeSrc} />
+            <AppScreen iframeSrc={iframeSrc} />
+          </Container>
       </Container>
-      <VirtualHomeButton
-        style={{
-          width: iphoneConfig.virtualHomeButtonWidth,
-          position: "absolute",
-          bottom: iphoneConfig.deviceBarRatios.bottom,
-          zIndex: 900,
-        }}
-      />
     </Wrapper>
   );
 };

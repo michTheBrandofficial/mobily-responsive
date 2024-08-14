@@ -109,7 +109,6 @@ const setupPWAConfig = (src: string) => {
 }
 
 /**
- * @todo test manifest fetching and theme_color with anom-project
  */
 const View: Nixix.FC = (): someView => {
   const [iframeSrc] = signal<string>(
@@ -131,7 +130,7 @@ const View: Nixix.FC = (): someView => {
       iframeSrc.value = ''
       wait(() =>
         useDeviceSettings().setDeviceSettings(p => {
-          p.theme_color = 'transparent'
+          p.theme_color = 'white'
           return p;
         }), 400)
     }
@@ -159,6 +158,7 @@ const View: Nixix.FC = (): someView => {
               const Device = DEVICE_MAPPING[device.value].component;
               const childNodes = current.childNodes;
               current.replaceChildren(<Device iframeSrc={iframeSrc} />);
+              useDeviceScreen().setDeviceScreen('home-screen')
               removeNode(childNodes as any);
             }
             refetchFrame();

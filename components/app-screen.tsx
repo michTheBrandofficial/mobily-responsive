@@ -73,7 +73,7 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
       clipPath: iphoneConfig.clothoidRadius,
       position: 'absolute',
       zIndex: 800,
-      backgroundColor: 'white',
+      backgroundColor: 'transparent',
       top: px(0),
       left: px(0),
       opacity: 0,
@@ -87,7 +87,13 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
         position: 'absolute',
         top: px(0),
       }} />
-      <Iframe src={iframeSrc} />
+      <Container style={{
+        height: percentage(100),
+        width: percentage(100),
+        backgroundColor: 'white'
+      }} >
+        <Iframe src={iframeSrc} />
+      </Container>
       <Container className='tws-flex tws-items-center tws-justify-center' style={{
         width: percentage(100),
         height: 'fit-content',
