@@ -36,11 +36,11 @@ export const basePhoneConfig: BasePhoneConfig = {
 export const useBasePhoneConfig = function () {
   const [sbasePhoneConfig, setBasePhoneConfig] =
     store<BasePhoneConfig>(basePhoneConfig);
-  return {
+  return () => ({
     basePhoneConfig: sbasePhoneConfig,
     setBasePhoneConfig,
-  };
-};
+  });
+}();
 
 type BasePhoneConfigRatios<T = number> = {
   deviceWidthRatio: T;

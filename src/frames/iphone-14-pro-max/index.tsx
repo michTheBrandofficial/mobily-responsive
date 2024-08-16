@@ -1,4 +1,4 @@
-import Wallpaper from '@/assets/images/iphone home screen 2.jpg';
+import Wallpaper from '@/assets/images/iphone 14 wallpaper.jpg';
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
@@ -28,7 +28,7 @@ const virtualHomeButtonRatio = 120 / testingDimensions.h;
 
 const clothoidRadiusRatio = 43 / testingDimensions.w;
 
-const deviceBarRatios = [15 / testingDimensions.h, 5 / testingDimensions.h] as const
+const deviceBarRatios = [15 / testingDimensions.h, 6 / testingDimensions.h] as const
 
 const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   const wrapperRef = callRef<HTMLElement>();
@@ -67,7 +67,7 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
             zIndex: 900,
           }} />
           <HomeScreen iframeSrc={iframeSrc} />
-          <AppScreen iframeSrc={iframeSrc} />
+          <AppScreen config="iphone" iframeSrc={iframeSrc} />
         </Container>
       </Container>
     </Wrapper>

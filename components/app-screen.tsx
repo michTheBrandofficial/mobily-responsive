@@ -1,17 +1,17 @@
 import { percentage, px } from '@/lib/utils'
 import { homeScreenIconScale } from '@/src/constants'
+import { useBasePhoneConfig } from '@/src/stores/base-phone-config'
 import { useDeviceSettings } from '@/src/stores/device-settings'
 import { useIconCoordinates } from '@/src/stores/icon-coordinates'
-import { useIphoneConfig } from '@/src/stores/iphone-config'
+import { IphoneConfig, useIphoneConfig } from '@/src/stores/iphone-config'
 import { callRef, reaction, Signal } from 'nixix/primitives'
 import { Container } from 'nixix/view-components'
 import VirtualHomeButton from '~/components/virtual-home-button'
 import { useDeviceScreen } from '~/stores/device-screen'
 import Iframe from './iframe'
 
-'08140826381'
-
-const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
+// default canfig is iphone
+const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>, config: 'base' | 'iphone' }) => {
   const appScreenRef = callRef<HTMLDivElement>()
   const { deviceScreen } = useDeviceScreen()
   const newIconSize = homeScreenIconScale * 64;
@@ -40,17 +40,16 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
             {
               offset: 0,
               opacity: 0,
-              scale: `${64 / 391.421875} ${64 / 846.5}`,
               translate: `${px(xCoordinate - x)} ${px(yCoordinate - y)}`
             },
             {
-              offset: .333,
+              offset: .5,
               opacity: .9,
               scale: `${newIconSize / 391.421875} ${newIconSize / 846.5}`,
               translate: `${px(xCoordinate - x + (isInFirstTwoIcons.value ? 30 : -30))} ${px(yCoordinate - y + 30)}`
             },
             {
-              offset: .666,
+              offset: .75,
               opacity: .95,
               scale: '.9',
               translate: `0 0`
@@ -65,12 +64,14 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
       } else animation?.reverse()
     }
   }, [deviceScreen])
-  const { iphoneConfig } = useIphoneConfig()
+  let phoneConfig!: IphoneConfig;
+  if (config === 'base') phoneConfig = useBasePhoneConfig().basePhoneConfig;
+  else phoneConfig = useIphoneConfig().iphoneConfig
   return (
     <Container bind:ref={appScreenRef} className=' ' style={{
       width: percentage(100),
       height: percentage(100),
-      clipPath: iphoneConfig.clothoidRadius,
+      clipPath: phoneConfig.clothoidRadius,
       position: 'absolute',
       zIndex: 800,
       backgroundColor: 'transparent',
@@ -78,11 +79,11 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
       left: px(0),
       opacity: 0,
       scale: `0`,
-      paddingTop: iphoneConfig.safeAreaInset
+      paddingTop: phoneConfig.safeAreaInset
     }} >
       <Container style={{
         width: percentage(100),
-        height: iphoneConfig.safeAreaInset,
+        height: phoneConfig.safeAreaInset,
         backgroundColor: useDeviceSettings().deviceSettings.theme_color,
         position: 'absolute',
         top: px(0),
@@ -98,11 +99,11 @@ const AppScreen = ({ iframeSrc }: { iframeSrc: Signal<string> }) => {
         width: percentage(100),
         height: 'fit-content',
         position: 'absolute',
-        bottom: iphoneConfig.deviceBarRatios.bottom,
+        bottom: phoneConfig.deviceBarRatios.bottom,
         zIndex: 900,
       }}>
         <VirtualHomeButton style={{
-          width: iphoneConfig.virtualHomeButtonWidth,
+          width: phoneConfig.virtualHomeButtonWidth,
           backgroundColor: '#080808'
         }} />
       </Container>

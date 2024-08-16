@@ -47,24 +47,28 @@ const HomeScreen: Nixix.FC<{
   const { deviceScreen, setDeviceScreen } = useDeviceScreen()
   const homeScreenIcon = callRef<HTMLDivElement>();
   let isInFirstTwoIcons = true
-  let animation: Animation | null = null;  
+  let animation: Animation | null = null;
+  const untitledIcon: App.HomeScreenIconMapping[string] = {
+    name: 'Untitled',
+    origin: 'http://localhost:3000',
+    icon: Tools
+  }
 
   // get new home screen icons
-  readTextFile(`${dataDir}/icons.json`, FSOptions).then(async (val) => {
+  readTextFile(`${dataDir}/icons.json`, FSOptions)
+    .then(async (val) => {
     const iconFileObject: App.HomeScreenIconMapping = JSON.parse(val);
     const iconValues = Object.values(iconFileObject);
     for (const icon of iconValues) {
       const val = await readBinaryFile(icon.icon, FSOptions).then(val => new Blob([val]))
       icon.icon = URL.createObjectURL(val)
     }
-    // make this only one untitled
-    const untitledIcon: App.HomeScreenIconMapping[string] = {
-      name: 'Untitled',
-      origin: 'http://localhost:3000',
-      icon: Tools
-    }
     setHomeScreenIcons([...iconValues, untitledIcon])
   })
+    .catch(err => {
+      console.warn(err)
+      setHomeScreenIcons([untitledIcon])
+    })
   // animation for icons
   reaction(() => {
     if (deviceScreen.value === 'app-screen') {

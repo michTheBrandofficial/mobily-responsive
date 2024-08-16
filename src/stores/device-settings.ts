@@ -6,7 +6,7 @@ type Settings = {
 
 export const useDeviceSettings = function () {
   const [deviceSettings, setDeviceSettings] = store<Settings>({
-    theme_color: ''
+    theme_color: 'white'
   });
   return () => ({
     deviceSettings, setDeviceSettings

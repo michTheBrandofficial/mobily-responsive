@@ -21,7 +21,7 @@ const DeviceSelectButton: Nixix.FC = (): someView => {
       />
       <Container
         on:click_stopPropagation={() => undefined}
-        className={concat`tws-w-fit tws-h-fit ${display} tws-font-medium tws-absolute tws-right-[140%] tws-z-[800] tws-bottom-4 `}
+        className={concat`tws-w-fit tws-h-fit tws-font-medium tws-absolute tws-right-[140%] tws-z-[800] tws-bottom-4 ${display} `}
       >
         <DeviceSelect display={display} setDisplay={setDisplay} />
       </Container>

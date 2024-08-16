@@ -30,7 +30,7 @@ const fetchIconBlob = async (icons: App.WebManifest['icons'], iframeOrigin: stri
 
 const storeAppHomeScreenData = async (name: string, blob: Blob, origin: string) => {
   // unique name using the short_name from the webmanifest combined with a base64 string formed from the origin
-  const iconFileName = `${name.replace(' ', '')}-${btoa(origin).replace('=', '')}`
+  const iconFileName = `${name.replace(' ', '')}-${btoa(origin).replace(/=/g, '')}`
   const iconFilePath = `${dataDir}/AppIcons/${iconFileName}.png` as const;
   const binary = await blobToBinary(blob);
   await writeBinaryFile(
@@ -109,6 +109,7 @@ const setupPWAConfig = (src: string) => {
 }
 
 /**
+ * @modal should open when the app opens
  */
 const View: Nixix.FC = (): someView => {
   const [iframeSrc] = signal<string>(

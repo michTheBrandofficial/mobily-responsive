@@ -19,7 +19,7 @@ const deviceHeightRatio = 160 / testingDimensions.h;
 
 const safeAreaInsetRatio = 16 / testingDimensions.h;
 
-const deviceBarRatios = [18 / testingDimensions.h, 22 / testingDimensions.h] as const
+const deviceBarRatios = [18 / testingDimensions.h, 6 / testingDimensions.h] as const
 
 const virtualHomeButtonRatio = 110 / testingDimensions.h;
 

@@ -51,6 +51,7 @@ const SelectContent: Nixix.FC<SelectProps> = ({ "on:select": onSelect }) => {
         (previousElementSibling as HTMLButtonElement).focus();
       else (parentElement?.lastElementChild as HTMLButtonElement).focus();
     }
+    console.log(key)
     if (["Enter"].includes(key)) {
       let value = currentTarget.dataset["value"];
       setDeviceValue(value as Device)();

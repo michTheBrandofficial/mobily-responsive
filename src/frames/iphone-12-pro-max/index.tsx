@@ -1,4 +1,4 @@
-import Wallpaper from '@/assets/images/iphone home screen.jpg';
+import Wallpaper from '@/assets/images/iphone 12 wallpaper.jpg';
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
@@ -66,7 +66,7 @@ const Iphone12ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
               zIndex: 900,
             }} />
             <HomeScreen iframeSrc={iframeSrc} />
-            <AppScreen iframeSrc={iframeSrc} />
+            <AppScreen config="iphone" iframeSrc={iframeSrc} />
           </Container>
       </Container>
     </Wrapper>

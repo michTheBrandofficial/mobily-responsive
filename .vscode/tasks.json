@@ -4,12 +4,20 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "${cwd}",
+      "type": "npm",
       "script": "tauri:dev",
       "group": "none",
       "label": "pnpm: tauri:dev",
       "detail": "tauri dev",
       "problemMatcher": []
-    }
+    },
+    {
+      "type": "npm",
+      "script": "tauri:build",
+      "group": "build",
+      "label": "pnpm: tauri:build",
+      "detail": "tauri build",
+      "problemMatcher": []
+    },
   ]
 }
