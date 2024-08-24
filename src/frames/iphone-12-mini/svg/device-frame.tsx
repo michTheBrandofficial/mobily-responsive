@@ -1,14 +1,28 @@
+import { px } from "@/lib/utils";
 import { concat } from "nixix/primitives";
 import { deviceFrameHeightClass } from "~/constants";
 
+interface Props extends App.SVGProps {
+  height: number
+}
 
-const DeviceFrame: Nixix.FC<App.SVGProps> = ({ className, ...rest }): someView => {
-  const resizeClass = ' tws-w-auto tws-max-h-[856px] tws-relative '
+/**
+ * @note just put height on this thing, it will resize;
+ */
+const DeviceFrame: Nixix.FC<Props> = ({ className, height, ...rest }): someView => {
+  const resizeClass = ' tws-w-auto tws-max-h-[812px] tws-relative '
 
   return (
     <svg
-      {...rest} className={concat`${deviceFrameHeightClass} ${resizeClass} ${className} `}
-      width="426" height="852" viewBox="0 0 426 852" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {...rest} 
+      style={{
+        ...rest.style,
+        width: 'auto',
+        maxHeight: px(height)
+      }} 
+      className={concat`${deviceFrameHeightClass} ${resizeClass} ${className} `}
+      height={height} 
+      viewBox="0 0 426 852" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="412.87" y="266.5" width="12.63" height="99.04" rx="3.5" fill="black" stroke="url(#paint0_linear_309_412)" />
       <path d="M6.30016 324.5H4.16016C2.22716 324.5 0.660156 326.067 0.660156 328V383.86C0.660156 385.793 2.22716 387.36 4.16016 387.36H6.30016C8.23315 387.36 9.80016 385.793 9.80016 383.86V328C9.80016 326.067 8.23315 324.5 6.30016 324.5Z" fill="black" stroke="url(#paint1_linear_309_412)" />
       <rect x="0.659668" y="243.5" width="9.14" height="62.86" rx="3.5" fill="black" stroke="url(#paint2_linear_309_412)" />

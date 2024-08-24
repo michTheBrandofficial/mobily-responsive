@@ -7,11 +7,6 @@ export type BasePhoneConfig<T = string> = {
   width: T;
   height: T;
   virtualHomeButtonWidth: T;
-  /**
-   * @deprecated use clothoidRadius instead
-   */
-  borderRadius: T;
-  // to be passed to clipPath style property
   clothoidRadius: string;
   deviceBarRatios: {
     top: T;
@@ -24,7 +19,6 @@ export const basePhoneConfig: BasePhoneConfig = {
   width: "",
   height: "",
   virtualHomeButtonWidth: "",
-  borderRadius: "",
   clothoidRadius: "",
   deviceBarRatios: {
     top: "",
@@ -75,7 +69,6 @@ export const setupResizeEffect = <E extends HTMLElement>(
         width: px(width - round(width * deviceWidthRatio)),
         height: px(height - round(height * deviceHeightRatio)),
         virtualHomeButtonWidth: px(round(height * virtualHomeButtonRatio)),
-        borderRadius: px(round(width * borderRadiusRatio)),
         clothoidRadius: clothoidize({
           radius: round(width * borderRadiusRatio),
           format: "minify",

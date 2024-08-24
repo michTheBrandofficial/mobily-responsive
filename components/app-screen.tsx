@@ -77,7 +77,7 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
       top: px(0),
       left: px(0),
       opacity: 0,
-      scale: `0`,
+      scale: 0,
       paddingTop: phoneConfig.safeAreaInset
     }} >
       <Container style={{

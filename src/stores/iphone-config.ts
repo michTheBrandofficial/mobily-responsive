@@ -35,7 +35,7 @@ type BaseIphoneConfigRatios<T = number> = {
 /**
  * modifies the iphoneConfig store object
  */
-export const setupResizeEffect = <E extends HTMLElement>(wrapperRef: MutableRefObject<E | null>, {deviceBarRatios, deviceHeightRatio, virtualHomeButtonRatio, borderRadiusRatio, clothoidRadiusRatio, deviceWidthRatio, safeAreaInsetRatio}: BaseIphoneConfigRatios, fn?: (target: E) => void) => {
+export const setupResizeEffect = <E extends HTMLElement>(wrapperRef: MutableRefObject<E | null>, {deviceBarRatios, deviceHeightRatio, virtualHomeButtonRatio, clothoidRadiusRatio, deviceWidthRatio, safeAreaInsetRatio}: BaseIphoneConfigRatios, fn?: (target: E) => void) => {
   effect(() => {
     const observer = new ResizeObserver(entries => {
       const [{ target }] = entries
@@ -45,8 +45,7 @@ export const setupResizeEffect = <E extends HTMLElement>(wrapperRef: MutableRefO
       useIphoneConfig().setIphoneConfig({
         width: px(width - round(width * deviceWidthRatio)),
         height: px(height - round(height * deviceHeightRatio)),
-        virtualHomeButtonWidth: px(round(height * virtualHomeButtonRatio)),
-        borderRadius: px(round(width * (borderRadiusRatio || 0))),
+        virtualHomeButtonWidth: px(round(width * virtualHomeButtonRatio)),
         clothoidRadius: clothoidize({
           radius: round(width * clothoidRadiusRatio),
           format: 'minify',

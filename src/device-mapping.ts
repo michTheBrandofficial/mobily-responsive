@@ -1,6 +1,7 @@
 import Iphone12Mini from './frames/iphone-12-mini';
 import Iphone12ProMax from './frames/iphone-12-pro-max';
 import Iphone14ProMax from './frames/iphone-14-pro-max';
+import Iphone15 from './frames/iphone-15';
 import Iphone5S from './frames/iphone-5s';
 import Iphone6SPlus from './frames/iphone-6s-plus';
 import SamsungS205G from './frames/samsung-galaxy-s20-5g';
@@ -25,6 +26,10 @@ export const DEVICE_MAPPING = {
   'iphone-14-pro-max': {
     component: Iphone14ProMax,
     displayName: 'Iphone 14 Pro Max',
+  },
+  'iphone-15': {
+    component: Iphone15,
+    displayName: 'Iphone 15',
   },
   'samsung-s20-5g': {
     component: SamsungS205G,
