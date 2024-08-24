@@ -5,13 +5,15 @@ import { BaseDirectory, exists, readTextFile, writeBinaryFile, writeFile } from 
 import { removeNode } from "nixix";
 import { effect, reaction, signal } from "nixix/primitives";
 import { Container, VStack } from "nixix/view-components";
-import { dataDir, FSOptions } from "./constants";
+import { dataDir, FSOptions, iframeRef } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { useBasePhoneConfig } from "./stores/base-phone-config";
 import { useDevice } from "./stores/device";
 import { useDeviceScreen } from "./stores/device-screen";
 import { useDeviceSettings } from "./stores/device-settings";
 import { useIphoneConfig } from "./stores/iphone-config";
+
+const [safeAreaInset, setSafeAreaInset] = signal<string>(px(0))
 
 const fetchIconBlob = async (icons: App.WebManifest['icons'], iframeOrigin: string) => {
   return new Promise<Blob>((resolve, reject) => {
@@ -86,11 +88,18 @@ const setupPWAConfig = (src: string) => {
         const { display, theme_color, short_name, icons } = manifest
         const isFullScreen = display === "fullscreen"
         if (isFullScreen) {
-          useBasePhoneConfig().setBasePhoneConfig(prev => {
+          const { basePhoneConfig, setBasePhoneConfig } = useBasePhoneConfig();
+          const { iphoneConfig, setIphoneConfig } = useIphoneConfig();
+          const { device: { value } } = useDevice()
+          setSafeAreaInset((prev) => {
+            const { safeAreaInset } = (value.includes('iphone') ? iphoneConfig : basePhoneConfig);
+            return (parseFloat(safeAreaInset) === 0) ? prev : safeAreaInset;
+          });
+          setBasePhoneConfig(prev => {
             prev.safeAreaInset = '0';
             return prev;
           })
-          useIphoneConfig().setIphoneConfig(prev => {
+          setIphoneConfig(prev => {
             prev.safeAreaInset = '0';
             return prev;
           })
@@ -108,15 +117,11 @@ const setupPWAConfig = (src: string) => {
     .catch(err => console.warn(err))
 }
 
-/**
- * @modal should open when the app opens
- */
 const View: Nixix.FC = (): someView => {
   const [iframeSrc] = signal<string>(
-    localStorage.getItem("iframeSrc") || "http://localhost:3000",
+    ""
   );
   const { deviceScreen } = useDeviceScreen()
-
   // setup data dir if it is not created;
   effect(handleDirCreation)
   effect(() => {
@@ -136,6 +141,15 @@ const View: Nixix.FC = (): someView => {
         }), 400)
     }
   }, [deviceScreen])
+  reaction(() => {
+    setTimeout(() => {
+      const message = {
+        type: 'mobily-responsive-safeAreaInset',
+        safeAreaInsetTop: safeAreaInset.value
+      }
+      if (deviceScreen.value === 'app-screen') iframeRef.current?.contentWindow?.postMessage(JSON.stringify(message), new URL(iframeSrc.value).origin);
+    }, 1000);
+  }, [iframeSrc])
 
   return (
     <VStack

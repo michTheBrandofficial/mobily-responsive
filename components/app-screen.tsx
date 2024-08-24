@@ -1,5 +1,5 @@
 import { percentage, px } from '@/lib/utils'
-import { homeScreenIconScale } from '@/src/constants'
+import { homeScreenIconScale, iframeRef } from '@/src/constants'
 import { useBasePhoneConfig } from '@/src/stores/base-phone-config'
 import { useDeviceSettings } from '@/src/stores/device-settings'
 import { useIconCoordinates } from '@/src/stores/icon-coordinates'
@@ -15,8 +15,8 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
   const appScreenRef = callRef<HTMLDivElement>()
   const { deviceScreen } = useDeviceScreen()
   const newIconSize = homeScreenIconScale * 64;
-  let animation: Animation | null = null
   // leave this animation here for reversal;
+  let animation: Animation | null = null
   reaction(() => {
     const isAppScreenOpen = deviceScreen.value === 'app-screen';
     const appScreenEl = appScreenRef.current
@@ -56,7 +56,8 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
             },
             {
               opacity: 1,
-              scale: '1',
+              // if left at 1.00 home screen shows a little, which is bad
+              scale: '1.005',
               translate: `0px`
             }
           ];
@@ -64,9 +65,7 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
       } else animation?.reverse()
     }
   }, [deviceScreen])
-  let phoneConfig!: IphoneConfig;
-  if (config === 'base') phoneConfig = useBasePhoneConfig().basePhoneConfig;
-  else phoneConfig = useIphoneConfig().iphoneConfig
+  let phoneConfig: IphoneConfig = config === 'base' ? useBasePhoneConfig().basePhoneConfig : useIphoneConfig().iphoneConfig;
   return (
     <Container bind:ref={appScreenRef} className=' ' style={{
       width: percentage(100),
@@ -93,7 +92,7 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
         width: percentage(100),
         backgroundColor: 'white'
       }} >
-        <Iframe src={iframeSrc} />
+        <Iframe src={iframeSrc} bind:ref={iframeRef} />
       </Container>
       <Container className='tws-flex tws-items-center tws-justify-center' style={{
         width: percentage(100),

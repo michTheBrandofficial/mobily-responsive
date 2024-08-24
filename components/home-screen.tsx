@@ -87,7 +87,7 @@ const HomeScreen: Nixix.FC<{
     } else animation?.reverse()
   }, [deviceScreen])
   return (
-    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-16 tws-pb-4 tws-flex tws-flex-col tws-justify-between ">
+    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-32 tws-pb-4 tws-flex tws-flex-col tws-justify-between ">
       <HStack className='tws-h-fit tws-w-full tws-px-4 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between tws-gap-y-10 '>
         <For each={homeScreenIcons}>
           {(icon, i) => {

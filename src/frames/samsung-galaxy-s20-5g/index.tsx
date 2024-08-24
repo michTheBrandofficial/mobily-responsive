@@ -45,7 +45,7 @@ const SamsungS205G: Nixix.FC<Props> = ({ iframeSrc }): someView => {
         ...pick(basePhoneConfig, 'width', 'height', 'borderRadius'),
         ...containerStyles,
         // marginRight because the controls of this device contribute to the width
-        marginRight: px(2),
+        marginRight: px(4),
         marginBottom: px(6),
         clipPath: basePhoneConfig.clothoidRadius,
         background: `url(${Wallpaper})`,

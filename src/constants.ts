@@ -1,5 +1,5 @@
 import { BaseDirectory } from "@tauri-apps/api/fs";
-import { signal } from "nixix/primitives";
+import { callRef, signal } from "nixix/primitives";
 import { Device } from "./device-mapping";
 
 export const containerStyles = {
@@ -23,3 +23,5 @@ export const FSOptions = {
 } as const;
 
 export const homeScreenIconScale = 1.4;
+
+export const iframeRef = callRef<HTMLIFrameElement>();
