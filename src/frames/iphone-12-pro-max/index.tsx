@@ -16,7 +16,7 @@ const dimensions = { w: 428, h: 926 };
 
 const deviceWidthRatio = 46 / dimensions.w;
 
-const deviceHeightRatio = 45 / dimensions.h;
+const deviceHeightRatio = 46 / dimensions.h;
 
 const safeAreaInsetRatio = 55 / dimensions.h;
 
@@ -50,7 +50,7 @@ const Iphone12ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           clipPath: iphoneConfig.clothoidRadius,
           background: `url(${Wallpaper})`,
           backgroundSize: 'cover',
-          marginRight: '2px'
+          marginRight: '0px'
         }} >
           <Container style={{
             paddingTop: iphoneConfig.safeAreaInset,
