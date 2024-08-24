@@ -10,7 +10,6 @@ interface Props extends App.SVGProps {
  * @note just put height on this thing, it will resize;
  */
 const DeviceFrame: Nixix.FC<Props> = ({ className, height, ...rest }): someView => {
-  const resizeClass = ' tws-w-auto tws-max-h-[812px] tws-relative '
 
   return (
     <svg
@@ -18,9 +17,10 @@ const DeviceFrame: Nixix.FC<Props> = ({ className, height, ...rest }): someView 
       style={{
         ...rest.style,
         width: 'auto',
-        maxHeight: px(height)
+        maxHeight: px(height),
+        position: 'relative'
       }} 
-      className={concat`${deviceFrameHeightClass} ${resizeClass} ${className} `}
+      className={concat`${deviceFrameHeightClass} ${className} `}
       height={height} 
       viewBox="0 0 426 852" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="412.87" y="266.5" width="12.63" height="99.04" rx="3.5" fill="black" stroke="url(#paint0_linear_309_412)" />

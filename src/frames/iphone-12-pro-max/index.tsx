@@ -12,22 +12,22 @@ import StatusBar from "./svg/status-bar";
 
 type Props = App.DeviceProps;
 
-const testingDimensions = { w: 357.033, h: 717.433 };
+const dimensions = { w: 428, h: 926 };
 
-const deviceWidthRatio = 41 / testingDimensions.w;
+const deviceWidthRatio = 46 / dimensions.w;
 
-const deviceHeightRatio = 36 / testingDimensions.h;
+const deviceHeightRatio = 45 / dimensions.h;
 
-const safeAreaInsetRatio = 36 / testingDimensions.h;
+const safeAreaInsetRatio = 55 / dimensions.h;
 
 const deviceBarRatios = [
-  18 / testingDimensions.h,
-  6 / testingDimensions.h,
+  18 / dimensions.h,
+  6 / dimensions.h,
 ] as const;
 
-const virtualHomeButtonRatio = 120 / testingDimensions.h;
+const virtualHomeButtonRatio = 145 / dimensions.w;
 
-const clothoidRadiusRatio = 36 / testingDimensions.w;
+const clothoidRadiusRatio = 46 / dimensions.w;
 
 const Iphone12ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   const wrapperRef = callRef<HTMLElement>();
@@ -42,14 +42,15 @@ const Iphone12ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   });
   return (
     <Wrapper bind:ref={wrapperRef}>
-      <DeviceFrame />
+      <DeviceFrame height={dimensions.h} />
       <Container
         style={{
           ...pick(iphoneConfig, "width", "height"),
           ...containerStyles,
           clipPath: iphoneConfig.clothoidRadius,
           background: `url(${Wallpaper})`,
-          backgroundSize: 'cover'
+          backgroundSize: 'cover',
+          marginRight: '2px'
         }} >
           <Container style={{
             paddingTop: iphoneConfig.safeAreaInset,
