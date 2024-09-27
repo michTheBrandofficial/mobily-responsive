@@ -57,6 +57,7 @@ const Iphone12ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
             width: percentage(100),
             height: percentage(100),
             clipPath: 'inherit',
+            borderRadius: 'inherit',
             overflow: 'hidden',
             position: 'relative'
           }} >
@@ -64,7 +65,7 @@ const Iphone12ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
               width: iphoneConfig.width,
               position: 'absolute',
               top: px(0),
-              zIndex: 900,
+              zIndex: 300,
             }} />
             <HomeScreen iframeSrc={iframeSrc} />
             <AppScreen config="iphone" iframeSrc={iframeSrc} />

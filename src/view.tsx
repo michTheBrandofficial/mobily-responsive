@@ -1,4 +1,5 @@
 import Sidebar from "@/components/sidebar";
+import { ErrorMatcher } from "@/lib/error-matcher";
 import { handleDirCreation } from "@/lib/file-handle";
 import { blobToBinary, prefixWithSlash, px, wait } from "@/lib/utils";
 import { BaseDirectory, exists, readTextFile, writeBinaryFile, writeFile } from "@tauri-apps/api/fs";
@@ -80,7 +81,9 @@ const storeAppHomeScreenData = async (name: string, blob: Blob, origin: string) 
 
 const setupPWAConfig = (src: string) => {
   const { origin: iframeOrigin } = new URL(src);
-  fetch(`${iframeOrigin}/manifest.json`)
+  fetch(`${iframeOrigin}/manifest.json`, {
+    mode: 'no-cors'
+  })
     .then(async val => {
       // webmanifest data
       const manifest: App.WebManifest = val.ok ? (await val.json()) : {}
@@ -114,7 +117,13 @@ const setupPWAConfig = (src: string) => {
           storeAppHomeScreenData(short_name, icon_blob, iframeOrigin)
       }
     })
-    .catch(err => console.warn(err))
+    .catch(err => {
+      ErrorMatcher
+        .use(err)
+        .match(TypeError, () => {
+          console.log(err)
+        })
+    })
 }
 
 const View: Nixix.FC = (): someView => {

@@ -26,13 +26,13 @@ const HomeScreenIcon: Nixix.FC<{
 
   return (
     <Container on:click={rest['on:click']} className='tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer '>
-      <Container className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] '>
-        {isUntitled ? (
+      {isUntitled ? (
+        <Container className='tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] '>
           <img src={Tools} alt={'Untitled'} className='tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] ' />
-        ) : (
-          <img src={icon} alt={name} className='tws-w-full tws-h-full tws-rounded-[inherit]  ' />
-        )}
-      </Container>
+        </Container>
+      ) : (
+        <img src={icon} alt={name} className='tws-w-16 tws-h-16 tws-rounded-[inherit]  ' />
+      )}
       <p className='tws-text-white tws-text-xs ' >{name}</p>
     </Container>
   )
@@ -57,14 +57,14 @@ const HomeScreen: Nixix.FC<{
   // get new home screen icons
   readTextFile(`${dataDir}/icons.json`, FSOptions)
     .then(async (val) => {
-    const iconFileObject: App.HomeScreenIconMapping = JSON.parse(val);
-    const iconValues = Object.values(iconFileObject);
-    for (const icon of iconValues) {
-      const val = await readBinaryFile(icon.icon, FSOptions).then(val => new Blob([val]))
-      icon.icon = URL.createObjectURL(val)
-    }
-    setHomeScreenIcons([...iconValues, untitledIcon])
-  })
+      const iconFileObject: App.HomeScreenIconMapping = JSON.parse(val);
+      const iconValues = Object.values(iconFileObject);
+      for (const icon of iconValues) {
+        const val = await readBinaryFile(icon.icon, FSOptions).then(val => new Blob([val]))
+        icon.icon = URL.createObjectURL(val)
+      }
+      setHomeScreenIcons([...iconValues, untitledIcon])
+    })
     .catch(err => {
       console.warn(err)
       setHomeScreenIcons([untitledIcon])
@@ -87,18 +87,23 @@ const HomeScreen: Nixix.FC<{
     } else animation?.reverse()
   }, [deviceScreen])
   return (
-    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-32 tws-pb-4 tws-flex tws-flex-col tws-justify-between ">
+    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-32 tws-pb-4 tws-flex tws-flex-col tws-justify-between tws-bg-orange-100">
       <HStack className='tws-h-fit tws-w-full tws-px-4 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between tws-gap-y-10 '>
         <For each={homeScreenIcons}>
           {(icon, i) => {
             return (
-              <HomeScreenIcon on:click={({currentTarget}) => {
-                homeScreenIcon.current = currentTarget!;
-                const iconRowIndex = Number(i) % numberIconsInRow;
-                isInFirstTwoIcons = [0, 1].includes(iconRowIndex);
-                setDeviceScreen('app-screen');
-                iframeSrc.value = icon.origin;
-              }} key={i} icon={icon} iframeSrc={iframeSrc} />
+              <HomeScreenIcon
+                on:click={({ currentTarget }) => {
+                  homeScreenIcon.current = currentTarget!;
+                  const iconRowIndex = Number(i) % numberIconsInRow;
+                  isInFirstTwoIcons = [0, 1].includes(iconRowIndex);
+                  setDeviceScreen('app-screen');
+                  iframeSrc.value = icon.origin;
+                }}
+                key={i}
+                icon={icon}
+                iframeSrc={iframeSrc}
+              />
             )
           }}
         </For>

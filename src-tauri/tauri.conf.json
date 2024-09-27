@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "pnpm run build",
+    "beforeBuildCommand": "",
     "beforeDevCommand": "pnpm run dev",
     "devPath": "http://localhost:1420",
     "distDir": "../dist"
@@ -44,11 +44,14 @@
       "longDescription": "",
       "resources": [],
       "shortDescription": "",
-      "targets": "msi",
+      "targets": ["deb", "appimage"],
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": ""
+      },
+      "deb": {
+        "files": {}
       }
     },
     "security": {
@@ -67,7 +70,8 @@
         "maxWidth": 500,
         "transparent": true,
         "decorations": false,
-        "center": true
+        "center": true,
+        "alwaysOnTop": true
       }
     ]
   }
