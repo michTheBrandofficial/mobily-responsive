@@ -23,7 +23,7 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
     const [xCoordinate, yCoordinate, isInFirstTwoIcons] = useIconCoordinates().iconCoordinates;
     if (appScreenEl) {
       const animationOptions: KeyframeAnimationOptions = {
-        duration: 300,
+        duration: 1000,
         fill: 'forwards',
         easing: 'cubic-bezier(0.33, 1, 0.68, 1)'
       }
@@ -39,7 +39,7 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
           [
             {
               offset: 0,
-              opacity: 0,
+              opacity: .3,
               translate: `${px(xCoordinate - x)} ${px(yCoordinate - y)}`
             },
             {

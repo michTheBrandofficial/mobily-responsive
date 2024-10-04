@@ -75,13 +75,20 @@ const HomeScreen: Nixix.FC<{
       const { x, y } = homeScreenIcon.current!.getBoundingClientRect()
       useIconCoordinates().setIconCoordinates([x, y, isInFirstTwoIcons])
       animation = homeScreenIcon.current!.animate(
+        [{
+          opacity: 0.3
+        },
         {
           offset: .333,
-          opacity: 1,
           scale: homeScreenIconScale.toString(),
           translate: `${px(isInFirstTwoIcons ? 30 : -30)} 30px`
-        }, {
-        duration: 300,
+        },
+        {
+          opacity: 0,
+        }
+        ], {
+        duration: 1000,
+        fill: 'forwards',
         easing: 'cubic-bezier(0.33, 1, 0.68, 1)',
       });
     } else animation?.reverse()
