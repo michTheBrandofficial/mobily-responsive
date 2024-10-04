@@ -14,7 +14,8 @@
     "allowlist": {
       "window": {
         "all": false,
-        "setDecorations": true
+        "setDecorations": true,
+        "setAlwaysOnTop": true
       },
       "fs": {
         "all": false,
@@ -44,14 +45,11 @@
       "longDescription": "",
       "resources": [],
       "shortDescription": "",
-      "targets": ["deb", "appimage"],
+      "targets": ["msi"],
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": ""
-      },
-      "deb": {
-        "files": {}
       }
     },
     "security": {
@@ -70,8 +68,7 @@
         "maxWidth": 500,
         "transparent": true,
         "decorations": false,
-        "center": true,
-        "alwaysOnTop": true
+        "center": true
       }
     ]
   }

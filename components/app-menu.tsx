@@ -12,6 +12,12 @@ const options = [
       appWindow.setDecorations(checked);
     },
   },
+  {
+    setting: "Always on top",
+    onClick: (checked: boolean) => {
+      appWindow.setAlwaysOnTop(checked);
+    },
+  }
 ] as const;
 
 const AppMenu = (): someView => {
@@ -47,6 +53,7 @@ const AppMenu = (): someView => {
                       className="tws-w-4 tws-h-4 "
                       on:change={({ currentTarget }) => {
                         onClick?.(currentTarget!.checked);
+                        setTimeout(() => setMenuDisplay(false), 200);
                       }}
                     />
                     {setting}
