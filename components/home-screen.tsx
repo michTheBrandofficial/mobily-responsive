@@ -82,7 +82,7 @@ const HomeScreen: Nixix.FC<{
           translate: `${px(isInFirstTwoIcons ? 30 : -30)} 30px`
         }, {
         duration: 300,
-        easing: 'ease',
+        easing: 'cubic-bezier(0.33, 1, 0.68, 1)',
       });
     } else animation?.reverse()
   }, [deviceScreen])
