@@ -61,11 +61,11 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 900,
+        "height": 1080,
         "resizable": true,
         "title": "Simulator",
-        "width": 500,
-        "maxWidth": 500,
+        "width": 1080,
+        "maxWidth": 1000,
         "transparent": true,
         "decorations": false,
         "center": true

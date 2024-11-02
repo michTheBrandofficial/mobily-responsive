@@ -3,7 +3,7 @@ import { px } from '@/lib/utils'
 import { useDeviceScreen } from '@/src/stores/device-screen'
 import { useIconCoordinates } from '@/src/stores/icon-coordinates'
 import { readBinaryFile, readTextFile } from '@tauri-apps/api/fs'
-import Nixix from 'nixix'
+import * as Nixix from 'nixix'
 import { For } from 'nixix/hoc'
 import { callRef, reaction, Signal, Store, store } from 'nixix/primitives'
 import { MouseEventHandler } from 'nixix/types/eventhandlers'
@@ -94,7 +94,7 @@ const HomeScreen: Nixix.FC<{
     } else animation?.reverse()
   }, [deviceScreen])
   return (
-    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-32 tws-pb-4 tws-flex tws-flex-col tws-justify-between tws-bg-orange-100">
+    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-32 tws-pb-4 tws-flex tws-flex-col tws-justify-between">
       <HStack className='tws-h-fit tws-w-full tws-px-4 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between tws-gap-y-10 '>
         <For each={homeScreenIcons}>
           {(icon, i) => {

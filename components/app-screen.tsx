@@ -57,7 +57,7 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
             {
               opacity: 1,
               // if left at 1.00 home screen shows a little, which is bad
-              scale: '1.005',
+              scale: '1',
               translate: `0px`
             }
           ];

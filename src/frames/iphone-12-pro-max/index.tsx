@@ -65,7 +65,7 @@ const Iphone12ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
               width: iphoneConfig.width,
               position: 'absolute',
               top: px(0),
-              zIndex: 300,
+              zIndex: 900,
             }} />
             <HomeScreen iframeSrc={iframeSrc} />
             <AppScreen config="iphone" iframeSrc={iframeSrc} />
