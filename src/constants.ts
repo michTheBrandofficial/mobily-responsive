@@ -12,7 +12,7 @@ export const [deviceFrameHeightClass, setDeviceFrameHeightClass] =
   signal(" tws-h-[98.5vh] ");
 
 export const defaultSelectedDevice: Device =
-  (localStorage.getItem("lastUsedDevice") as Device) || "iphone-14-pro-max";
+  (localStorage.getItem("lastUsedDevice") as Device) || "iphone-16";
 
 export const AppLocalData = BaseDirectory.AppLocalData
 
