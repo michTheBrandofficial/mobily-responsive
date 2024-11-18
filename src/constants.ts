@@ -9,10 +9,10 @@ export const containerStyles = {
 } as const;
 
 export const [deviceFrameHeightClass, setDeviceFrameHeightClass] =
-  signal(" tws-h-[98.5vh] ");
+  signal(" tws-max-h-[98.5vh] ");
 
 export const defaultSelectedDevice: Device =
-  (localStorage.getItem("lastUsedDevice") as Device) || "iphone-16-pro";
+  (localStorage.getItem("lastUsedDevice") as Device) || "iphone-15-pro";
 
 export const AppLocalData = BaseDirectory.AppLocalData
 

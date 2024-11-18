@@ -14,23 +14,23 @@ type Props = App.DeviceProps
 
 // 352.467 and 717.433 are the dimensions which was tested for the iphone frame. It should be what we use to get our ratios for resizing of the iframe container;
 const dimensions = {
-  w: 430,
-  h: 932
+  w: 393,
+  h: 852
 }
 
-const deviceWidthRatio = 43 / dimensions.w;
+const deviceWidthRatio = 65 / dimensions.w;
 
-const deviceHeightRatio = 43 / dimensions.h;
+const deviceHeightRatio = 73 / dimensions.h;
 
-const safeAreaInsetRatio = 67 / dimensions.h;
+const safeAreaInsetRatio = 60 / dimensions.h;
 
-const virtualHomeButtonRatio = 145 / dimensions.w;
+const virtualHomeButtonRatio = 115 / dimensions.w;
 
-const clothoidRadiusRatio = 53 / dimensions.w;
+const clothoidRadiusRatio = 45 / dimensions.w;
 
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const
 
-const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
+const Iphone15Pro: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   const wrapperRef = callRef<HTMLElement>();
   const { iphoneConfig } = useIphoneConfig()
   setupResizeEffect(wrapperRef, {
@@ -74,4 +74,4 @@ const Iphone14ProMax: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   )
 }
 
-export default Iphone14ProMax;
+export default Iphone15Pro;
