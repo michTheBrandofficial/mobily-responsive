@@ -11,9 +11,6 @@ export const containerStyles = {
 export const [deviceFrameHeightClass, setDeviceFrameHeightClass] =
   signal(" tws-max-h-[98.5vh] ");
 
-export const defaultSelectedDevice: Device =
-  (localStorage.getItem("lastUsedDevice") as Device) || "iphone-15-pro";
-
 export const AppLocalData = BaseDirectory.AppLocalData
 
 export const dataDir = `./MobilyResponsiveData`
@@ -25,3 +22,6 @@ export const FSOptions = {
 export const homeScreenIconScale = 1.4;
 
 export const iframeRef = callRef<HTMLIFrameElement>();
+
+export { type Device };
+
