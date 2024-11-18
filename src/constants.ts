@@ -9,10 +9,7 @@ export const containerStyles = {
 } as const;
 
 export const [deviceFrameHeightClass, setDeviceFrameHeightClass] =
-  signal(" tws-h-[98.5vh] ");
-
-export const defaultSelectedDevice: Device =
-  (localStorage.getItem("lastUsedDevice") as Device) || "iphone-16";
+  signal(" tws-max-h-[98.5vh] ");
 
 export const AppLocalData = BaseDirectory.AppLocalData
 
@@ -25,3 +22,6 @@ export const FSOptions = {
 export const homeScreenIconScale = 1.4;
 
 export const iframeRef = callRef<HTMLIFrameElement>();
+
+export { type Device };
+

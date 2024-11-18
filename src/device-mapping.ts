@@ -1,29 +1,19 @@
-import Iphone12Mini from './frames/iphone-12-mini';
-import Iphone12ProMax from './frames/iphone-12-pro-max';
-import Iphone14ProMax from './frames/iphone-14-pro-max';
 import Iphone15 from './frames/iphone-15';
-import Iphone16 from './frames/iphone-16';
+import Iphone15Pro from './frames/iphone-15-pro';
+import Iphone16Pro from './frames/iphone-16-pro';
 
 export const DEVICE_MAPPING = {
-  'iphone-12-mini': {
-    component: Iphone12Mini,
-    displayName: 'Iphone 12 Mini',
-  },
-  'iphone-12-pro-max': {
-    component: Iphone12ProMax,
-    displayName: 'Iphone 12 Pro Max',
-  },
-  'iphone-14-pro-max': {
-    component: Iphone14ProMax,
-    displayName: 'Iphone 14 Pro Max',
-  },
   'iphone-15': {
     component: Iphone15,
     displayName: 'Iphone 15',
   },
-  'iphone-16': {
-    component: Iphone16,
-    displayName: 'Iphone 16',
+  'iphone-15-pro': {
+    component: Iphone15Pro,
+    displayName: 'Iphone 15 Pro',
+  },
+  'iphone-16-pro': {
+    component: Iphone16Pro,
+    displayName: 'Iphone 16 Pro',
   },
 } as const;
 

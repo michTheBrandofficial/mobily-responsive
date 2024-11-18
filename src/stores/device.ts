@@ -1,6 +1,11 @@
 import { signal } from "nixix/primitives";
-import { defaultSelectedDevice } from "../constants";
-import { Device } from "../device-mapping";
+import { DEVICE_MAPPING, type Device } from "../device-mapping";
+
+const defaultSelectedDevice: Device = ((): Device => {
+  const lastUsed = (localStorage.getItem("lastUsedDevice") as Device);
+  if (!lastUsed || !(lastUsed in DEVICE_MAPPING)) return 'iphone-15-pro';
+  else return lastUsed;
+})()
 
 export const useDevice = function () {
   const [device, setDevice] = signal<Device>(defaultSelectedDevice);
