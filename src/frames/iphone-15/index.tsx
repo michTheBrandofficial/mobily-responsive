@@ -18,19 +18,19 @@ const dimensions = {
   h: 852
 }
 
-const deviceWidthRatio = 42 / dimensions.w;
+const deviceWidthRatio = 65 / dimensions.w;
 
-const deviceHeightRatio = 39 / dimensions.h;
+const deviceHeightRatio = 73 / dimensions.h;
 
 const safeAreaInsetRatio = 60 / dimensions.h;
 
-const virtualHomeButtonRatio = 130 / dimensions.w;
+const virtualHomeButtonRatio = 115 / dimensions.w;
 
-const clothoidRadiusRatio = 51 / dimensions.w;
+const clothoidRadiusRatio = 45 / dimensions.w;
 
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const
 
-const Iphone15: Nixix.FC<Props> = ({ iframeSrc }): someView => {
+const Iphone15Pro: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   const wrapperRef = callRef<HTMLElement>();
   const { iphoneConfig } = useIphoneConfig()
   setupResizeEffect(wrapperRef, {
@@ -74,4 +74,4 @@ const Iphone15: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   )
 }
 
-export default Iphone15;
+export default Iphone15Pro;
