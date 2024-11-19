@@ -170,11 +170,11 @@ const View: Nixix.FC = (): someView => {
         alignItems: "center",
         justifyContent: "center",
         gap: px(12),
-        paddingInline: px(20),
+        paddingInline: px(0),
         position: "relative",
       }}
     >
-      <VStack className="tws-h-full tws-w-full tws-pl-3 tws-flex tws-items-center min-[600px]:tws-pl-0 min-[600px]:tws-justify-center ">
+      <VStack className="tws-h-full tws-w-full tws-pl-0 tws-flex tws-items-center min-[600px]:tws-pl-0 min-[600px]:tws-justify-center ">
         <Container
           bind:ref={({ current }) => {
             const { device } = useDevice()

@@ -43,7 +43,7 @@ const Iphone15Pro: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   })
 
   return (
-    <Wrapper bind:ref={wrapperRef} >
+    <Wrapper bind:ref={wrapperRef} className='tws-ml-1' >
       <DeviceFrame height={dimensions.h} />
       <Container className={`tws-h-auto tws-w-auto tws-transition-[background] tws-duration-300 tws-ease-[ease] `} style={{
         ...pick(iphoneConfig, 'width', 'height'),

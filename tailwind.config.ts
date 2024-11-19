@@ -12,8 +12,8 @@ export default {
     extend: {
       fontFamily: {
         Rubik: ["Rubik", "sans-serif"],
-        Satoshi: ["Satoshi", "sans-serif"],
-        DM_Sans: ["DM_Sans", "Arial"],
+        Futura: ["Futura", "Arial"],
+        Helvetica_Neue: ["Helvetica_Neue", "Arial"],
       },
     },
   },
