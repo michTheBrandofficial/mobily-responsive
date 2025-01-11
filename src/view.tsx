@@ -81,12 +81,11 @@ const storeAppHomeScreenData = async (name: string, blob: Blob, origin: string) 
 
 const setupPWAConfig = (src: string) => {
   const { origin: iframeOrigin } = new URL(src);
-  fetch(`${iframeOrigin}/manifest.json`, {
-    mode: 'no-cors'
-  })
+  fetch(`${iframeOrigin}/manifest.json`)
     .then(async val => {
       // webmanifest data
-      const manifest: App.WebManifest = val.ok ? (await val.json()) : {}
+      if (!val.ok) return;
+      const manifest: App.WebManifest = await val.json();
       if (manifest) {
         const { display, theme_color, short_name, icons } = manifest
         const isFullScreen = display === "fullscreen"
