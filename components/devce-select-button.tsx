@@ -7,17 +7,17 @@ const DeviceSelectButton: Nixix.FC = (): someView => {
   const [display, setDisplay] = signal<App.Display>(" tws-hidden ");
   return (
     <Button
-      className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-group "
+      className="tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-group tws-bg-sidebar-button/70 tws-p-2 tws-rounded-full "
       on:click={() => {
         setDisplay((prev) =>
-          prev === " tws-block " ? " tws-hidden " : " tws-block ",
+          prev === " tws-block " ? " tws-hidden " : " tws-block "
         );
       }}
     >
       <SmartPhone
-        className={"tws-fill-black tws-stroke-none "}
-        width={28}
-        height={28}
+        className={"tws-fill-white tws-stroke-none "}
+        width={20}
+        height={20}
       />
       <Container
         on:click_stopPropagation={() => undefined}

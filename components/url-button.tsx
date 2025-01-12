@@ -13,12 +13,12 @@ const UrlButton: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   return (
     <Button
       on:click={() => setDisplay(" tws-block ")}
-      className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group "
+      className="tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group tws-bg-sidebar-button/70 tws-p-2 tws-rounded-full "
     >
       <UrlLink
-        className={"tws-stroke-none tws-fill-black "}
-        width={26}
-        height={26}
+        className={"tws-stroke-none tws-fill-white "}
+        width={20}
+        height={20}
       />
       <Container
         on:click_stopPropagation={noop}

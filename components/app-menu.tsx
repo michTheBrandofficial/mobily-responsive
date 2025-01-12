@@ -28,10 +28,10 @@ const AppMenu = (): someView => {
   });
   return (
     <Button
-      className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative "
+      className="tws-rounded-full tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-bg-sidebar-button/70 tws-p-2 "
       on:click={() => setMenuDisplay((p) => !p)}
     >
-      <Settings className={"tws-stroke-none "} width={24} height={24} stroke-width={1} />
+      <Settings className={"tws-stroke-none tws-fill-white "} width={20} height={20} stroke-width={1} />
       <Container
         className="tws-min-w-fit tws-h-fit tws-font-medium tws-absolute tws-top-0 tws-right-[140%] tws-z-[800] tws-hidden data-[shown=true]:tws-block "
         data-shown={menuDisplay}

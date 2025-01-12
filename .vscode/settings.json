@@ -1,4 +1,5 @@
 {
+  "editor.wordWrap": "on",
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "package.json": "*"

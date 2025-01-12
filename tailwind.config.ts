@@ -15,6 +15,9 @@ export default {
         Futura: ["Futura", "Arial"],
         Helvetica_Neue: ["Helvetica_Neue", "Arial"],
       },
+      backgroundColor: {
+        "sidebar-button": "#939393",
+      },
     },
   },
   prefix: "tws-",

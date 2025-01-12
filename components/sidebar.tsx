@@ -17,28 +17,28 @@ const Sidebar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
       <Button
         on:click={() => {
           const url = iframeSrc.value;
-          iframeSrc.value = '';
+          iframeSrc.value = "";
           iframeSrc.value = url;
         }}
-        className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group "
+        className="tws-rounded-full tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group tws-bg-sidebar-button/70 tws-p-2 "
       >
         <Reload
-          className={"tws-stroke-none tws-fill-inherit "}
-          width={24}
-          height={24}
+          className={"tws-stroke-none tws-fill-white "}
+          width={20}
+          height={20}
         />
       </Button>
       <AppMenu />
       <Button
         on:click={() => {
-          useDeviceScreen().setDeviceScreen('home-screen')
+          useDeviceScreen().setDeviceScreen("home-screen");
         }}
-        className="tws-rounded-lg tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group tws-mt-auto "
+        className="tws-flex tws-items-center tws-justify-center tws-transition-colors tws-duration-300 tws-relative tws-group tws-mt-auto tws-p-2 tws-rounded-full tws-bg-sidebar-button/70  "
       >
         <Home
-          className={"tws-stroke-none tws-fill-inherit "}
-          width={24}
-          height={24}
+          className={"tws-stroke-none tws-fill-white "}
+          width={20}
+          height={20}
         />
       </Button>
       <UrlButton iframeSrc={iframeSrc} />
