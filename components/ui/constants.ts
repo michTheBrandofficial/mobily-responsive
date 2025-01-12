@@ -1,0 +1,1 @@
+export const twFontFamily = '!tw-font-Satoshi' as const;
