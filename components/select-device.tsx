@@ -7,15 +7,11 @@ import {
 } from "nixix/primitives";
 import { KeyboardEventHandler } from "nixix/types/eventhandlers";
 import { Container, VStack } from "nixix/view-components";
-import {
-  DEVICE_MAPPING,
-  Device,
-  DeviceDisplayName,
-} from "~/device-mapping";
+import { DEVICE_MAPPING, Device, DeviceDisplayName } from "~/device-mapping";
 import { useDevice } from "~/stores/device";
 
 const [displayName] = signal<DeviceDisplayName>(
-  DEVICE_MAPPING[useDevice().device.value].displayName,
+  DEVICE_MAPPING[useDevice().device.value].displayName
 );
 
 interface SelectProps {
@@ -23,7 +19,7 @@ interface SelectProps {
 }
 
 const SelectContent: Nixix.FC<SelectProps> = ({ "on:select": onSelect }) => {
-  const {setDevice} = useDevice()
+  const { setDevice } = useDevice();
   const setDeviceValue = (value: Device) => () => {
     setDevice(value);
     displayName.value = DEVICE_MAPPING[value].displayName;
@@ -34,7 +30,7 @@ const SelectContent: Nixix.FC<SelectProps> = ({ "on:select": onSelect }) => {
     ([value, { displayName }]) => ({
       displayName,
       value: value as keyof typeof DEVICE_MAPPING,
-    }),
+    })
   );
   const handleKeyUp: KeyboardEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
@@ -51,7 +47,6 @@ const SelectContent: Nixix.FC<SelectProps> = ({ "on:select": onSelect }) => {
         (previousElementSibling as HTMLButtonElement).focus();
       else (parentElement?.lastElementChild as HTMLButtonElement).focus();
     }
-    console.log(key)
     if (["Enter"].includes(key)) {
       let value = currentTarget.dataset["value"];
       setDeviceValue(value as Device)();
@@ -86,30 +81,11 @@ const SelectContent: Nixix.FC<SelectProps> = ({ "on:select": onSelect }) => {
   );
 };
 
-interface Props {
-  display: Signal<App.Display>;
-  setDisplay: SetSignalDispatcher<App.Display>;
-}
-
-const DeviceSelect: Nixix.FC<Props> = ({ display, setDisplay }): someView => {
-  const {device} = useDevice()
+const DeviceSelect: Nixix.FC = (): someView => {
+  const { device } = useDevice();
   return (
-    <VStack
-      className="tws-font-Rubik tws-font-medium tws-space-y-2 tws-relative tws-z-[700] tws-mt-auto tws-text-[#171717] dark:tws-text-stone-300 "
-      bind:ref={({ current }) =>
-        reaction(
-          () =>
-            display.value !== " tws-hidden " &&
-            current
-              .querySelector<HTMLDivElement>(
-                `div[data-value="${device.value}"]`,
-              )
-              ?.focus(),
-          [display],
-        )
-      }
-    >
-      <SelectContent on:select={() => setDisplay(" tws-hidden ")} />
+    <VStack className="tws-font-Rubik tws-font-medium tws-space-y-2 tws-relative tws-z-[700] tws-mt-auto tws-text-[#171717] dark:tws-text-stone-300 ">
+      <SelectContent />
     </VStack>
   );
 };

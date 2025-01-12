@@ -19,7 +19,7 @@ const HomeScreenIcon: Nixix.FC<{
   return (
     <Container
       on:click={rest["on:click"]}
-      className="tws-w-fit tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer "
+      className="tws-w-16 tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer "
     >
       {isUntitled ? (
         <Container className="tws-w-16 tws-h-16 tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] ">
@@ -36,7 +36,7 @@ const HomeScreenIcon: Nixix.FC<{
           className="tws-w-16 tws-h-16 tws-rounded-[inherit]  "
         />
       )}
-      <p className="tws-text-white tws-text-xs ">{name}</p>
+      <p className="tws-text-white tws-font-sans tws-font-semibold tws-text-xs tws-line-clamp-1 tws-max-w-full ">{name}</p>
     </Container>
   );
 };

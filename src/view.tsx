@@ -79,7 +79,8 @@ const storeAppHomeScreenData = async (name: string, blob: Blob, origin: string) 
   }
 }
 
-const setupPWAConfig = (src: string) => {
+const setupPWAConfig = (src: string | null ) => {
+  if (!src) return;
   const { origin: iframeOrigin } = new URL(src);
   fetch(`${iframeOrigin}/manifest.json`)
     .then(async val => {

@@ -2,15 +2,14 @@ import { signal } from "nixix/primitives";
 import { DEVICE_MAPPING, type Device } from "../device-mapping";
 
 const defaultSelectedDevice: Device = ((): Device => {
-  const lastUsed = (localStorage.getItem("lastUsedDevice") as Device);
-  if (!lastUsed || !(lastUsed in DEVICE_MAPPING)) return 'iphone-15-pro';
+  const lastUsed = localStorage.getItem("lastUsedDevice") as Device;
+  if (!lastUsed || !(lastUsed in DEVICE_MAPPING)) return "iphone-15-pro";
   else return lastUsed;
-})()
+})();
 
-export const useDevice = function () {
+export const useDevice = (function () {
   const [device, setDevice] = signal<Device>(defaultSelectedDevice);
   return () => {
-    return { device, setDevice }
-  }
-}()
-
+    return { device, setDevice };
+  };
+})();
