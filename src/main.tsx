@@ -1,4 +1,4 @@
-import { render } from "nixix/dom";
+import { render } from "nixix";
 import "./index.css";
 import View from "./view";
 

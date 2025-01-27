@@ -12,6 +12,7 @@ export default defineConfig({
   plugins: [
     viteJsconfigPaths(),
     nixix({
+      projectRoot: "src/main.tsx",
       hmr: true,
     }),
   ],
@@ -41,5 +42,8 @@ export default defineConfig({
       // 3. tell vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
     },
+  },
+  optimizeDeps: {
+    force: true,
   },
 });

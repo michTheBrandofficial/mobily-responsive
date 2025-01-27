@@ -1,16 +1,14 @@
 import { cn } from "@/lib/cn";
+import { createContext, onlyChild } from "@/lib/context";
 import { FC, NixixNode } from "nixix";
 import { Show } from "nixix/hoc";
-import { callRef, effect, store } from "nixix/primitives";
+import { callRef, effect, memo, Store, store } from "nixix/primitives";
 
-const [popoverState, setPopoverState] = store<PopoverStateType>({
-  open: false,
-  config: {
-    transformOrigin: "bottom-right",
-  },
-});
+type TPopoverContextSetters = {
+  setOpen: (open: boolean) => void;
+};
 
-type PopoverStateType = {
+type TPopoverContext = {
   open: boolean;
   config: {
     transformOrigin:
@@ -22,7 +20,11 @@ type PopoverStateType = {
   };
 };
 
-type PopoverProps = Pick<Props, "children"> & {
+const { Provider, context } =
+  createContext<Store<TPopoverContext & TPopoverContextSetters>>();
+
+type PopoverProps = {
+  children: () => NixixNode;
   transformOrigin?:
     | "center"
     | "top-left"
@@ -31,14 +33,38 @@ type PopoverProps = Pick<Props, "children"> & {
     | "bottom-right";
 };
 
+/**
+ * @dev children is a function, till we finish rendering provider, so provider can set state.
+ */
 const PopoverProvider = ({
   children,
-  transformOrigin = "center",
+  transformOrigin = "bottom-right",
 }: PopoverProps) => {
+  const [popoverState, setPopoverState] = store<TPopoverContext>({
+    open: false,
+    config: {
+      transformOrigin: transformOrigin,
+    },
+  });
+  const validatedChildren = onlyChild(children);
   return (
-    <section className={cn("tws-w-fit tws-h-fit tws-relative")}>
-      {children}
-    </section>
+    <Provider
+      value={{
+        ...popoverState,
+        setOpen(open) {
+          setPopoverState((p) => {
+            p.open = open;
+            return p;
+          });
+        },
+      }}
+    >
+      {() => (
+        <section className={cn("tws-w-fit tws-h-fit tws-relative")}>
+          {validatedChildren()}
+        </section>
+      )}
+    </Provider>
   );
 };
 
@@ -54,12 +80,18 @@ const PopoverTrigger: FC<Pick<Props, "children" | "className">> = ({
   children,
   className,
 }) => {
-  const setOpen = (bool: boolean) => {
-    setPopoverState((p) => ({ ...p, open: bool }));
-  };
+  const { setOpen, open } = context();
+  const styleMemo = memo(() => open.value ? {
+    zIndex: 100000,
+    scale: 1.2
+  } : {
+    zIndex: 10,
+    scale: 1,
+  }, [open])
   return (
     <div
-      className={cn("tws-w-fit tws-h-fit ", className)}
+      className={cn("tws-w-fit tws-h-fit tws-relative tws-transition-[scale] tws-duration-500 ", className)}
+      style={styleMemo}
       on:click={() => setOpen(true)}
     >
       {children}
@@ -75,9 +107,7 @@ const PopoverClose: FC<
     onClose?: (close: () => void) => void;
   }
 > = ({ children, className, onClose }) => {
-  const setOpen = (bool: boolean) => {
-    setPopoverState((p) => ({ ...p, open: bool }));
-  };
+  const { setOpen } = context();
   return (
     <div
       className={cn("tws-w-fit tws-h-fit ", className)}
@@ -94,8 +124,7 @@ const PopoverClose: FC<
  * @dev adding classnames tws-right-0, tws-left-0 to change the position of the popover
  */
 const PopoverContent: FC<Props> = ({ children, className }) => {
-  const { open, config } = popoverState;
-  const setOpen = (open: boolean) => setPopoverState((p) => ({ ...p, open }));
+  const { open, config, setOpen } = context();
   const containerRef = callRef<HTMLElement>();
   effect(() => {
     if (open.value) containerRef.current?.focus();
@@ -104,7 +133,7 @@ const PopoverContent: FC<Props> = ({ children, className }) => {
     <Show when={() => open.value === true}>
       <section
         on:click_self={() => setOpen(false)}
-        className="tws-fixed tws-h-screen tws-w-screen !tws-mt-0 tws-top-0 tws-left-0 tws-z-[99999]"
+        className="tws-fixed tws-h-screen tws-w-screen tws-bg-black/40 tws-backdrop-blur-[128px] !tws-mt-0 tws-top-0 tws-left-0 tws-z-[99999]"
       ></section>
       <section
         bind:ref={containerRef}
