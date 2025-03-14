@@ -5,11 +5,11 @@
 extern crate winapi;
 
 fn main() {
-  #[cfg(target_os = "windows")]
-  unsafe {
-    winapi::um::shellscalingapi::SetProcessDpiAwareness(1);
-  }
-  tauri::Builder::default()
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+    #[cfg(target_os = "windows")]
+    unsafe {
+        winapi::um::shellscalingapi::SetProcessDpiAwareness(1);
+    }
+    tauri::Builder::default()
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }
