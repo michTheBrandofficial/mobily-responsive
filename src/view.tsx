@@ -223,7 +223,6 @@ const View: Nixix.FC = (): someView => {
             }, [device]);
           }}
         ></Container>
-        <Loaders.IOSSpinner />
       </VStack>
     </VStack>
   );

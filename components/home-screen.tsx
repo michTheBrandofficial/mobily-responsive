@@ -25,7 +25,7 @@ const HomeScreen: Nixix.FC<{
   let animation: Animation | null = null;
   const untitledIcon: App.HomeScreenIconMapping[string] = {
     name: "Untitled",
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     icon: Tools,
   };
 

@@ -22,7 +22,9 @@ const Iframe: Nixix.FC<Props> = ({
 
   return (
     <>
-      <Show when={() => loading.value}>{() => <Loaders.IOSSpinner />}</Show>
+      <Show when={() => loading.value}>
+        {(open) => (open ? <Loaders.IOSSpinner /> : "")}
+      </Show>
       <iframe
         {...props}
         src={src}
