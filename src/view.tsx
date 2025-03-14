@@ -18,6 +18,7 @@ import { useDeviceScreen } from "./stores/device-screen";
 import { useDeviceSettings } from "./stores/device-settings";
 import { useIphoneConfig } from "./stores/iphone-config";
 import TopNavbar from "@/components/top-navbar";
+import Loaders from "@/components/loaders";
 
 const [safeAreaInset, setSafeAreaInset] = signal<string>(px(0));
 
@@ -222,6 +223,7 @@ const View: Nixix.FC = (): someView => {
             }, [device]);
           }}
         ></Container>
+        <Loaders.IOSSpinner />
       </VStack>
     </VStack>
   );

@@ -9,6 +9,7 @@ import { containerStyles } from "~/constants";
 import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
+import Loaders from "@/components/loaders";
 
 type Props = App.DeviceProps;
 
@@ -51,7 +52,7 @@ const Iphone16Pro: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           ...pick(iphoneConfig, "width", "height"),
           ...containerStyles,
           clipPath: iphoneConfig.clothoidRadius,
-          background: `url(${Wallpaper})`,
+          background: `white`,
           backgroundSize: "cover",
         }}
       >
@@ -73,6 +74,7 @@ const Iphone16Pro: Nixix.FC<Props> = ({ iframeSrc }): someView => {
               zIndex: 900,
             }}
           />
+          <Loaders.IOSSpinner />
           <HomeScreen iframeSrc={iframeSrc} />
           <AppScreen config="iphone" iframeSrc={iframeSrc} />
         </Container>
