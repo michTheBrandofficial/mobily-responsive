@@ -5,7 +5,7 @@ import { useIconCoordinates } from "@/src/stores/icon-coordinates";
 import { readBinaryFile, readTextFile } from "@tauri-apps/api/fs";
 import * as Nixix from "nixix";
 import { For } from "nixix/hoc";
-import { callRef, reaction, Signal, store } from "nixix/primitives";
+import { ref, reaction, Signal, store } from "nixix/primitives";
 import { HStack, VStack } from "nixix/view-components";
 import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
@@ -20,7 +20,7 @@ const HomeScreen: Nixix.FC<{
     App.HomeScreenIconMapping[string][]
   >([]);
   const { deviceScreen, setDeviceScreen } = useDeviceScreen();
-  const homeScreenIcon = callRef<HTMLDivElement>();
+  const homeScreenIcon = ref<HTMLDivElement>();
   let isInFirstTwoIcons = true;
   let animation: Animation | null = null;
   const untitledIcon: App.HomeScreenIconMapping[string] = {
@@ -85,7 +85,7 @@ const HomeScreen: Nixix.FC<{
                   const iconRowIndex = Number(i) % numberIconsInRow;
                   isInFirstTwoIcons = [0, 1].includes(iconRowIndex);
                   setDeviceScreen("app-screen");
-                  iframeSrc.value = icon.origin;
+                  iframeSrc.value = icon.origin.value;
                 }}
                 key={i}
                 icon={icon}

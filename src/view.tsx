@@ -8,7 +8,6 @@ import {
   writeBinaryFile,
   writeFile,
 } from "@tauri-apps/api/fs";
-import { removeNode } from "nixix";
 import { effect, reaction, signal } from "nixix/primitives";
 import { Container, VStack } from "nixix/view-components";
 import { dataDir, FSOptions, iframeRef } from "./constants";
@@ -213,10 +212,8 @@ const View: Nixix.FC = (): someView => {
             const { device } = useDevice();
             function refetchFrame() {
               const Device = DEVICE_MAPPING[device.value].component;
-              const childNodes = current.childNodes;
               current.replaceChildren(<Device iframeSrc={iframeSrc} />);
               useDeviceScreen().setDeviceScreen("home-screen");
-              removeNode(childNodes as any);
             }
             refetchFrame();
             reaction(() => {

@@ -4,7 +4,7 @@ import { useBasePhoneConfig } from '@/src/stores/base-phone-config'
 import { useDeviceSettings } from '@/src/stores/device-settings'
 import { useIconCoordinates } from '@/src/stores/icon-coordinates'
 import { IphoneConfig, useIphoneConfig } from '@/src/stores/iphone-config'
-import { callRef, concat, reaction, signal, Signal } from 'nixix/primitives'
+import { ref, concat, reaction, signal, Signal } from 'nixix/primitives'
 import { Container } from 'nixix/view-components'
 import VirtualHomeButton from '~/components/virtual-home-button'
 import { useDeviceScreen } from '~/stores/device-screen'
@@ -12,7 +12,7 @@ import Iframe from './iframe'
 
 // default canfig is iphone
 const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>, config: 'base' | 'iphone' }) => {
-  const appScreenRef = callRef<HTMLDivElement>()
+  const appScreenRef = ref<HTMLDivElement>()
   const { deviceScreen } = useDeviceScreen()
   const newIconSize = homeScreenIconScale * 64;
   // leave this animation here for reversal;

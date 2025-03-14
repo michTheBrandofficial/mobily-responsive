@@ -10,7 +10,7 @@ const IOSSpinner: Nixix.FC<{ color?: string }> = ({ color }): someView => {
           const styles = {} as EmptyObject;
           if (color) styles.backgroundColor = color
           return <div
-            className="tws-w-[4px] tws-h-3.5 tws-bg-slate-500 tws-rounded-lg tws-fade-animation "
+            className="tws-w-[4px] tws-h-2 tws-bg-gray-500 tws-rounded-lg tws-fade-animation "
             style={{
               transform: `rotate(${deg(i * 30)}) translateY(${percentage(140)})`,
               position: 'absolute',

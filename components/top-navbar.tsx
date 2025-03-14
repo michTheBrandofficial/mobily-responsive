@@ -6,8 +6,8 @@ import { useDevice } from "@/src/stores/device";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
 import { pick } from "@/lib/utils";
 import Reload from "./icons/reload";
-import Settings from "./icons/settings";
 import { useDeviceScreen } from "@/src/stores/device-screen";
+import AppMenu from "./app-menu";
 
 type Props = {
   iframeSrc: Signal<string>;
@@ -30,22 +30,20 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
         </Paragragh>
       </Container>
 
-      <Container className="tws-flex tws-gap-x-5">
-        <Button className="tws-ml-auto" on:click={() => {
+      <Container className="tws-flex tws-ml-auto tws-gap-x-5">
+        <Button on:click={() => {
           useDeviceScreen().setDeviceScreen('home-screen')
         }} >
-          <Home className={"tws-w-5 tws-fill-[#CFCFCC]"} />
+          <Home className={"tws-w-5 tws-h-5 tws-fill-[#CFCFCC]"} />
         </Button>
-        <Button className="tws-ml-auto" on:click={() => {
+        <Button on:click={() => {
           const url = iframeSrc.value;
           iframeSrc.value = ''
           iframeSrc.value = url;
         }}>
           <Reload className={"tws-w-5 tws-fill-[#CFCFCC]"} />
         </Button>
-        <Button className="tws-ml-auto">
-          <Settings className={"tws-w-5 tws-fill-[#CFCFCC]"} />
-        </Button>
+        <AppMenu />
       </Container>
     </VStack>
   );
