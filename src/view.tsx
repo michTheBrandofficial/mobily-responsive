@@ -208,7 +208,7 @@ const View: Nixix.FC = (): someView => {
       <VStack className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-pb-1 tws-pt-1 tws-flex-col tws-items-center tws-justify-between ">
         <TopNavbar iframeSrc={iframeSrc} />
         <Container
-        className="tws-flex-grow"
+          className="tws-flex-grow"
           bind:ref={({ current }) => {
             const { device } = useDevice();
             function refetchFrame() {

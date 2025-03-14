@@ -3,7 +3,7 @@ import { DEVICE_MAPPING, type Device } from "../device-mapping";
 
 const defaultSelectedDevice: Device = ((): Device => {
   const lastUsed = localStorage.getItem("lastUsedDevice") as Device;
-  if (!lastUsed || !(lastUsed in DEVICE_MAPPING)) return "iphone-15-pro";
+  if (!lastUsed || !(lastUsed in DEVICE_MAPPING)) return "iphone-16-pro";
   else return lastUsed;
 })();
 
