@@ -25,6 +25,13 @@
         "readFile": true,
         "scope": ["$APPLOCALDATA/**/**"]
       },
+      "shell": {
+        "all": false,
+        "execute": false,
+        "open": true,
+        "scope": [],
+        "sidecar": false
+      },
       "path": {
         "all": true
       }
