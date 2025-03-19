@@ -9,7 +9,7 @@ export const containerStyles = {
 } as const;
 
 export const [deviceFrameHeightClass, setDeviceFrameHeightClass] =
-  signal(" tws-max-h-[93vh] ");
+  signal(" tws-max-h-[93.6vh] ");
 
 export const AppLocalData = BaseDirectory.AppLocalData;
 

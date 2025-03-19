@@ -18,7 +18,6 @@ import { useDeviceScreen } from "./stores/device-screen";
 import { useDeviceSettings } from "./stores/device-settings";
 import { useIphoneConfig } from "./stores/iphone-config";
 import TopNavbar from "@/components/top-navbar";
-import Loaders from "@/components/loaders";
 
 const [safeAreaInset, setSafeAreaInset] = signal<string>(px(0));
 
@@ -205,7 +204,7 @@ const View: Nixix.FC = (): someView => {
         position: "relative",
       }}
     >
-      <VStack className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-pb-1 tws-pt-1 tws-flex-col tws-items-center tws-justify-between ">
+      <VStack className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-flex-col tws-items-center tws-justify-between ">
         <TopNavbar iframeSrc={iframeSrc} />
         <Container
           className="tws-flex-grow"
