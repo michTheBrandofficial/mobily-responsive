@@ -6,10 +6,10 @@ import { readBinaryFile, readTextFile } from "@tauri-apps/api/fs";
 import * as Nixix from "nixix";
 import { For } from "nixix/hoc";
 import { ref, reaction, Signal, store } from "nixix/primitives";
-import { HStack, VStack } from "nixix/view-components";
+import { Container, HStack, VStack } from "nixix/view-components";
 import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
-import DockIcons from "./icons/dock-icons";
+import DockIcons, { SearchIcon } from "./icons/dock-icons";
 
 const numberIconsInRow = 4;
 
@@ -74,8 +74,8 @@ const HomeScreen: Nixix.FC<{
     } else animation?.reverse();
   }, [deviceScreen]);
   return (
-    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-px-4 tws-pt-32 tws-pb-4 tws-flex tws-flex-col tws-justify-between tws-font-Helvetica_Neue tws-tracking-wide">
-      <HStack className="tws-h-fit tws-w-full tws-px-2 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between tws-gap-y-10 ">
+    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-pt-32 tws-flex tws-flex-col tws-justify-between tws-font-Helvetica_Neue tws-tracking-wide">
+      <HStack className="tws-h-fit tws-w-full tws-px-[24px] tws-font-medium tws-grid tws-grid-cols-4-60 tws-justify-between ">
         <For each={homeScreenIcons}>
           {(icon, i) => {
             return (
@@ -95,13 +95,20 @@ const HomeScreen: Nixix.FC<{
           }}
         </For>
       </HStack>
-      <HStack
-        className="tws-h-fit tws-w-full tws-bg-gray-300/40 tws-backdrop-blur-2xl tws-px-4 tws-py-4 tws-font-medium tws-grid tws-grid-cols-4-64 tws-justify-between "
-        style={{
-          borderRadius: px(34),
-        }}
-      >
-        <DockIcons />
+      {/* Search buttons and device dock */}
+      <HStack className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] ">
+        <Container className="tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/15 tws-backdrop-blur-[150px] tws-text-white tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs " >
+          <SearchIcon /> Search
+        </Container>
+        {/* Dock */}
+        <HStack
+          className="tws-h-fit tws-w-full tws-bg-[#666666]/15 tws-backdrop-blur-[150px] tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between "
+          style={{
+            borderRadius: px(42),
+          }}
+        >
+          <DockIcons />
+        </HStack>
       </HStack>
     </VStack>
   );
