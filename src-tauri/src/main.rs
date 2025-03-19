@@ -4,7 +4,7 @@
 mod jump_list;
 
 use jump_list::JumpListManager;
-use tauri::{App, AppHandle, Manager};
+use tauri::AppHandle;
 
 #[cfg(windows)]
 extern crate winapi;
