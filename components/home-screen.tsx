@@ -5,11 +5,12 @@ import { useIconCoordinates } from "@/src/stores/icon-coordinates";
 import { readBinaryFile, readTextFile } from "@tauri-apps/api/fs";
 import * as Nixix from "nixix";
 import { For } from "nixix/hoc";
-import { ref, reaction, Signal, store } from "nixix/primitives";
+import { ref, reaction, Signal, store, memo } from "nixix/primitives";
 import { Container, HStack, VStack } from "nixix/view-components";
 import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
+import { useIphoneConfig } from "@/src/stores/iphone-config";
 
 const numberIconsInRow = 4;
 
@@ -73,8 +74,15 @@ const HomeScreen: Nixix.FC<{
       );
     } else animation?.reverse();
   }, [deviceScreen]);
+  const {iphoneConfig} = useIphoneConfig()
   return (
-    <VStack className="tws-h-full tws-w-full tws-bg-transparent tws-pt-32 tws-flex tws-flex-col tws-justify-between tws-font-Helvetica_Neue tws-tracking-wide">
+    <VStack
+    style={{
+      paddingTop: memo(() => {
+        return `${90 - parseInt(`${iphoneConfig.safeAreaInset}`)}px`
+      }, [iphoneConfig.safeAreaInset])
+    }}
+    className="tws-h-full tws-w-full tws-bg-transparent tws-flex tws-flex-col tws-justify-between tws-font-Helvetica_Neue tws-tracking-wide">
       <HStack className="tws-h-fit tws-w-full tws-px-[24px] tws-font-medium tws-grid tws-grid-cols-4-60 tws-justify-between ">
         <For each={homeScreenIcons}>
           {(icon, i) => {
