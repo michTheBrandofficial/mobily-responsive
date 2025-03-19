@@ -20,7 +20,7 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     [device]
   );
   return (
-    <VStack className="tws-w-full tws-max-h-[45px] tws-flex tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-py-2 tws-px-6 tws-bg-[#474844] ">
+    <VStack className="tws-w-full tws-max-h-[45px] tws-flex tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-mt-1 tws-py-2 tws-px-6 tws-bg-[#474844] ">
       <Container className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 ">
         <Paragragh className="tws-text-[#ECEDE9] tws-font-bold ">
           {deviceDisplayName.displayName}
