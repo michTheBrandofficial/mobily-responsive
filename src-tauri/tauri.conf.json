@@ -42,9 +42,9 @@
         "icons/icon.ico"
       ],
       "identifier": "com.mobily-responsive.dev",
-      "longDescription": "",
+      "longDescription": "A desktop application that helps developers test their websites across different device sizes and resolutions. Built with Tauri and React for optimal performance and native integration.",
       "resources": [],
-      "shortDescription": "",
+      "shortDescription": "A desktop app for testing website responsiveness across different device sizes",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
