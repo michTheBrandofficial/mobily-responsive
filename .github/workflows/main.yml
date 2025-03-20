@@ -51,6 +51,12 @@ jobs:
         with:
           workspaces: './src-tauri -> target'
 
+      # Add this before the tauri-action step
+      - name: List target directory (debug)
+        run: |
+          ls -la src-tauri/target/release/bundle/
+          ls -la src-tauri/target/release/
+
       - name: install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: yarn install # change this to npm or pnpm depending on which one you use.
