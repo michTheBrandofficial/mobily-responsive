@@ -51,7 +51,6 @@ jobs:
         with:
           workspaces: './src-tauri -> target'
 
-      # Add this before the tauri-action step
       - name: List target directory (debug)
         run: |
           ls -la src-tauri/target/release/bundle/
