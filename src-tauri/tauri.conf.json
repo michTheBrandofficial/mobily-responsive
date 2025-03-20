@@ -45,7 +45,7 @@
       "longDescription": "",
       "resources": [],
       "shortDescription": "",
-      "targets": ["msi"],
+      "targets": "all",
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
