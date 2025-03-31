@@ -1,5 +1,5 @@
 import { BaseDirectory } from "@tauri-apps/api/fs";
-import { callRef, signal } from "nixix/primitives";
+import { ref, signal } from "nixix/primitives";
 import { Device } from "./device-mapping";
 
 export const containerStyles = {
@@ -9,19 +9,18 @@ export const containerStyles = {
 } as const;
 
 export const [deviceFrameHeightClass, setDeviceFrameHeightClass] =
-  signal(" tws-max-h-[98.5vh] ");
+  signal(" tws-max-h-[93.6vh] ");
 
-export const AppLocalData = BaseDirectory.AppLocalData
+export const AppLocalData = BaseDirectory.AppLocalData;
 
-export const dataDir = `./MobilyResponsiveData`
+export const dataDir = `./MobilyResponsiveData`;
 
 export const FSOptions = {
-  dir: AppLocalData
+  dir: AppLocalData,
 } as const;
 
 export const homeScreenIconScale = 1.4;
 
-export const iframeRef = callRef<HTMLIFrameElement>();
+export const iframeRef = ref<HTMLIFrameElement>();
 
 export { type Device };
-

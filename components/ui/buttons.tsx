@@ -16,7 +16,7 @@ export const Button: Nixix.FC<ButtonProps> = ({ children, variant = 'full', clas
     <VButton
       {...props}
       className={cn(
-        ` `,
+        // `active:tws-scale-90 active:tws-rotate-2 hover:tws-scale-105 tws-transition-transform tws-duration-150 `,
         className,
       )}
     >{children}</VButton>

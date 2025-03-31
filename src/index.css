@@ -26,8 +26,8 @@
     width: 0px;
   }
 
-  .tws-grid-cols-4-64 {
-    grid-template-columns: repeat(4, minmax(0, 64px));
+  .tws-grid-cols-4-60 {
+    grid-template-columns: repeat(4, minmax(0, 60px));
   }
 
   :root {
