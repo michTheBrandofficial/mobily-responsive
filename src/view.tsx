@@ -19,7 +19,7 @@ import { useDeviceSettings } from "./stores/device-settings";
 import { useIphoneConfig } from "./stores/iphone-config";
 import TopNavbar from "@/components/top-navbar";
 import { containerRef } from "./stores/container-ref";
-import html2canvas from "html2canvas";
+import DomToImage from "dom-to-image";
 
 const [safeAreaInset, setSafeAreaInset] = signal<string>(px(0));
 
@@ -180,15 +180,47 @@ const View: Nixix.FC = (): someView => {
         break;
       case "app-screen":
         wait(() => {
-          html2canvas(containerRef.current as HTMLDivElement).then(canvas => {
-            const context = canvas.getContext('2d');
-            if (!context) return;
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            // calculate luminance and get color changes here using `blackSpectrum` variable
-            const pixels = imageData.data;
-            console.log(pixels)
-          })
-        }, 500)
+          DomToImage.toSvg(containerRef.current as HTMLDivElement).then(
+            (svg) => {
+              const image = new Image();
+              image.src = svg;
+              document.body.replaceChildren(image);
+              return "";
+              //   const context = canvas.getContext("2d");
+              //   document.body.replaceChildren(canvas);
+              //   if (!context) return;
+              //   const statusBarElement = document.getElementById("status-bar");
+              //   const elementRect = statusBarElement?.getBoundingClientRect();
+              //   if (!elementRect) return;
+              //   const imageData = context.getImageData(
+              //     elementRect?.x,
+              //     elementRect.y,
+              //     elementRect.width,
+              //     elementRect.height
+              //   );
+              //   // calculate luminance and get color changes here using `blackSpectrum` variable
+              //   const pixels = imageData.data;
+              //   let totalLuminance = 0;
+              //   const pixelCount = pixels.length / 4;
+              //   for (let i = 0; i < pixels.length; i += 4) {
+              //     const r = pixels[i];
+              //     const g = pixels[i + 1];
+              //     const b = pixels[i + 2];
+              //     const luminance = r * 0.299 + g * 0.587 + b * 0.114;
+              //     totalLuminance += luminance;
+              //   }
+              //   const threshold = 128;
+              //   const averageLuminance = totalLuminance / pixelCount;
+              //   console.log("averageLuminance: ", averageLuminance);
+              //   const blackColourOnSpectrum =
+              //     blackSpectrum[
+              //       (Number((threshold / averageLuminance).toFixed(1)) *
+              //         10) as keyof typeof blackSpectrum
+              //     ];
+              //   console.log(blackColourOnSpectrum);
+            }
+          );
+        }, 3000);
         break;
     }
   }, [deviceScreen]);

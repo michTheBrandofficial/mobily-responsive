@@ -30,7 +30,10 @@ const clothoidRadiusRatio = 58 / dimensions.w;
 
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const;
 
-const Iphone16Pro: Nixix.FC<Props> = ({ iframeSrc, containerRef }): someView => {
+const Iphone16Pro: Nixix.FC<Props> = ({
+  iframeSrc,
+  containerRef,
+}): someView => {
   const wrapperRef = ref<HTMLElement>();
   const { iphoneConfig } = useIphoneConfig();
   setupResizeEffect(wrapperRef, {
@@ -46,7 +49,6 @@ const Iphone16Pro: Nixix.FC<Props> = ({ iframeSrc, containerRef }): someView => 
     <Wrapper bind:ref={wrapperRef}>
       <DeviceFrame height={dimensions.h} />
       <Container
-        bind:ref={containerRef}
         className={`tws-h-auto tws-w-auto tws-transition-[background] tws-duration-300 tws-ease-[ease] `}
         style={{
           ...pick(iphoneConfig, "width", "height"),
@@ -57,6 +59,7 @@ const Iphone16Pro: Nixix.FC<Props> = ({ iframeSrc, containerRef }): someView => 
         }}
       >
         <Container
+          bind:ref={containerRef}
           style={{
             paddingTop: iphoneConfig.safeAreaInset,
             width: percentage(100),
