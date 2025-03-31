@@ -1,4 +1,4 @@
-import { CSSProperties, removeNode } from 'nixix';
+import { CSSProperties } from 'nixix';
 
 export const getDims = ({ width, height }: CSSStyleDeclaration) => {
   return {
@@ -77,5 +77,5 @@ export const debounce = <T extends VoidFunction | Utilities.FunctionWithArgs>(
 };
 
 export const removeChildren = (element: Element) => {
-  Array.from(element.children).forEach((child) => removeNode(child));
+  Array.from(element.children).forEach((child) => child.remove());
 };
