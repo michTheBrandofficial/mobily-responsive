@@ -32,7 +32,7 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     <VStack className="tws-w-full tws-max-h-[45px] tws-flex tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-mt-1 tws-py-2 tws-px-6 tws-bg-[#474844] tws-relative ">
       <Container
         data-inputopen={isInputOpen}
-        className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 data-[inputopen=true]:-tws-translate-x-[200%] "
+        className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 data-[inputopen=true]:-tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear "
       >
         <Paragragh className="tws-text-[#ECEDE9] tws-font-bold ">
           {deviceDisplayName.displayName}
@@ -50,8 +50,9 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           iframeSrc.value = formData.get("url") as string;
           setIsInputOpen(false);
         }}
-        className="tws-min-w-full tws-h-full -tws-mb-3 tws-relative tws-transition-transform tws-duration-700 tws-ease-[ease] tws-origin-center tws-scale-0 data-[open=true]:tws-scale-100 data-[open=false]:tws-hidden "
+        className="tws-min-w-full tws-h-full tws-transition-[transform] tws-duration-300 tws-ease-linear tws-delay-200 tws-origin-center tws-scale-x-0 data-[open=true]:tws-scale-x-100 tws-absolute tws-top-[92%] tws-left-1/2 -tws-translate-x-1/2 "
       >
+        <Container className="tws-relative">
         <TextField
           // bind:ref reaction to focus when inputOpen === true
           name="url"
@@ -70,10 +71,11 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
             className={"tws-w-[18px] tws-h-[18px] tws-fill-[#CFCFCC]"}
           />
         </Button>
+        </Container>
       </FormField>
       <Container
         data-inputopen={isInputOpen}
-        className="tws-flex tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%]"
+        className="tws-flex tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear"
       >
         <Button
           on:click={() => {
