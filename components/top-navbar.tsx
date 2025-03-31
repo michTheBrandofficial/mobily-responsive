@@ -1,4 +1,4 @@
-import { memo, ref, signal, Signal } from "nixix/primitives";
+import { effect, memo, ref, signal, Signal } from "nixix/primitives";
 import {
   Container,
   FormField,
@@ -10,7 +10,7 @@ import Home from "./icons/home";
 import { Button } from "./ui/buttons";
 import { useDevice } from "@/src/stores/device";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
-import { pick } from "@/lib/utils";
+import { pick, wait } from "@/lib/utils";
 import Reload from "./icons/reload";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import AppMenu from "./app-menu";
@@ -55,10 +55,16 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
         <Container className="tws-relative">
         <TextField
           // bind:ref reaction to focus when inputOpen === true
+          bind:ref={({ current }) => {
+            effect(() => {
+              if (isInputOpen.value) 
+                wait(() => current.focus(), 500);
+            })
+          }}
           name="url"
           on:blur={() => {
             formRef.current?.requestSubmit();
-            setIsInputOpen(true);
+            setIsInputOpen(false);
           }}
           className="tws-w-[90%] tws-absolute tws-left-1/2 -tws-translate-x-1/2 tws-bottom-1.5 focus:tws-outline-none tws-bg-transparent tws-border-b-2 tws-border-[#CFCFCC] tws-pb-1 tws-caret-white tws-text-white tws-text-sm tws-text-center tws-font-medium "
         />
