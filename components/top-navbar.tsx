@@ -1,4 +1,4 @@
-import { memo, ref, Signal } from "nixix/primitives";
+import { memo, ref, signal, Signal } from "nixix/primitives";
 import {
   Container,
   FormField,
@@ -26,23 +26,38 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     () => pick(DEVICE_MAPPING[device.value], "displayName", "iosVersion"),
     [device]
   );
-  const formRef = ref<HTMLFormElement>()
+  const formRef = ref<HTMLFormElement>();
+  const [isInputOpen, setIsInputOpen] = signal<boolean>(false);
   return (
     <VStack className="tws-w-full tws-max-h-[45px] tws-flex tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-mt-1 tws-py-2 tws-px-6 tws-bg-[#474844] tws-relative ">
+      <Container
+        data-inputopen={isInputOpen}
+        className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 data-[inputopen=true]:-tws-translate-x-[200%] "
+      >
+        <Paragragh className="tws-text-[#ECEDE9] tws-font-bold ">
+          {deviceDisplayName.displayName}
+        </Paragragh>
+        <Paragragh className="tws-text-[#B0B0AD] tws-font-medium ">
+          iOS {deviceDisplayName.iosVersion}
+        </Paragragh>
+      </Container>
       <FormField
         bind:ref={formRef}
+        data-open={isInputOpen}
         on:submit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.currentTarget);
-          console.log(formData.get("url"));
+          iframeSrc.value = formData.get("url") as string;
+          setIsInputOpen(false);
         }}
-        className="tws-min-w-full tws-h-full -tws-mb-3 tws-relative"
+        className="tws-min-w-full tws-h-full -tws-mb-3 tws-relative tws-transition-transform tws-duration-700 tws-ease-[ease] tws-origin-center tws-scale-0 data-[open=true]:tws-scale-100 data-[open=false]:tws-hidden "
       >
         <TextField
+          // bind:ref reaction to focus when inputOpen === true
           name="url"
           on:blur={() => {
-            formRef.current?.requestSubmit()
-            // reset state here
+            formRef.current?.requestSubmit();
+            setIsInputOpen(true);
           }}
           className="tws-w-[90%] tws-absolute tws-left-1/2 -tws-translate-x-1/2 tws-bottom-1.5 focus:tws-outline-none tws-bg-transparent tws-border-b-2 tws-border-[#CFCFCC] tws-pb-1 tws-caret-white tws-text-white tws-text-sm tws-text-center tws-font-medium "
         />
@@ -56,16 +71,10 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           />
         </Button>
       </FormField>
-      <Container className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 tws-scale-0">
-        <Paragragh className="tws-text-[#ECEDE9] tws-font-bold ">
-          {deviceDisplayName.displayName}
-        </Paragragh>
-        <Paragragh className="tws-text-[#B0B0AD] tws-font-medium ">
-          iOS {deviceDisplayName.iosVersion}
-        </Paragragh>
-      </Container>
-
-      <Container className="tws-flex tws-ml-auto tws-gap-x-5 tws-scale-0">
+      <Container
+        data-inputopen={isInputOpen}
+        className="tws-flex tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%]"
+      >
         <Button
           on:click={() => {
             useDeviceScreen().setDeviceScreen("home-screen");
@@ -81,6 +90,13 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           }}
         >
           <Reload className={"tws-w-5 tws-fill-[#CFCFCC]"} />
+        </Button>
+        <Button
+          on:click={() => {
+            setIsInputOpen(true);
+          }}
+        >
+          <SearchIcon className={"tws-w-5 tws-h-5 tws-fill-[#CFCFCC]"} />
         </Button>
         <AppMenu />
       </Container>
