@@ -20,6 +20,8 @@ import { useIphoneConfig } from "./stores/iphone-config";
 import TopNavbar from "@/components/top-navbar";
 import { containerRef } from "./stores/container-ref";
 import DomToImage from "dom-to-image";
+import html2canvas from "html2canvas";
+html2canvas
 
 const [safeAreaInset, setSafeAreaInset] = signal<string>(px(0));
 
