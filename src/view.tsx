@@ -18,6 +18,8 @@ import { useDeviceScreen } from "./stores/device-screen";
 import { useDeviceSettings } from "./stores/device-settings";
 import { useIphoneConfig } from "./stores/iphone-config";
 import TopNavbar from "@/components/top-navbar";
+import { containerRef } from "./stores/container-ref";
+import html2canvas from "html2canvas";
 
 const [safeAreaInset, setSafeAreaInset] = signal<string>(px(0));
 
@@ -164,16 +166,30 @@ const View: Nixix.FC = (): someView => {
     setupPWAConfig(src);
   });
   reaction(() => {
-    if (deviceScreen.value === "home-screen") {
-      iframeSrc.value = "";
-      wait(
-        () =>
-          useDeviceSettings().setDeviceSettings((p) => {
-            p.theme_color = "white";
-            return p;
-          }),
-        400
-      );
+    switch (deviceScreen.value) {
+      case "home-screen":
+        iframeSrc.value = "";
+        wait(
+          () =>
+            useDeviceSettings().setDeviceSettings((p) => {
+              p.theme_color = "white";
+              return p;
+            }),
+          400
+        );
+        break;
+      case "app-screen":
+        wait(() => {
+          html2canvas(containerRef.current as HTMLDivElement).then(canvas => {
+            const context = canvas.getContext('2d');
+            if (!context) return;
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            // calculate luminance and get color changes here using `blackSpectrum` variable
+            const pixels = imageData.data;
+            console.log(pixels)
+          })
+        }, 500)
+        break;
     }
   }, [deviceScreen]);
   reaction(() => {
@@ -210,14 +226,16 @@ const View: Nixix.FC = (): someView => {
           className="tws-flex-grow"
           bind:ref={({ current }) => {
             const { device } = useDevice();
-            function refetchFrame() {
+            function changeDevice() {
               const Device = DEVICE_MAPPING[device.value].component;
-              current.replaceChildren(<Device iframeSrc={iframeSrc} />);
+              current.replaceChildren(
+                <Device containerRef={containerRef} iframeSrc={iframeSrc} />
+              );
               useDeviceScreen().setDeviceScreen("home-screen");
             }
-            refetchFrame();
+            changeDevice();
             reaction(() => {
-              refetchFrame();
+              changeDevice();
               setupPWAConfig(iframeSrc.value);
             }, [device]);
           }}

@@ -8,6 +8,8 @@ import { pick } from "@/lib/utils";
 import Reload from "./icons/reload";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import AppMenu from "./app-menu";
+import Camera from "./icons/camera";
+import html2canvas from "html2canvas";
 
 type Props = {
   iframeSrc: Signal<string>;

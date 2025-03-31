@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+import { MutableRefObject } from "nixix";
 import { Signal } from "nixix/primitives";
 
 export { };
@@ -7,6 +8,7 @@ declare global {
   namespace App {
     type DeviceProps = {
       iframeSrc: Signal<string>;
+      containerRef: MutableRefObject<HTMLDivElement | null>
     };
 
     type Display = " tws-flex " | " tws-hidden " | " tws-block ";
