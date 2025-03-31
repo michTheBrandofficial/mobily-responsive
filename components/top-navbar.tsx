@@ -53,30 +53,30 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
         className="tws-min-w-full tws-h-full tws-transition-[transform] tws-duration-300 tws-ease-linear tws-delay-200 tws-origin-center tws-scale-x-0 data-[open=true]:tws-scale-x-100 tws-absolute tws-top-[92%] tws-left-1/2 -tws-translate-x-1/2 "
       >
         <Container className="tws-relative">
-        <TextField
-          // bind:ref reaction to focus when inputOpen === true
-          bind:ref={({ current }) => {
-            effect(() => {
-              if (isInputOpen.value) 
-                wait(() => current.focus(), 500);
-            })
-          }}
-          name="url"
-          on:blur={() => {
-            formRef.current?.requestSubmit();
-            setIsInputOpen(false);
-          }}
-          className="tws-w-[90%] tws-absolute tws-left-1/2 -tws-translate-x-1/2 tws-bottom-1.5 focus:tws-outline-none tws-bg-transparent tws-border-b-2 tws-border-[#CFCFCC] tws-pb-1 tws-caret-white tws-text-white tws-text-sm tws-text-center tws-font-medium "
-        />
-        <Button
-          type="submit"
-          className="tws-absolute tws-right-6 tws-bottom-3 tws-z-30"
-          on:click={() => {}}
-        >
-          <SearchIcon
-            className={"tws-w-[18px] tws-h-[18px] tws-fill-[#CFCFCC]"}
+          <TextField
+            // bind:ref reaction to focus when inputOpen === true
+            bind:ref={({ current }) => {
+              effect(() => {
+                if (isInputOpen.value) wait(() => current.focus(), 500);
+              });
+            }}
+            value={iframeSrc}
+            name="url"
+            on:blur={() => {
+              formRef.current?.requestSubmit();
+              setIsInputOpen(false);
+            }}
+            className="tws-w-[90%] tws-absolute tws-left-1/2 -tws-translate-x-1/2 tws-bottom-1.5 focus:tws-outline-none tws-bg-transparent tws-border-b-2 tws-border-[#CFCFCC] tws-pb-1 tws-caret-white tws-text-white tws-text-sm tws-text-center tws-font-medium "
           />
-        </Button>
+          <Button
+            type="submit"
+            className="tws-absolute tws-right-6 tws-bottom-3 tws-z-30"
+            on:click={() => {}}
+          >
+            <SearchIcon
+              className={"tws-w-[18px] tws-h-[18px] tws-fill-[#CFCFCC]"}
+            />
+          </Button>
         </Container>
       </FormField>
       <Container
@@ -101,7 +101,8 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
         </Button>
         <Button
           on:click={() => {
-            setIsInputOpen(true);
+            if (useDeviceScreen().deviceScreen.value === "app-screen")
+              setIsInputOpen(true);
           }}
         >
           <SearchIcon className={"tws-w-5 tws-h-5 tws-fill-[#CFCFCC]"} />
