@@ -39,9 +39,13 @@ const HomeScreenIcon: Nixix.FC<{
       <p
         className={`/tws-text-white tws-min-w-[75px] tws-overflow-visible tws-text-center tws-text-[#474844] tws-text-[11px] tws-whitespace-nowrap tws-max-w-full tws-font-Rubik tws-font-normal `}
       >
-        {name.value.length > 10
-          ? memo(() => name.value.slice(0, 10).concat('...'), [name])
-          : name}
+        {memo(
+          () =>
+            name.value.length > 10
+              ? name.value.slice(0, 10).concat("...")
+              : name.value,
+          [name]
+        )}
       </p>
     </Container>
   );
