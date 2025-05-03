@@ -1,4 +1,4 @@
-import Wallpaper from "@/assets/images/iphone-sports-wallpaper.png";
+import Wallpaper from "@/assets/images/iphone-escalade-wallpaper.png";
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";

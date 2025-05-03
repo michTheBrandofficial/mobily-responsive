@@ -1,4 +1,4 @@
-import { Signal, Store } from "nixix/primitives";
+import { memo, Signal, Store } from "nixix/primitives";
 import { MouseEventHandler } from "nixix/types/eventhandlers";
 import { Container } from "nixix/view-components";
 import Tools from "@/assets/images/tools icon.png";
@@ -19,7 +19,7 @@ const HomeScreenIcon: Nixix.FC<{
   return (
     <Container
       on:click={rest["on:click"]}
-      className="tws-w-[60px] tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer "
+      className="tws-w-[60px] tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer tws-overflow-x-visible "
     >
       {isUntitled ? (
         <Container className="tws-w-[60px] tws-h-[60px] tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] ">
@@ -36,7 +36,17 @@ const HomeScreenIcon: Nixix.FC<{
           className="tws-w-[60px] tws-h-[60px] tws-rounded-[inherit]  "
         />
       )}
-      <p className="tws-text-white tws-text-xs tws-line-clamp-1 tws-max-w-full tws-font-Rubik tws-font-normal ">{name}</p>
+      <p
+        className={`/tws-text-white tws-min-w-[75px] tws-overflow-visible tws-text-center tws-text-[#474844] tws-text-[11px] tws-whitespace-nowrap tws-max-w-full tws-font-Rubik tws-font-normal `}
+      >
+        {memo(
+          () =>
+            name.value.length > 10
+              ? name.value.slice(0, 10).concat("...")
+              : name.value,
+          [name]
+        )}
+      </p>
     </Container>
   );
 };
