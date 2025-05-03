@@ -36,7 +36,7 @@ const HomeScreenIcon: Nixix.FC<{
           className="tws-w-[60px] tws-h-[60px] tws-rounded-[inherit]  "
         />
       )}
-      <p className="tws-text-white tws-text-xs tws-line-clamp-1 tws-max-w-full tws-font-Rubik tws-font-normal ">{name}</p>
+      <p className="tws-text-white tws-text-[#080808]/65 tws-text-[11px] tws-line-clamp-1 tws-max-w-full tws-font-Rubik tws-font-normal ">{name}</p>
     </Container>
   );
 };
