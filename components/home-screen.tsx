@@ -105,8 +105,8 @@ const HomeScreen: Nixix.FC<{
       </HStack>
       {/* Search buttons and device dock */}
       <HStack className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] ">
-        <Container className="tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/15 tws-backdrop-blur-[150px] tws-text-[#080808]/80 tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs " >
-          <SearchIcon className={'tws-fill-[#080808]/80 '} /> Search
+        <Container className="tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs " >
+          <SearchIcon className={'tws-fill-[#474844] '} /> Search
         </Container>
         {/* Dock */}
         <HStack
