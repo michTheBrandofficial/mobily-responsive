@@ -15,6 +15,8 @@ import Reload from "./icons/reload";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import AppMenu from "./app-menu";
 import { SearchIcon } from "./icons/search";
+import DeviceSelect from "./select-device";
+import DeviceSelectMenu from "./device-select-menu";
 
 type Props = {
   iframeSrc: Signal<string>;
@@ -105,8 +107,9 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
               setIsInputOpen(true);
           }}
         >
-          <SearchIcon className={"tws-w-5 tws-h-5 tws-fill-[#CFCFCC]"} />
+          <SearchIcon className={"tws-w-5 tws-h-[18px] tws-fill-[#CFCFCC]"} />
         </Button>
+        <DeviceSelectMenu />
         <AppMenu />
       </Container>
     </VStack>
