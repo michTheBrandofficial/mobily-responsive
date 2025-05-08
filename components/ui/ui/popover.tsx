@@ -140,7 +140,7 @@ const PopoverContent: FC<Props> = ({ children, className }) => {
             bind:ref={containerRef}
             data-open={open}
             tabindex={0}
-            className={`tws-transition-transform tws-duration-500 tws-scale-50 data-[open=true]:tws-scale-100 ${cn(
+            className={`tws-transition-transform tws-duration-150 tws-ease-[ease] tws-scale-50 data-[open=true]:tws-scale-100 ${cn(
               ` tws-bg-white tws-absolute tws-z-[100000] `,
               className,
               {
