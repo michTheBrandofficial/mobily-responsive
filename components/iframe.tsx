@@ -30,6 +30,7 @@ const Iframe: Nixix.FC<Props> = ({
         src={src}
         on:load={() => (loading.value = false)}
         className={cn("tws-no-scroll  ", className)}
+        allow="clipboard-read; clipboard-write"
         style={{
           ...style,
           width: percentage(100),

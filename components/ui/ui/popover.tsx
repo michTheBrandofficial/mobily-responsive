@@ -20,6 +20,10 @@ type TPopoverContext = {
 const { Provider, context } =
   createContext<Store<TPopoverContext>>();
 
+type DoNotUseProps = {
+  do_not_use_this_prop?: boolean;
+}
+
 type PopoverProps = {
   children: () => NixixNode;
   transformOrigin?:
@@ -36,9 +40,10 @@ type PopoverProps = {
 const PopoverProvider = ({
   children,
   transformOrigin = "bottom-right",
-}: PopoverProps) => {
+  do_not_use_this_prop = false
+}: PopoverProps & DoNotUseProps) => {
   const [popoverState, setPopoverState] = store<TPopoverContext>({
-    open: false,
+    open: do_not_use_this_prop,
     config: {
       transformOrigin: transformOrigin,
     },
@@ -140,7 +145,7 @@ const PopoverContent: FC<Props> = ({ children, className }) => {
             bind:ref={containerRef}
             data-open={open}
             tabindex={0}
-            className={`tws-transition-transform tws-duration-500 tws-scale-50 data-[open=true]:tws-scale-100 ${cn(
+            className={`tws-transition-transform tws-duration-150 tws-ease-[ease] tws-scale-50 data-[open=true]:tws-scale-100 ${cn(
               ` tws-bg-white tws-absolute tws-z-[100000] `,
               className,
               {
