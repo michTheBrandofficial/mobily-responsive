@@ -1,5 +1,5 @@
 import Tools from "@/assets/images/tools icon.png";
-import { blobToBinary, px, saveImageFile } from "@/lib/utils";
+import { px } from "@/lib/utils";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import { useIconCoordinates } from "@/src/stores/icon-coordinates";
 import { readBinaryFile, readTextFile } from "@tauri-apps/api/fs";
@@ -11,7 +11,6 @@ import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
 import { useIphoneConfig } from "@/src/stores/iphone-config";
-import { toBlob, toPixelData } from 'html-to-image';
 
 const numberIconsInRow = 4;
 

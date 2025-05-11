@@ -64,11 +64,8 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
         animation = appScreenEl.animate(animationKeyFrames, animationOptions)
       } else animation?.reverse()
       // home button transition
-      setHomeButtonClass('tws-translate-y-0');
-      setTimeout(() => setHomeButtonClass('tws-translate-y-10'), 2500);
     }
   }, [deviceScreen])
-  const [homeButtonClass, setHomeButtonClass] = signal<string>('tws-translate-y-0')
   let phoneConfig: IphoneConfig = config === 'base' ? useBasePhoneConfig().basePhoneConfig : useIphoneConfig().iphoneConfig;
   return (
     <Container bind:ref={appScreenRef} className=' ' style={{
@@ -98,14 +95,14 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
       }} >
         <Iframe src={iframeSrc} bind:ref={iframeRef} />
       </Container>
-      <Container className={concat`tws-flex tws-items-center tws-justify-center ${homeButtonClass} tws-transition-transform tws-duration-500 peer-hover:tws-translate-y-0 `} style={{
+      <Container className={concat`tws-flex tws-items-center tws-justify-center tws-transition-transform tws-duration-500 `} style={{
         width: percentage(100),
         height: 'fit-content',
         position: 'absolute',
         bottom: phoneConfig.deviceBarRatios.bottom,
         zIndex: 900,
       }}>
-        <VirtualHomeButton style={{
+        <VirtualHomeButton className='tws-rounded-full' style={{
           width: phoneConfig.virtualHomeButtonWidth,
           backgroundColor: '#080808'
         }} />

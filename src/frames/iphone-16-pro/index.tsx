@@ -1,6 +1,5 @@
 import Wallpaper from "@/assets/images/iphone-escalade-wallpaper.png";
 import AppScreen from "@/components/app-screen";
-import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
 import { percentage, pick, px } from "@/lib/utils";
 import { ref } from "nixix/primitives";
@@ -9,6 +8,7 @@ import { containerStyles } from "~/constants";
 import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
+import HomeScreen from "@/components/home-screen";
 
 type Props = App.DeviceProps;
 
@@ -43,7 +43,7 @@ const Iphone16Pro: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   });
 
   return (
-    <Wrapper bind:ref={wrapperRef} >
+    <Wrapper bind:ref={wrapperRef}>
       <DeviceFrame height={dimensions.h} />
       <Container
         className={`tws-h-auto tws-w-auto tws-transition-[background] tws-duration-300 tws-ease-[ease] `}

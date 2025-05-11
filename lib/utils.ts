@@ -95,3 +95,6 @@ export const saveImageFile = async (binary: Uint8Array<ArrayBuffer> | Uint8Clamp
     }
   );
 }
+
+// capitalize first letter
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);

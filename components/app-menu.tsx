@@ -6,6 +6,26 @@ import Settings from "./icons/settings";
 import { SVGAttributes } from "nixix";
 import Popover from "./ui/ui/popover";
 import DevIcon from "@/assets/images/developer-icon.jpg";
+import { useTheme } from "@/src/stores/theme";
+import { capitalize } from "@/lib/utils";
+
+const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7.99997 16C12.3686 16 16 12.3765 16 8C16 3.63138 12.3608 0 7.99214 0C3.61565 0 0 3.63138 0 8C0 12.3765 3.62351 16 7.99997 16ZM7.99997 14.6667C4.29801 14.6667 1.34114 11.702 1.34114 8C1.34114 4.30588 4.29018 1.33334 7.99214 1.33334C11.6862 1.33334 14.6588 4.30588 14.6667 8C14.6745 11.702 11.6941 14.6667 7.99997 14.6667ZM10.2431 9.74116C7.86661 9.74116 6.34507 8.25098 6.34507 5.8745C6.34507 5.38041 6.47839 4.68235 6.61958 4.31374C6.6588 4.21178 6.66663 4.14903 6.66663 4.10981C6.66663 3.99215 6.57253 3.85883 6.40782 3.85883C6.3529 3.85883 6.2588 3.86666 6.15684 3.90588C4.5333 4.54903 3.44311 6.30589 3.44311 8.14901C3.44311 10.7294 5.41173 12.5726 7.99214 12.5726C9.87445 12.5726 11.498 11.4118 12.0627 9.99214C12.1019 9.89018 12.1098 9.78821 12.1098 9.75686C12.1098 9.59215 11.9764 9.48235 11.8509 9.48235C11.8039 9.48235 11.749 9.49018 11.6627 9.51371C11.3333 9.63137 10.7843 9.74116 10.2431 9.74116Z"
+        fill="inherit"
+      />
+    </svg>
+  );
+};
 
 const LinkIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (
@@ -46,6 +66,7 @@ const CheckIcon = (props: SVGAttributes<SVGSVGElement>) => {
 };
 
 const AppMenu = (): someView => {
+  const { theme, setTheme } = useTheme();
   const optionHandlers: {
     [index: string]: (
       menuOption: Store<{
@@ -64,8 +85,18 @@ const AppMenu = (): someView => {
         return p;
       });
     },
-    "about": function handler() {
-      window.open('https://x.com/mich_thedev', '_blank');
+    "theme": function handler(menuOption) {
+      // const checked = menuOption.checked.value;
+      const optionId = menuOption.id.value;
+      const isDarkModeOn = theme.value === "dark";
+      setTheme(isDarkModeOn ? "light" : "dark");
+      setMenuOptions((p) => {
+        p.find((val) => val.id === optionId)!.title = `Theme: ${capitalize(theme.value)}`;
+        return p;
+      });
+    },
+    about: function handler() {
+      window.open("https://x.com/mich_thedev", "_blank");
     },
   };
   const [menuOptions, setMenuOptions] = store<
@@ -73,23 +104,30 @@ const AppMenu = (): someView => {
       setting: string;
       checked: boolean;
       title: string;
-      type: "checkbox" | "link";
+      type: "checkbox" | "link" | "theme";
       id: number;
     }>
   >([
     {
       setting: "set-on-top",
-      title: 'Always on top',
+      title: "Always on top",
       checked: false,
       type: "checkbox",
       id: 1,
     },
     {
+      setting: "theme",
+      title: `Theme: ${capitalize(theme.value)}`,
+      checked: false,
+      type: "theme",
+      id: 2,
+    },
+    {
       setting: "about",
-      title: 'About Developer',
+      title: "About Developer",
       checked: false,
       type: "link",
-      id: 2,
+      id: 3,
     },
   ]);
   return (
@@ -113,32 +151,47 @@ const AppMenu = (): someView => {
                     }}
                     className="tws-font-normal tws-bg-[#E9E0E3]/20 tws-blur-32 tws-text-[#020003] hover:tws-bg-[#D0D0D2]/80 tws-flex tws-cursor-pointer tws-items-center tws-gap-x-1.5 last:tws-border-none tws-border-b tws-border-[#C5BCBD] tws-px-2.5 tws-text-sm first:tws-rounded-t-xl last:tws-rounded-b-xl tws-min-h-[36px] "
                   >
-                    <Show when={() => item.type.value === "link"}>
-                      {(isLink) =>
-                        isLink ? (
-                          <LinkIcon
-                            fill="#020003"
-                            stroke={""}
-                            stroke-width={6}
-                            width={18}
-                            height={18}
-                          />
-                        ) : (
-                          <CheckIcon
-                            style={{
-                              opacity: memo(
-                                () => (item.checked.value ? "1" : "0"),
-                                [item.checked]
-                              ),
-                            }}
-                            fill="none"
-                            stroke={"#020003"}
-                            stroke-width={2.5}
-                            width={18}
-                            height={18}
-                          />
-                        )
-                      }
+                    <Show when={() => (item.type.value, true)}>
+                      {() => {
+                        switch (item.type.value) {
+                          case "link":
+                            return (
+                              <LinkIcon
+                                fill="#020003"
+                                stroke={""}
+                                stroke-width={6}
+                                width={18}
+                                height={18}
+                              />
+                            );
+                          case "theme":
+                            return (
+                              <ThemeIcon
+                                fill="#020003"
+                                stroke={""}
+                                stroke-width={6}
+                                width={18}
+                                height={18}
+                              />
+                            );
+                          default:
+                            return (
+                              <CheckIcon
+                                style={{
+                                  opacity: memo(
+                                    () => (item.checked.value ? "1" : "0"),
+                                    [item.checked]
+                                  ),
+                                }}
+                                fill="none"
+                                stroke={"#020003"}
+                                stroke-width={2.5}
+                                width={18}
+                                height={18}
+                              />
+                            );
+                        }
+                      }}
                     </Show>
                     {item.title}
                     <Show when={() => item.type.value === "link"}>

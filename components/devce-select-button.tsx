@@ -30,11 +30,7 @@ const DeviceSelectButton: Nixix.FC = (): someView => {
   const [selectedDevice, setSelectedDevice] = signal<Device>(device.value);
   const setDeviceValue = (value: Device) => () => {
     // incase setupPwaconfig throws errors
-    try {
-      setDevice(value);
-    } finally {
-      localStorage.setItem("lastUsedDevice", value);
-    }
+    setDevice(value);
   };
   const devices = Object.entries(DEVICE_MAPPING).map(
     ([value, { displayName }]) => ({
