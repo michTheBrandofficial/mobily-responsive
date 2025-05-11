@@ -1,5 +1,5 @@
 import Tools from "@/assets/images/tools icon.png";
-import { px } from "@/lib/utils";
+import { blobToBinary, px, saveImageFile } from "@/lib/utils";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import { useIconCoordinates } from "@/src/stores/icon-coordinates";
 import { readBinaryFile, readTextFile } from "@tauri-apps/api/fs";
@@ -11,6 +11,7 @@ import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
 import { useIphoneConfig } from "@/src/stores/iphone-config";
+import { toBlob, toPixelData } from 'html-to-image';
 
 const numberIconsInRow = 4;
 
@@ -74,15 +75,16 @@ const HomeScreen: Nixix.FC<{
       );
     } else animation?.reverse();
   }, [deviceScreen]);
-  const {iphoneConfig} = useIphoneConfig()
+  const { iphoneConfig } = useIphoneConfig();
   return (
     <VStack
-    style={{
-      paddingTop: memo(() => {
-        return `${90 - parseInt(`${iphoneConfig.safeAreaInset}`)}px`
-      }, [iphoneConfig.safeAreaInset])
-    }}
-    className="tws-h-full tws-w-full tws-bg-transparent tws-flex tws-flex-col tws-justify-between tws-font-Helvetica_Neue tws-tracking-wide">
+      style={{
+        paddingTop: memo(() => {
+          return `${90 - parseInt(`${iphoneConfig.safeAreaInset}`)}px`;
+        }, [iphoneConfig.safeAreaInset]),
+      }}
+      className="tws-h-full tws-w-full tws-flex tws-flex-col tws-justify-between tws-font-Helvetica_Neue tws-tracking-wide"
+    >
       <HStack className="tws-h-fit tws-w-full tws-px-[24px] tws-font-medium tws-grid tws-grid-cols-4-60 tws-justify-between ">
         <For each={homeScreenIcons}>
           {(icon, i) => {
@@ -105,8 +107,8 @@ const HomeScreen: Nixix.FC<{
       </HStack>
       {/* Search buttons and device dock */}
       <HStack className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] ">
-        <Container className="tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs " >
-          <SearchIcon className={'tws-fill-[#474844] '} /> Search
+        <Container className="tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs ">
+          <SearchIcon className={"tws-fill-[#474844] "} /> Search
         </Container>
         {/* Dock */}
         <HStack
