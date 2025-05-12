@@ -1,19 +1,20 @@
 import { percentage, px } from '@/lib/utils'
 import { homeScreenIconScale, iframeRef } from '@/src/constants'
 import { useBasePhoneConfig } from '@/src/stores/base-phone-config'
-import { useDeviceSettings } from '@/src/stores/device-settings'
 import { useIconCoordinates } from '@/src/stores/icon-coordinates'
 import { IphoneConfig, useIphoneConfig } from '@/src/stores/iphone-config'
-import { ref, concat, reaction, signal, Signal } from 'nixix/primitives'
+import { ref, concat, reaction, Signal } from 'nixix/primitives'
 import { Container } from 'nixix/view-components'
 import VirtualHomeButton from '~/components/virtual-home-button'
 import { useDeviceScreen } from '~/stores/device-screen'
 import Iframe from './iframe'
+import { useScreenState } from '@/src/stores/screen-state'
 
 // default canfig is iphone
 const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>, config: 'base' | 'iphone' }) => {
   const appScreenRef = ref<HTMLDivElement>()
   const { deviceScreen } = useDeviceScreen()
+  const { setScreenState } = useScreenState()
   const newIconSize = homeScreenIconScale * 64;
   // leave this animation here for reversal;
   let animation: Animation | null = null
@@ -62,6 +63,10 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
             }
           ];
         animation = appScreenEl.animate(animationKeyFrames, animationOptions)
+        animation.addEventListener('finish', function finish() {
+          setScreenState('after-app-launch')
+          animation?.removeEventListener('finish', finish)
+        })
       } else animation?.reverse()
       // home button transition
     }
@@ -84,16 +89,17 @@ const AppScreen = ({ iframeSrc, config = 'iphone' }: { iframeSrc: Signal<string>
       <Container style={{
         width: percentage(100),
         height: phoneConfig.safeAreaInset,
-        backgroundColor: useDeviceSettings().deviceSettings.theme_color,
+        // backgroundColor: useDeviceSettings().deviceSettings.theme_color,
+        backgroundColor: 'black',
         position: 'absolute',
         top: px(0),
       }} />
       <Container className='tws-peer ' style={{
         height: percentage(100),
         width: percentage(100),
-        backgroundColor: 'white'
+        backgroundColor: 'black'
       }} >
-        <Iframe src={iframeSrc} bind:ref={iframeRef} />
+        {/* <Iframe src={iframeSrc} bind:ref={iframeRef} /> */}
       </Container>
       <Container className={concat`tws-flex tws-items-center tws-justify-center tws-transition-transform tws-duration-500 `} style={{
         width: percentage(100),

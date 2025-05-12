@@ -41,7 +41,7 @@ const Iphone16Pro: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     virtualHomeButtonRatio,
     safeAreaInsetRatio,
   });
-
+  Wallpaper
   return (
     <Wrapper bind:ref={wrapperRef}>
       <DeviceFrame height={dimensions.h} />

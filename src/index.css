@@ -18,6 +18,7 @@
 }
 
 @layer components {
+  /* wallpapers */
   .tws-no-scroll {
     scrollbar-width: none;
   }
