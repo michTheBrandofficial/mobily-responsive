@@ -17,6 +17,7 @@ import AppMenu from "./app-menu";
 import { SearchIcon } from "./icons/search";
 import DeviceSelect from "./select-device";
 import DeviceSelectMenu from "./device-select-menu";
+import { useScreenState } from "@/src/stores/screen-state";
 
 type Props = {
   iframeSrc: Signal<string>;
@@ -87,6 +88,7 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
       >
         <Button
           on:click={() => {
+            useScreenState().setScreenState('before-close-app')
             useDeviceScreen().setDeviceScreen("home-screen");
           }}
         >
