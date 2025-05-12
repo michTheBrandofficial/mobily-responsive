@@ -23,7 +23,6 @@ const SelectContent: Nixix.FC<SelectProps> = ({ "on:select": onSelect }) => {
   const setDeviceValue = (value: Device) => () => {
     setDevice(value);
     displayName.value = DEVICE_MAPPING[value].displayName;
-    localStorage.setItem("lastUsedDevice", value);
     onSelect(value);
   };
   const devices = Object.entries(DEVICE_MAPPING).map(

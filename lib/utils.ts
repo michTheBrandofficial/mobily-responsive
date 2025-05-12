@@ -1,3 +1,5 @@
+import { dataDir, FSOptions } from '@/src/constants';
+import { writeBinaryFile, writeFile } from '@tauri-apps/api/fs';
 import { CSSProperties } from 'nixix';
 
 export const getDims = ({ width, height }: CSSStyleDeclaration) => {
@@ -79,3 +81,20 @@ export const debounce = <T extends VoidFunction | Utilities.FunctionWithArgs>(
 export const removeChildren = (element: Element) => {
   Array.from(element.children).forEach((child) => child.remove());
 };
+
+export const saveImageFile = async (binary: Uint8Array<ArrayBuffer> | Uint8ClampedArray<ArrayBuffer>) => {
+  
+  const iconFilePath = `${dataDir}/extract-image.png` as const;
+  await writeBinaryFile(
+    {
+      contents: binary,
+      path: iconFilePath,
+    },
+    {
+      ...FSOptions,
+    }
+  );
+}
+
+// capitalize first letter
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);

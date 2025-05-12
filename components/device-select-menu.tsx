@@ -1,30 +1,11 @@
-import { appWindow } from "@tauri-apps/api/window";
-import { For, Show } from "nixix/hoc";
-import { memo, Store, store } from "nixix/primitives";
+import { For } from "nixix/hoc";
+import { memo, store } from "nixix/primitives";
 import { Button, Container } from "nixix/view-components";
 import { SVGAttributes } from "nixix";
 import Popover from "./ui/ui/popover";
 import DeviceFrameIcon from "./icons/device-frame";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
 import { useDevice } from "@/src/stores/device";
-
-/**
- * 
- const setDeviceValue = (value: Device) => () => {
-     setDevice(value);
-     displayName.value = DEVICE_MAPPING[value].displayName;
-     localStorage.setItem("lastUsedDevice", value);
-     onSelect(value);
-   };
-     const { setDevice } = useDevice();
-   
-     const devices = Object.entries(DEVICE_MAPPING).map(
-         ([value, { displayName }]) => ({
-           displayName,
-           value: value as keyof typeof DEVICE_MAPPING,
-         })
-       );
- */
 
 const CheckIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (

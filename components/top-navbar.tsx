@@ -17,6 +17,7 @@ import AppMenu from "./app-menu";
 import { SearchIcon } from "./icons/search";
 import DeviceSelect from "./select-device";
 import DeviceSelectMenu from "./device-select-menu";
+import { useScreenState } from "@/src/stores/screen-state";
 
 type Props = {
   iframeSrc: Signal<string>;
@@ -31,7 +32,7 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   const formRef = ref<HTMLFormElement>();
   const [isInputOpen, setIsInputOpen] = signal<boolean>(false);
   return (
-    <VStack className="tws-w-full tws-max-h-[45px] tws-flex tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-mt-1 tws-py-2 tws-px-6 tws-bg-[#474844] tws-relative tws-overflow-x-clip ">
+    <VStack className="tws-w-screen tws-max-w-[386px] tws-max-h-[45px] tws-flex tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-mt-1 tws-py-2 tws-px-6 tws-bg-[#474844] tws-relative tws-overflow-x-clip ">
       <Container
         data-inputopen={isInputOpen}
         className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 data-[inputopen=true]:-tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear "
@@ -87,6 +88,7 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
       >
         <Button
           on:click={() => {
+            useScreenState().setScreenState('before-close-app')
             useDeviceScreen().setDeviceScreen("home-screen");
           }}
         >

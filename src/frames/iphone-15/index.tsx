@@ -1,14 +1,14 @@
-import Wallpaper from "@/assets/images/iphone-alpinisme-wallpaper.png";
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
 import { percentage, pick, px } from "@/lib/utils";
-import { ref } from "nixix/primitives";
+import { concat, memo, ref } from "nixix/primitives";
 import { Container } from "nixix/view-components";
 import { containerStyles } from "~/constants";
 import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
+import { useScreenState } from "@/src/stores/screen-state";
 
 type Props = App.DeviceProps;
 
@@ -26,7 +26,7 @@ const safeAreaInsetRatio = 60 / dimensions.h;
 
 const virtualHomeButtonRatio = 115 / dimensions.w;
 
-const clothoidRadiusRatio = 45 / dimensions.w;
+const clothoidRadiusRatio = 49 / dimensions.w;
 
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const;
 
@@ -41,17 +41,26 @@ const Iphone15: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     virtualHomeButtonRatio,
     safeAreaInsetRatio,
   });
-
+  const { screenState } = useScreenState();
+  const backgroundMemo = memo(() => {
+    switch (screenState.value) {
+      case "after-app-launch":
+        return `tws-wallpaper-after-app-launch`;
+      case "before-close-app":
+        return `tws-wallpaper-iphone-15`;
+      default:
+        return `tws-wallpaper-iphone-15`;
+    }
+  }, [screenState]);
   return (
     <Wrapper bind:ref={wrapperRef}>
       <DeviceFrame height={dimensions.h} />
       <Container
-        className={`tws-h-auto tws-w-auto tws-transition-[background] tws-duration-300 tws-ease-[ease] `}
+        className={concat`tws-h-auto tws-w-auto ${backgroundMemo}`}
         style={{
           ...pick(iphoneConfig, "width", "height"),
           ...containerStyles,
           clipPath: iphoneConfig.clothoidRadius,
-          background: `url(${Wallpaper})`,
           backgroundSize: "cover",
         }}
       >

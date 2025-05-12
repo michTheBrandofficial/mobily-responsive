@@ -12,6 +12,7 @@ export type BasePhoneConfig<T = string> = {
     top: T;
     bottom: T;
   };
+  borderRadius: T;
   safeAreaInset: T;
 };
 
@@ -25,6 +26,7 @@ export const basePhoneConfig: BasePhoneConfig = {
     bottom: "",
   },
   safeAreaInset: "",
+  borderRadius: "",
 };
 
 export const useBasePhoneConfig = function () {
@@ -75,6 +77,7 @@ export const setupResizeEffect = <E extends HTMLElement>(
           precise: 15,
           unit: "px",
         }),
+        borderRadius: px(round(width * borderRadiusRatio)),
         deviceBarRatios: {
           top: px(round(height * deviceBarRatios[0])),
           bottom: px(round(height * deviceBarRatios[1])),
