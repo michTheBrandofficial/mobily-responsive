@@ -26,7 +26,7 @@ const safeAreaInsetRatio = 60 / dimensions.h;
 
 const virtualHomeButtonRatio = 115 / dimensions.w;
 
-const clothoidRadiusRatio = 45 / dimensions.w;
+const clothoidRadiusRatio = 49 / dimensions.w;
 
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const;
 
@@ -58,8 +58,9 @@ const Iphone15: Nixix.FC<Props> = ({ iframeSrc }): someView => {
       <Container
         className={concat`tws-h-auto tws-w-auto ${backgroundMemo}`}
         style={{
-          ...pick(iphoneConfig, "width", "height", "borderRadius"),
+          ...pick(iphoneConfig, "width", "height"),
           ...containerStyles,
+          clipPath: iphoneConfig.clothoidRadius,
           backgroundSize: "cover",
         }}
       >

@@ -1,8 +1,9 @@
-import clothoidize from "@/lib/clothoidize";
 import { getDims, px, round } from "@/lib/utils";
 import { MutableRefObject } from "nixix";
 import { effect, store } from "nixix/primitives";
 import { BasePhoneConfig, basePhoneConfig } from "./base-phone-config";
+import { getSvgPath } from "figma-squircle";
+import clothoidize from "@/lib/clothoidize";
 
 export interface IphoneConfig extends BasePhoneConfig {}
 
@@ -51,16 +52,20 @@ export const setupResizeEffect = <E extends HTMLElement>(
     const observer = new ResizeObserver((entries) => {
       const [{ target }] = entries;
       const { width, height } = getDims(getComputedStyle(target!));
+      const { newWidth, newHeight } = (() => ({
+        newWidth: width - round(width * deviceWidthRatio),
+        newHeight: height - round(height * deviceHeightRatio),
+      }))()
       useIphoneConfig().setIphoneConfig({
-        width: px(width - round(width * deviceWidthRatio)),
-        height: px(height - round(height * deviceHeightRatio)),
+        width: px(newWidth),
+        height: px(newHeight),
         virtualHomeButtonWidth: px(round(width * virtualHomeButtonRatio)),
         clothoidRadius: clothoidize({
-          radius: round(width * clothoidRadiusRatio),
-          format: "minify",
-          precise: 15,
-          unit: "px",
-        }),
+        format: 'minify',
+        precise: 100,
+        radius: round(width * clothoidRadiusRatio),
+        unit: 'px'
+      }),
         borderRadius: px(round(width * clothoidRadiusRatio)),
         deviceBarRatios: {
           top: px(round(height * deviceBarRatios[0])),
