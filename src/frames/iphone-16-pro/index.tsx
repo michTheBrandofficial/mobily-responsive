@@ -69,7 +69,6 @@ const Iphone16Pro: Nixix.FC<Props> = ({ iframeSrc }): someView => {
             paddingTop: iphoneConfig.safeAreaInset,
             width: percentage(100),
             height: percentage(100),
-            clipPath: "inherit",
             overflow: "hidden",
             position: "relative",
           }}

@@ -60,12 +60,6 @@ export const setupResizeEffect = <E extends HTMLElement>(
         width: px(newWidth),
         height: px(newHeight),
         virtualHomeButtonWidth: px(round(width * virtualHomeButtonRatio)),
-        // clothoidRadius: `path('${getSvgPath({
-        //   width: newWidth,
-        //   height: newHeight,
-        //   cornerRadius: round(width * clothoidRadiusRatio),
-        //   cornerSmoothing: 1,
-        // })}')`,
         clothoidRadius: clothoidize({
         format: 'minify',
         precise: 100,
