@@ -1,10 +1,16 @@
 import { px } from "@/lib/utils";
+import { memo } from "nixix/primitives";
+import { useTheme } from "../stores/theme";
 
 type VirtualHomeButtonProps = JSX.IntrinsicElements['div'] & {
-  bgColor?: /*dark*/'#030712' | /*light*/'#f3f4f6'
+  bgColor?: /*dark*/'#000' | /*light*/'#fff'
 }
 
-const VirtualHomeButton: Nixix.FC<VirtualHomeButtonProps> = ({className = '', bgColor = '#030712', style, ...rest}): someView => {
+const VirtualHomeButton: Nixix.FC<VirtualHomeButtonProps> = ({className = '', style, ...rest}): someView => {
+  const { theme } = useTheme()
+  const bgColor = memo(() => {
+    return theme.value === 'dark' ? '#000' : '#fff'
+  }, [theme])
   return (
     <div className={className} {...rest} style={{
       height: px(4),

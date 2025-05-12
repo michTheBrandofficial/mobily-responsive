@@ -1,3 +1,4 @@
+import plugin from "tailwindcss/plugin";
 import { type Config } from "tailwindcss";
 
 export default {
@@ -21,5 +22,19 @@ export default {
     },
   },
   prefix: "tws-",
-  plugins: [],
+  plugins: [
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        '.wallpaper-iphone-15': {
+          background: `url(./assets/images/iphone-alpinisme-wallpaper.png)`
+        },
+        '.wallpaper-iphone-16-pro': {
+          background: `url(./assets/images/iphone-escalade-wallpaper.png)`
+        },
+        '.wallpaper-after-app-launch': {
+          background: 'black'
+        }
+      });
+    }),
+  ],
 } satisfies Config;
