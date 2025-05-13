@@ -13,7 +13,6 @@ export default {
     extend: {
       fontFamily: {
         Rubik: ["Rubik", "sans-serif"],
-        Futura: ["Futura", "Arial"],
         Helvetica_Neue: ["Helvetica_Neue", "Arial"],
       },
       backgroundColor: {
@@ -26,10 +25,10 @@ export default {
     plugin(({ addUtilities }) => {
       addUtilities({
         '.wallpaper-iphone-15': {
-          background: `url(./assets/images/iphone-alpinisme-wallpaper.png)`
+          background: `url(../assets/images/iphone-alpinisme-wallpaper.png)`
         },
         '.wallpaper-iphone-16-pro': {
-          background: `url(./assets/images/iphone-escalade-wallpaper.png)`
+          background: `url(../assets/images/iphone-escalade-wallpaper.png)`
         },
         '.wallpaper-after-app-launch': {
           background: 'black'
