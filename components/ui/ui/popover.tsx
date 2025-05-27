@@ -1,6 +1,6 @@
 import { cn } from "@/lib/cn";
 import { createContext, onlyChild } from "@/lib/context";
-import { FC, NixixNode } from "nixix";
+import Nixix, { FC, NixixAttributes, NixixNode } from "nixix";
 import { Show } from "nixix/hoc";
 import { ref, effect, memo, Store, store } from "nixix/primitives";
 
@@ -14,15 +14,14 @@ type TPopoverContext = {
       | "bottom-left"
       | "bottom-right";
   };
-  setOpen: (open: boolean) => void
+  setOpen: (open: boolean) => void;
 };
 
-const { Provider, context } =
-  createContext<Store<TPopoverContext>>();
+const { Provider, context } = createContext<Store<TPopoverContext>>();
 
 type DoNotUseProps = {
   do_not_use_this_prop?: boolean;
-}
+};
 
 type PopoverProps = {
   children: () => NixixNode;
@@ -40,7 +39,7 @@ type PopoverProps = {
 const PopoverProvider = ({
   children,
   transformOrigin = "bottom-right",
-  do_not_use_this_prop = false
+  do_not_use_this_prop = false,
 }: PopoverProps & DoNotUseProps) => {
   const [popoverState, setPopoverState] = store<TPopoverContext>({
     open: do_not_use_this_prop,
@@ -52,9 +51,7 @@ const PopoverProvider = ({
     },
   });
   return (
-    <Provider
-      value={popoverState}
-    >
+    <Provider value={popoverState}>
       {() => (
         <section className={"tws-w-fit tws-h-fit tws-relative"}>
           {children()}
@@ -110,11 +107,12 @@ const PopoverTrigger: FC<Pick<Props, "children" | "className">> = ({
 const PopoverClose: FC<
   Pick<Props, "children" | "className"> & {
     onClose?: (close: () => void) => void;
-  }
-> = ({ children, className, onClose }) => {
+  } & NixixAttributes<HTMLDivElement>
+> = ({ children, className, onClose, ...props }) => {
   const { setOpen } = context();
   return (
     <div
+      {...props}
       className={cn("tws-w-fit tws-h-fit ", className)}
       on:click={() =>
         onClose ? onClose(() => setOpen(false)) : setOpen(false)
@@ -133,46 +131,51 @@ const PopoverContent: FC<Props> = ({ children, className }) => {
   });
   return (
     <Show when={() => open.value === true}>
-      {(isOpen) => isOpen ? (
-        <>
-          <section
-            on:click_self={() => {
-              setOpen(false)
-            }}
-            className="tws-fixed tws-h-screen tws-w-screen !tws-bg-transparent !tws-mt-0 tws-top-0 tws-left-0 tws-z-[99999]"
-          ></section>
-          <section
-            bind:ref={containerRef}
-            data-open={open}
-            tabindex={0}
-            className={`tws-transition-transform tws-duration-150 tws-ease-[ease] tws-scale-50 data-[open=true]:tws-scale-100 ${cn(
-              ` tws-bg-white tws-absolute tws-z-[100000] `,
-              className,
-              {
-                "tws-origin-center": config.transformOrigin.value === "center",
-              },
-              {
-                "tws-origin-top-right tws-top-[140%] tws-right-0":
-                  config.transformOrigin.value === "top-right",
-              },
-              {
-                "tws-origin-top-left tws-top-[140%] tws-left-0":
-                  config.transformOrigin.value === "top-left",
-              },
-              {
-                "tws-origin-bottom-left tws-bottom-[140%] tws-left-0":
-                  config.transformOrigin.value === "bottom-left",
-              },
-              {
-                "tws-origin-bottom-right tws-bottom-[140%] tws-right-0":
-                  config.transformOrigin.value === "bottom-right",
-              }
-            )} `}
-          >
-            {children}
-          </section>
-        </>
-      ): ''}
+      {(isOpen) =>
+        isOpen ? (
+          <>
+            <section
+              on:click_self={() => {
+                setOpen(false);
+              }}
+              className="tws-fixed tws-h-screen tws-w-screen !tws-bg-transparent !tws-mt-0 tws-top-0 tws-left-0 tws-z-[99999]"
+            ></section>
+            <section
+              bind:ref={containerRef}
+              data-open={open}
+              tabindex={0}
+              className={`tws-transition-transform tws-duration-150 tws-ease-[ease] tws-scale-50 data-[open=true]:tws-scale-100 ${cn(
+                ` tws-bg-white tws-absolute tws-z-[100000] `,
+                className,
+                {
+                  "tws-origin-center":
+                    config.transformOrigin.value === "center",
+                },
+                {
+                  "tws-origin-top-right tws-top-[140%] tws-right-0":
+                    config.transformOrigin.value === "top-right",
+                },
+                {
+                  "tws-origin-top-left tws-top-[140%] tws-left-0":
+                    config.transformOrigin.value === "top-left",
+                },
+                {
+                  "tws-origin-bottom-left tws-bottom-[140%] tws-left-0":
+                    config.transformOrigin.value === "bottom-left",
+                },
+                {
+                  "tws-origin-bottom-right tws-bottom-[140%] tws-right-0":
+                    config.transformOrigin.value === "bottom-right",
+                }
+              )} `}
+            >
+              {children}
+            </section>
+          </>
+        ) : (
+          ""
+        )
+      }
     </Show>
   );
 };

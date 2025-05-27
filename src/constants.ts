@@ -8,8 +8,13 @@ export const containerStyles = {
   zIndex: 300,
 } as const;
 
+export const maxHeightMap = {
+  fullscreen: ' tws-max-h-[100vh] ',
+  minimize: ' tws-max-h-[93.6vh] '
+} as const;
+
 export const [deviceFrameHeightClass, setDeviceFrameHeightClass] =
-  signal(" tws-max-h-[93.6vh] ");
+  signal<typeof maxHeightMap[keyof typeof maxHeightMap]>(" tws-max-h-[93.6vh] ");
 
 export const AppLocalData = BaseDirectory.AppLocalData;
 

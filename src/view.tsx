@@ -8,9 +8,9 @@ import {
   writeBinaryFile,
   writeFile,
 } from "@tauri-apps/api/fs";
-import { effect, reaction, signal } from "nixix/primitives";
+import { concat, effect, memo, reaction, signal } from "nixix/primitives";
 import { Container, VStack } from "nixix/view-components";
-import { dataDir, FSOptions, iframeRef } from "./constants";
+import { dataDir, FSOptions, iframeRef, setDeviceFrameHeightClass } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { useBasePhoneConfig } from "./stores/base-phone-config";
 import { useDevice } from "./stores/device";
@@ -18,6 +18,9 @@ import { useDeviceScreen } from "./stores/device-screen";
 import { useDeviceSettings } from "./stores/device-settings";
 import { useIphoneConfig } from "./stores/iphone-config";
 import TopNavbar from "@/components/top-navbar";
+import MinimizeFullscreen from "@/components/icons/minimize";
+import { cn } from "@/lib/cn";
+import { useFullscreen } from "./stores/fullscreen";
 
 const [safeAreaInset, setSafeAreaInset] = signal<string>(px(0));
 
@@ -189,6 +192,10 @@ const View: Nixix.FC = (): someView => {
         );
     }, 1000);
   }, [iframeSrc]);
+  const { isFullscreen, setIsFullscreen } = useFullscreen()
+  const classMemo = memo(() => {
+    return isFullscreen.value ? '' : 'tws-hidden'
+  }, [isFullscreen])
 
   return (
     <VStack
@@ -222,6 +229,13 @@ const View: Nixix.FC = (): someView => {
             }, [device]);
           }}
         ></Container>
+        <Container on:click={() => {
+          setIsFullscreen(false)
+          // go back to normal height
+          setDeviceFrameHeightClass(' tws-max-h-[93.6vh] ')
+        }} className={concat`tws-p-2 tws-border-[#44433E] tws-bg-[#474844] tws-rounded-full tws-absolute tws-bottom-1 tws-right-2 tws-z-[1000000000] ${classMemo} `}>
+          <MinimizeFullscreen width={12} height={12} fill="white" />
+        </Container>
       </VStack>
     </VStack>
   );
