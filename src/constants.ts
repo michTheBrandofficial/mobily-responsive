@@ -1,6 +1,7 @@
 import { BaseDirectory } from "@tauri-apps/api/fs";
 import { ref, signal } from "nixix/primitives";
 import { Device } from "./device-mapping";
+import { useFullscreen } from "./stores/fullscreen";
 
 export const containerStyles = {
   overflow: "hidden",
@@ -9,12 +10,15 @@ export const containerStyles = {
 } as const;
 
 export const maxHeightMap = {
-  fullscreen: ' tws-max-h-[100vh] ',
-  minimize: ' tws-max-h-[93.6vh] '
+  fullscreen: " tws-max-h-[100vh] ",
+  minimize: " tws-max-h-[93.6vh] ",
 } as const;
 
-export const [deviceFrameHeightClass, setDeviceFrameHeightClass] =
-  signal<typeof maxHeightMap[keyof typeof maxHeightMap]>(" tws-max-h-[93.6vh] ");
+const { isFullscreen } = useFullscreen();
+
+export const [deviceFrameHeightClass, setDeviceFrameHeightClass] = signal<
+  (typeof maxHeightMap)[keyof typeof maxHeightMap]
+>(isFullscreen.value ? maxHeightMap.fullscreen : maxHeightMap.minimize);
 
 export const AppLocalData = BaseDirectory.AppLocalData;
 
