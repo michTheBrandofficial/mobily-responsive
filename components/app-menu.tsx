@@ -1,6 +1,6 @@
 import { appWindow } from "@tauri-apps/api/window";
 import { For, Show } from "nixix/hoc";
-import { memo, Store, store } from "nixix/primitives";
+import { effect, memo, ref, Store, store } from "nixix/primitives";
 import { Button, Container } from "nixix/view-components";
 import Settings from "./icons/settings";
 import { SVGAttributes } from "nixix";
@@ -8,6 +8,8 @@ import Popover from "./ui/ui/popover";
 import DevIcon from "@/assets/images/developer-icon.jpg";
 import { useTheme } from "@/src/stores/theme";
 import { capitalize } from "@/lib/utils";
+import { useFullscreen } from "@/src/stores/fullscreen";
+import { setDeviceFrameHeightClass } from "@/src/constants";
 
 const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (
@@ -65,8 +67,78 @@ const CheckIcon = (props: SVGAttributes<SVGSVGElement>) => {
   );
 };
 
+const FullscreenIcon = (props: SVGAttributes<SVGSVGElement>) => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+      stroke="white"
+      {...props}
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M4.5 3C3.67157 3 3 3.67157 3 4.5V6.25C3 6.66421 2.66421 7 2.25 7C1.83579 7 1.5 6.66421 1.5 6.25V4.5C1.5 2.84315 2.84315 1.5 4.5 1.5H6.25C6.66421 1.5 7 1.83579 7 2.25C7 2.66421 6.66421 3 6.25 3H4.5ZM9 2.25C9 1.83579 9.33579 1.5 9.75 1.5H11.5C13.1569 1.5 14.5 2.84315 14.5 4.5V6.25C14.5 6.66421 14.1642 7 13.75 7C13.3358 7 13 6.66421 13 6.25V4.5C13 3.67157 12.3284 3 11.5 3H9.75C9.33579 3 9 2.66421 9 2.25ZM2.25 9C2.66421 9 3 9.33579 3 9.75V11.5C3 12.3284 3.67157 13 4.5 13H6.25C6.66421 13 7 13.3358 7 13.75C7 14.1642 6.66421 14.5 6.25 14.5H4.5C2.84315 14.5 1.5 13.1569 1.5 11.5V9.75C1.5 9.33579 1.83579 9 2.25 9ZM13.75 9C14.1642 9 14.5 9.33579 14.5 9.75V11.5C14.5 13.1569 13.1569 14.5 11.5 14.5H9.75C9.33579 14.5 9 14.1642 9 13.75C9 13.3358 9.33579 13 9.75 13H11.5C12.3284 13 13 12.3284 13 11.5V9.75C13 9.33579 13.3358 9 13.75 9Z"
+        fill="inherit"
+      />
+    </svg>
+  );
+};
+
+const LOCALSTORAGE_ALWAYS_ON_TOP_KEY = "MobilyResponsive_always_on_top";
+
+const lastAlwaysOnTop = ((): "true" | "false" => {
+  const lastUsed = localStorage.getItem(LOCALSTORAGE_ALWAYS_ON_TOP_KEY) as
+    | "true"
+    | "false"
+    | null;
+  if (!lastUsed) return "false";
+  else return lastUsed;
+})();
+
+// effect to set always on top
+effect(() => {
+  appWindow.setAlwaysOnTop(lastAlwaysOnTop === "true");
+});
+
+const iconsMap = {
+  about: (
+    <LinkIcon
+      fill="#020003"
+      stroke={""}
+      stroke-width={6}
+      width={18}
+      height={18}
+    />
+  ),
+  theme: (
+    <ThemeIcon
+      fill="#020003"
+      stroke={""}
+      stroke-width={6}
+      width={18}
+      height={18}
+    />
+  ),
+  fullscreen: (
+    <FullscreenIcon
+      fill="#020003"
+      stroke={""}
+      stroke-width={6}
+      width={18}
+      height={18}
+    />
+  ),
+};
+
 const AppMenu = (): someView => {
   const { theme, setTheme } = useTheme();
+  const { setIsFullscreen } = useFullscreen();
   const optionHandlers: {
     [index: string]: (
       menuOption: Store<{
@@ -80,18 +152,29 @@ const AppMenu = (): someView => {
       const checked = menuOption.checked.value || false;
       const optionId = menuOption.id.value;
       appWindow.setAlwaysOnTop(!checked);
+      localStorage.setItem(
+        LOCALSTORAGE_ALWAYS_ON_TOP_KEY,
+        !checked ? "true" : "false"
+      );
       setMenuOptions((p) => {
         p.find((val) => val.id === optionId)!.checked = !checked;
         return p;
       });
     },
-    "theme": function handler(menuOption) {
+    fullscreen: function handler() {
+      setIsFullscreen(true);
+      setDeviceFrameHeightClass(' tws-max-h-[100vh] ')
+      closerRef.current?.click()
+    },
+    theme: function handler(menuOption) {
       // const checked = menuOption.checked.value;
       const optionId = menuOption.id.value;
       const isDarkModeOn = theme.value === "dark";
       setTheme(isDarkModeOn ? "light" : "dark");
       setMenuOptions((p) => {
-        p.find((val) => val.id === optionId)!.title = `Theme: ${capitalize(theme.value)}`;
+        p.find((val) => val.id === optionId)!.title = `Theme: ${capitalize(
+          theme.value
+        )}`;
         return p;
       });
     },
@@ -104,32 +187,44 @@ const AppMenu = (): someView => {
       setting: string;
       checked: boolean;
       title: string;
-      type: "checkbox" | "link" | "theme";
+      type: "checkbox" | "link" | "theme" | "click";
+      icon_prop?: string;
       id: number;
     }>
   >([
     {
       setting: "set-on-top",
       title: "Always on top",
-      checked: false,
+      checked: lastAlwaysOnTop === "true",
       type: "checkbox",
       id: 1,
+    },
+    {
+      setting: "fullscreen",
+      title: `Fullscreen`,
+      checked: false,
+      type: "click",
+      id: 2,
+      icon_prop: "fullscreen",
     },
     {
       setting: "theme",
       title: `Theme: ${capitalize(theme.value)}`,
       checked: false,
       type: "theme",
-      id: 2,
+      id: 3,
+      icon_prop: "theme",
     },
     {
       setting: "about",
       title: "About Developer",
       checked: false,
       type: "link",
-      id: 3,
+      id: 4,
+      icon_prop: "about",
     },
   ]);
+  const closerRef = ref<HTMLDivElement>()
   return (
     <Popover transformOrigin="top-right">
       {() => (
@@ -139,6 +234,7 @@ const AppMenu = (): someView => {
               <Settings className={"tws-h-5 tws-w-5 tws-fill-[#CFCFCC]"} />
             </Button>
           </Popover.Trigger>
+          <Popover.Close bind:ref={closerRef}  />
           <Popover.Content className="!tws-bg-white/80 tws-min-w-[200px] tws-rounded-xl !tws-min-h-fit tws-h-fit !tws-border-none tws-font-Rubik">
             <div className=" tws-text-white tws-flex tws-flex-col ">
               <For each={menuOptions}>
@@ -151,47 +247,26 @@ const AppMenu = (): someView => {
                     }}
                     className="tws-font-normal tws-bg-[#E9E0E3]/20 tws-blur-32 tws-text-[#020003] hover:tws-bg-[#D0D0D2]/80 tws-flex tws-cursor-pointer tws-items-center tws-gap-x-1.5 last:tws-border-none tws-border-b tws-border-[#C5BCBD] tws-px-2.5 tws-text-sm first:tws-rounded-t-xl last:tws-rounded-b-xl tws-min-h-[36px] "
                   >
+                    {item.icon_prop &&
+                      iconsMap[item.icon_prop?.value as "theme"]}
                     <Show when={() => (item.type.value, true)}>
-                      {() => {
-                        switch (item.type.value) {
-                          case "link":
-                            return (
-                              <LinkIcon
-                                fill="#020003"
-                                stroke={""}
-                                stroke-width={6}
-                                width={18}
-                                height={18}
-                              />
-                            );
-                          case "theme":
-                            return (
-                              <ThemeIcon
-                                fill="#020003"
-                                stroke={""}
-                                stroke-width={6}
-                                width={18}
-                                height={18}
-                              />
-                            );
-                          default:
-                            return (
-                              <CheckIcon
-                                style={{
-                                  opacity: memo(
-                                    () => (item.checked.value ? "1" : "0"),
-                                    [item.checked]
-                                  ),
-                                }}
-                                fill="none"
-                                stroke={"#020003"}
-                                stroke-width={2.5}
-                                width={18}
-                                height={18}
-                              />
-                            );
-                        }
-                      }}
+                      {() =>
+                        item.type.value === "checkbox" && (
+                          <CheckIcon
+                            style={{
+                              opacity: memo(
+                                () => (item.checked.value ? "1" : "0"),
+                                [item.checked]
+                              ),
+                            }}
+                            fill="none"
+                            stroke={"#020003"}
+                            stroke-width={2.5}
+                            width={18}
+                            height={18}
+                          />
+                        )
+                      }
                     </Show>
                     {item.title}
                     <Show when={() => item.type.value === "link"}>

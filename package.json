@@ -2,7 +2,7 @@
   "name": "mobily-responsive",
   "displayName": "Mobily Responsive",
   "description": "A Tool For Simulating Popular Devices",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "author": "Charles Ikechukwu <michthebrand@gmail.com>",
   "publisher": "michthebrand",
   "repository": {
@@ -20,8 +20,6 @@
   "dependencies": {
     "@tauri-apps/api": "^1.5.6",
     "clsx": "^2.1.1",
-    "figma-squircle": "^1.1.0",
-    "html-squircle": "^4.1.2",
     "nanoid": "^5.0.7",
     "nixix": "^3.1.6",
     "tailwind-merge": "^2.3.0"

@@ -2,7 +2,6 @@ import { getDims, px, round } from "@/lib/utils";
 import { MutableRefObject } from "nixix";
 import { effect, store } from "nixix/primitives";
 import { BasePhoneConfig, basePhoneConfig } from "./base-phone-config";
-import { getSvgPath } from "figma-squircle";
 import clothoidize from "@/lib/clothoidize";
 
 export interface IphoneConfig extends BasePhoneConfig {}
