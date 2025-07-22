@@ -1,75 +1,75 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-  "build": {
-    "beforeBuildCommand": "pnpm run build",
-    "beforeDevCommand": "pnpm run dev",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist"
-  },
-  "package": {
-    "productName": "Mobily Responsive",
-    "version": "0.5.0"
-  },
-  "tauri": {
-    "allowlist": {
-      "window": {
-        "all": false,
-        "setDecorations": true,
-        "setAlwaysOnTop": true
-      },
-      "fs": {
-        "all": false,
-        "createDir": true,
-        "exists": true,
-        "writeFile": true,
-        "readFile": true,
-        "scope": ["$APPLOCALDATA/**/**"]
-      },
-      "path": {
-        "all": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
-      "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "com.mobily-responsive.dev",
-      "longDescription": "A desktop application that helps developers test their websites across different device sizes and resolutions. Built with Tauri and React for optimal performance and native integration.",
-      "resources": [],
-      "shortDescription": "A desktop app for testing website responsiveness across different device sizes",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
-      }
-    },
-    "security": {
-      "csp": null
-    },
-    "updater": {
-      "active": false
-    },
-    "windows": [
-      {
-        "fullscreen": false,
-        "height": 1080,
-        "resizable": true,
-        "title": "Simulator",
-        "width": 1080,
-        "maxWidth": 1000,
-        "transparent": true,
-        "decorations": false,
-        "center": true
-      }
-    ]
-  }
+	"$schema": "../node_modules/@tauri-apps/cli/schema.json",
+	"build": {
+		"beforeBuildCommand": "pnpm run build",
+		"beforeDevCommand": "pnpm run dev",
+		"devPath": "http://localhost:1420",
+		"distDir": "../dist"
+	},
+	"package": {
+		"productName": "Mobily Responsive",
+		"version": "0.6.0"
+	},
+	"tauri": {
+		"allowlist": {
+			"window": {
+				"all": false,
+				"setDecorations": true,
+				"setAlwaysOnTop": true
+			},
+			"fs": {
+				"all": false,
+				"createDir": true,
+				"exists": true,
+				"writeFile": true,
+				"readFile": true,
+				"scope": ["$APPLOCALDATA/**/**"]
+			},
+			"path": {
+				"all": true
+			}
+		},
+		"bundle": {
+			"active": true,
+			"category": "DeveloperTool",
+			"copyright": "",
+			"externalBin": [],
+			"icon": [
+				"icons/32x32.png",
+				"icons/128x128.png",
+				"icons/128x128@2x.png",
+				"icons/icon.icns",
+				"icons/icon.ico"
+			],
+			"identifier": "com.mobily-responsive.dev",
+			"longDescription": "A desktop application that helps developers test their websites across different device sizes and resolutions. Built with Tauri and React for optimal performance and native integration.",
+			"resources": [],
+			"shortDescription": "A desktop app for testing website responsiveness across different device sizes",
+			"targets": "all",
+			"windows": {
+				"certificateThumbprint": null,
+				"digestAlgorithm": "sha256",
+				"timestampUrl": ""
+			}
+		},
+		"security": {
+			"csp": null
+		},
+		"updater": {
+			"active": false
+		},
+		"windows": [
+			{
+				"fullscreen": false,
+				"height": 1080,
+				"resizable": true,
+				"title": "Simulator",
+				"width": 1080,
+				"maxWidth": 1000,
+				"transparent": true,
+				"decorations": false,
+				"center": true
+			}
+		]
+	}
 }
