@@ -84,7 +84,53 @@ export const removeChildren = (element: Element) => {
 	Array.from(element.children).forEach((child) => child.remove());
 };
 
+
 // capitalize first letter
 export const capitalize = (str: string) =>
 	str.charAt(0).toUpperCase() + str.slice(1);
 
+export function last<T>(value: T[]): T;
+
+export function last(value: string): string;
+
+export function last<T>(value: T[] | string) {
+  return value[value.length - 1];
+}
+
+type CaseArray<C, R> = [C, R];
+
+/**
+ * @dev take this as an inline switch
+ * @param check value to check
+ * @param cases the cases to check against
+ * @returns the return value of the case that matches the check
+ */
+export function inlineSwitch<Check, Case extends Check, Return>(
+  check: Check,
+  ...cases: Array<CaseArray<Case, Return> | { default: Return }>
+) {
+  let pickedReturn: Return | undefined = undefined;
+  // separate the default case objects from the and return the a destructured array of [defaultCases, caseArrays]
+  const [defaultCases, caseArrays] = cases.reduce(
+    (acc, caseArray) => {
+      if (Array.isArray(caseArray)) {
+        acc[1].push(caseArray);
+      } else {
+        acc[0].push(caseArray);
+      }
+      return acc;
+    },
+    [[], []] as [{ default: Return }[], CaseArray<Case, Return>[]]
+  );
+
+  for (let i = 0; i < caseArrays.length; i++) {
+    const caseArray = caseArrays[i];
+    if (caseArray[0] === check) {
+      pickedReturn = caseArray[1];
+      break;
+    }
+  }
+  if (pickedReturn === undefined && defaultCases.length > 0)
+    pickedReturn = last(defaultCases).default;
+  return pickedReturn;
+}
