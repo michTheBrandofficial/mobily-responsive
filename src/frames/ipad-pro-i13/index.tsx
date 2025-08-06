@@ -17,15 +17,15 @@ const dimensions = {
   h: 1376,
 };
 
-const deviceWidthRatio = 42 / dimensions.w;
+const deviceWidthRatio = 82 / dimensions.w;
 
-const deviceHeightRatio = 42 / dimensions.h;
+const deviceHeightRatio = 138 / dimensions.h;
 
 const safeAreaInsetRatio = 60 / dimensions.h;
 
 const virtualHomeButtonRatio = 130 / dimensions.w;
 
-const clothoidRadiusRatio = 58 / dimensions.w;
+const clothoidRadiusRatio = 20 / dimensions.w;
 
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const;
 
