@@ -21,7 +21,7 @@ const deviceWidthRatio = 82 / dimensions.w;
 
 const deviceHeightRatio = 138 / dimensions.h;
 
-const safeAreaInsetRatio = 60 / dimensions.h;
+const safeAreaInsetRatio = 37 / dimensions.h;
 
 const virtualHomeButtonRatio = 130 / dimensions.w;
 
@@ -40,8 +40,11 @@ const IpadProi13: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     virtualHomeButtonRatio,
     safeAreaInsetRatio,
   });
+  // 
   const hasBezelsClassMemo = memo(() => {
-    return iphoneConfig.hasBezels!.value ? " " : " tws-invisible ";
+    // no bezel less display here
+    return ' '
+    //return iphoneConfig.hasBezels!.value ? " " : " tws-invisible ";
   }, [iphoneConfig.hasBezels!]);
   const { screenState } = useScreenState();
   const backgroundMemo = memo(() => {
