@@ -84,7 +84,8 @@ const HomeScreen: Nixix.FC<{
     const isIpadValue = isIpad.value
     return {
       dockIconsClass: isIpadValue ? ' !tws-px-4 !tws-py-5 tws-bg-white/15 !tws-w-fit tws-gap-x-5 !tws-rounded-[36px] ' : '',
-      searchButtoClass: isIpadValue ? ' !tws-bg-white/15 ' : ''
+      searchButtonClass: isIpadValue ? ' !tws-bg-white/15 ' : '',
+      screenIconsClass: isIpadValue ? ' !tws-max-w-[826px] !tws-grid-cols-6-60  ' : ''
     }
   }, [device])
   return (
@@ -96,7 +97,7 @@ const HomeScreen: Nixix.FC<{
       }}
       className="tws-h-full tws-w-full tws-flex tws-flex-col tws-justify-between tws-font-Helvetica_Neue tws-tracking-wide"
     >
-      <HStack className="tws-h-fit tws-w-full tws-px-[24px] tws-font-medium tws-grid tws-grid-cols-4-60 tws-justify-between ">
+      <HStack className={concat`tws-h-fit tws-w-full tws-mx-auto tws-px-[24px] tws-font-medium tws-grid tws-gap-y-8 tws-grid-cols-4-60 tws-justify-between ${ipadConfigMemo.screenIconsClass} `}>
         <For each={homeScreenIcons}>
           {(icon, i) => {
             return (
@@ -118,7 +119,7 @@ const HomeScreen: Nixix.FC<{
       </HStack>
       {/* Search buttons and device dock */}
       <HStack className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] ">
-        <Container className={concat`tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs ${ipadConfigMemo.searchButtoClass} `}>
+        <Container className={concat`tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs ${ipadConfigMemo.searchButtonClass} `}>
           <SearchIcon className={"tws-fill-[#474844] "} /> Search
         </Container>
         {/* Dock */}

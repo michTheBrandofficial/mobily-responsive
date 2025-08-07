@@ -27,6 +27,11 @@
     grid-template-columns: repeat(4, minmax(0, 60px));
   }
 
+  /* ipad grid */
+  .tws-grid-cols-6-60 {
+    grid-template-columns: repeat(6, minmax(0, 60px));
+  }
+
   :root {
     scrollbar-width: none;
   }
