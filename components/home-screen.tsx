@@ -5,12 +5,13 @@ import { useIconCoordinates } from "@/src/stores/icon-coordinates";
 import { readBinaryFile, readTextFile } from "@tauri-apps/api/fs";
 import * as Nixix from "nixix";
 import { For } from "nixix/hoc";
-import { ref, reaction, Signal, store, memo } from "nixix/primitives";
+import { ref, reaction, Signal, store, memo, concat } from "nixix/primitives";
 import { Container, HStack, VStack } from "nixix/view-components";
 import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
 import { useIphoneConfig } from "@/src/stores/iphone-config";
+import { useDevice } from "@/src/stores/device";
 
 const numberIconsInRow = 4;
 
@@ -74,7 +75,18 @@ const HomeScreen: Nixix.FC<{
       );
     } else animation?.reverse();
   }, [deviceScreen]);
+  const { device } = useDevice()
   const { iphoneConfig } = useIphoneConfig();
+  const isIpad = memo(() => {
+    return device.value.includes('ipad')
+  }, [device])
+  const ipadConfigMemo = memo(() => {
+    const isIpadValue = isIpad.value
+    return {
+      dockIconsClass: isIpadValue ? ' !tws-px-4 !tws-py-5 tws-bg-white/15 !tws-w-fit tws-gap-x-5 !tws-rounded-[36px] ' : '',
+      searchButtoClass: isIpadValue ? ' !tws-bg-white/15 ' : ''
+    }
+  }, [device])
   return (
     <VStack
       style={{
@@ -106,17 +118,17 @@ const HomeScreen: Nixix.FC<{
       </HStack>
       {/* Search buttons and device dock */}
       <HStack className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] ">
-        <Container className="tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs ">
+        <Container className={concat`tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs ${ipadConfigMemo.searchButtoClass} `}>
           <SearchIcon className={"tws-fill-[#474844] "} /> Search
         </Container>
         {/* Dock */}
         <HStack
-          className="tws-h-fit tws-w-full tws-bg-[#666666]/15 tws-backdrop-blur-[150px] tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between "
+          className={concat`tws-h-fit tws-w-full tws-bg-[#666666]/15 tws-backdrop-blur-[150px] tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between ${ipadConfigMemo.dockIconsClass} `}
           style={{
             borderRadius: px(42),
           }}
         >
-          <DockIcons />
+          <DockIcons isIpad={isIpad} />
         </HStack>
       </HStack>
     </VStack>

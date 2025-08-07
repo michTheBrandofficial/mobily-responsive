@@ -134,3 +134,7 @@ export function inlineSwitch<Check, Case extends Check, Return>(
     pickedReturn = last(defaultCases).default;
   return pickedReturn;
 }
+
+export const objectKeys = <T extends Record<string, any>>(obj: T) => {
+  return Object.keys(obj) as Array<keyof T>
+}

@@ -23,7 +23,7 @@ const deviceHeightRatio = 138 / dimensions.h;
 
 const safeAreaInsetRatio = 37 / dimensions.h;
 
-const virtualHomeButtonRatio = 130 / dimensions.w;
+const virtualHomeButtonRatio = 190 / dimensions.w;
 
 const clothoidRadiusRatio = 20 / dimensions.w;
 
