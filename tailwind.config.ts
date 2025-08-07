@@ -30,6 +30,9 @@ export default {
 				".wallpaper-iphone-16-pro": {
 					background: `url(../assets/images/iphone-16-pro-wallpaper.jpg)`,
 				},
+        ".wallpaper-ipad-pro-i13": {
+          background: `url(../assets/images/ipad-pro-i13-wallpaper.jpg)`
+        },
 				".wallpaper-after-app-launch": {
 					background: "black",
 				},

@@ -1,5 +1,152 @@
+import { percentage } from "@/lib/utils";
 import { FC, SVGAttributes } from "nixix";
+import { Show } from "nixix/hoc";
+import { Signal } from "nixix/primitives";
 import { Container } from "nixix/view-components";
+
+const Base = (): someView => {
+  return (
+    ''
+  )
+}
+
+const ICloud = (): someView => {
+  return (
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="60" height="60" rx="13.28" fill="white" />
+      <mask id="mask0_3516_1593" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="5" y="13" width="50" height="32">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.8289 25.4453C12.3376 22.0797 15.2425 19.5 18.75 19.5C19.7675 19.5 20.7342 19.7171 21.6065 20.1074C23.8856 15.876 28.3569 13 33.5 13C40.8512 13 46.83 18.8756 46.9964 26.1868C51.2774 27.0541 54.5 30.8382 54.5 35.375C54.5 40.5527 50.3027 44.75 45.125 44.75C45.0833 44.75 45.0416 44.7497 45 44.7492V44.75H15V44.7376C9.70944 44.4771 5.5 40.1051 5.5 34.7499C5.5 30.5231 8.12239 26.9088 11.8289 25.4453Z" fill="#D9D9D9" />
+      </mask>
+      <g mask="url(#mask0_3516_1593)">
+        <circle cx="45.125" cy="35.375" r="9.375" fill="url(#paint0_linear_3516_1593)" />
+        <path d="M25.5 34.7499C25.5 40.2728 21.0228 44.7499 15.5 44.7499C9.97715 44.7499 5.5 40.2728 5.5 34.7499C5.5 29.2271 9.97715 24.7499 15.5 24.7499C21.0228 24.7499 25.5 29.2271 25.5 34.7499Z" fill="url(#paint1_linear_3516_1593)" />
+        <circle cx="18.75" cy="26.5" r="7" fill="#8FDAF9" />
+        <circle cx="33.5" cy="26.5" r="13.5" fill="url(#paint2_linear_3516_1593)" />
+        <path d="M15 44.75H45V34H15V44.75Z" fill="#41BEFF" />
+        <foreignObject x="-6" y="1" width="73" height="56"><div style={{ backdropFilter: 'blur(6px)', clipPath: 'url(#bgblur_0_3516_1593_clip_path)', height: percentage(100), width: percentage(100) }} ></div></foreignObject><rect data-figma-bg-blur-radius="12" x="6" y="13" width="49" height="32" fill="#D9D9D9" fill-opacity="0.01" />
+        <circle cx="18.75" cy="26.5" r="7" fill="url(#paint3_linear_3516_1593)" fill-opacity="0.2" />
+        <circle opacity="0.5" cx="33.5" cy="26.5" r="13.5" fill="url(#paint4_linear_3516_1593)" />
+        <path opacity="0.42" d="M25.5 34.7499C25.5 40.2728 21.0228 44.7499 15.5 44.7499C9.97715 44.7499 5.5 40.2728 5.5 34.7499C5.5 29.2271 9.97715 24.7499 15.5 24.7499C21.0228 24.7499 25.5 29.2271 25.5 34.7499Z" fill="url(#paint5_linear_3516_1593)" />
+        <circle cx="45.125" cy="35.375" r="9.375" fill="url(#paint6_linear_3516_1593)" />
+      </g>
+      <defs>
+        <clipPath id="bgblur_0_3516_1593_clip_path" transform="translate(6 -1)"><rect x="6" y="13" width="49" height="32" />
+        </clipPath><linearGradient id="paint0_linear_3516_1593" x1="54" y1="26" x2="36" y2="45" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#3D85F4" />
+          <stop offset="1" stop-color="#3BA5FB" />
+        </linearGradient>
+        <linearGradient id="paint1_linear_3516_1593" x1="5" y1="25" x2="25" y2="45" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#92DCF7" />
+          <stop offset="1" stop-color="#81D7FA" />
+        </linearGradient>
+        <linearGradient id="paint2_linear_3516_1593" x1="47" y1="13" x2="20" y2="40" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#3D99EF" />
+          <stop offset="1" stop-color="#6DD0FA" />
+        </linearGradient>
+        <linearGradient id="paint3_linear_3516_1593" x1="12" y1="20" x2="26" y2="34" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#8FDAF9" />
+          <stop offset="1" stop-color="#8FDAF9" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="paint4_linear_3516_1593" x1="47" y1="13" x2="33" y2="40" gradientUnits="userSpaceOnUse">
+          <stop offset="0.25" stop-color="#3D99EF" />
+          <stop offset="1" stop-color="#6DD0FA" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="paint5_linear_3516_1593" x1="5" y1="25" x2="25" y2="45" gradientUnits="userSpaceOnUse">
+          <stop offset="0.227348" stop-color="#00B5FF" />
+          <stop offset="1" stop-color="#92DCF7" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="paint6_linear_3516_1593" x1="54" y1="26" x2="36" y2="45" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#4890FF" />
+          <stop offset="0.490431" stop-color="#3BA5FB" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+    </svg>
+  )
+}
+
+const Wallet = (): someView => {
+  return (
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#clip0_3516_457)">
+        <rect width="60" height="60" fill="url(#paint0_linear_3516_457)" />
+        <mask id="mask0_3516_457" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="7" y="13" width="46" height="34">
+          <rect x="7.33325" y="13" width="45.3333" height="34" rx="4.33333" fill="#D8D6CC" />
+        </mask>
+        <g mask="url(#mask0_3516_457)">
+          <rect x="7.33325" y="13" width="45.3333" height="34" rx="4.33333" fill="#D8D6CC" />
+          <mask id="mask1_3516_457" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="9" y="15" width="42" height="30">
+            <rect x="9.33325" y="15" width="41.3333" height="30" rx="2.66667" fill="#C4C4C4" />
+          </mask>
+          <g mask="url(#mask1_3516_457)">
+            <rect x="9.33325" y="15" width="41.3333" height="19" rx="2.66667" fill="#3B98C6" />
+            <g filter="url(#filter0_d_3516_457)">
+              <rect x="9.33325" y="18.6667" width="41.3333" height="19" rx="2.66667" fill="#FEB000" />
+            </g>
+            <g filter="url(#filter1_d_3516_457)">
+              <rect x="9.33325" y="22.3333" width="41.3333" height="19" rx="2.66667" fill="#4DBE3B" />
+            </g>
+            <g filter="url(#filter2_d_3516_457)">
+              <rect x="9.33325" y="26" width="41.3333" height="19" rx="2.66667" fill="#F16D5F" />
+            </g>
+          </g>
+          <g filter="url(#filter3_d_3516_457)">
+            <path d="M20.1527 30H7.33325V42.6667C7.33325 45.0599 9.27336 47 11.6666 47H48.3332C50.7265 47 52.6666 45.0599 52.6666 42.6667V30H39.8472C38.3442 30 36.9029 30.597 35.8402 31.6597L33.493 34.0069C32.5521 34.9478 31.3144 35.5237 29.9999 35.6433C28.6855 35.5237 27.4478 34.9478 26.5068 34.0069L24.1597 31.6597C23.0969 30.597 21.6556 30 20.1527 30Z" fill="#D8D6CC" />
+          </g>
+        </g>
+      </g>
+      <defs>
+        <filter id="filter0_d_3516_457" x="6.66659" y="16.0001" width="46.6666" height="24.3333" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+          <feOffset />
+          <feGaussianBlur stdDeviation="1.33333" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.19 0" />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3516_457" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3516_457" result="shape" />
+        </filter>
+        <filter id="filter1_d_3516_457" x="6.66659" y="19.6666" width="46.6666" height="24.3333" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+          <feOffset />
+          <feGaussianBlur stdDeviation="1.33333" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.19 0" />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3516_457" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3516_457" result="shape" />
+        </filter>
+        <filter id="filter2_d_3516_457" x="6.66659" y="23.3333" width="46.6666" height="24.3333" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+          <feOffset />
+          <feGaussianBlur stdDeviation="1.33333" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.19 0" />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3516_457" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3516_457" result="shape" />
+        </filter>
+        <filter id="filter3_d_3516_457" x="4.66659" y="27.3333" width="50.6666" height="22.3333" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+          <feOffset />
+          <feGaussianBlur stdDeviation="1.33333" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.19 0" />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3516_457" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3516_457" result="shape" />
+        </filter>
+        <linearGradient id="paint0_linear_3516_457" x1="30" y1="0" x2="30" y2="60" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#313131" />
+          <stop offset="1" stop-color="#141514" />
+        </linearGradient>
+        <clipPath id="clip0_3516_457">
+          <rect width="60" height="60" rx="13.28" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+
+  )
+}
 
 const Phone = (): someView => {
   return (
@@ -536,7 +683,7 @@ export const SearchIcon: FC<SVGAttributes<SVGSVGElement>> = (props): someView =>
 /**
  * @note four dock icons of sizes 64x64
  */
-const DockIcons = (): someView => {
+const DockIcons = (props: { isIpad: Signal<boolean> }): someView => {
   return (
     <>
       <Container className="tws-rounded-[16px] ">
@@ -551,6 +698,21 @@ const DockIcons = (): someView => {
       <Container className="tws-rounded-[16px] ">
         <FaceTime />
       </Container>
+      <Show when={() => props.isIpad.value === true} >
+        {(open) => {
+          if (open) return (
+            <>
+              <Container className="tws-rounded-[16px] ">
+                <Wallet />
+              </Container>
+              <Container className="tws-rounded-[16px] ">
+                <ICloud />
+              </Container>
+            </>
+          )
+          else return ''
+        }}
+      </Show>
     </>
   );
 };

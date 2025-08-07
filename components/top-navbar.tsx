@@ -10,7 +10,7 @@ import Home from "./icons/home";
 import { Button } from "./ui/buttons";
 import { useDevice } from "@/src/stores/device";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
-import { pick, wait } from "@/lib/utils";
+import { inlineSwitch, pick, wait } from "@/lib/utils";
 import Reload from "./icons/reload";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import AppMenu from "./app-menu";
@@ -26,15 +26,26 @@ type Props = {
 const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
   const { device } = useDevice();
   const deviceDisplayName = memo(
-    () => pick(DEVICE_MAPPING[device.value], "displayName", "iosVersion"),
+    () => pick(DEVICE_MAPPING[device.value], "displayName", "version"),
     [device]
   );
+  const versionMemo = memo(
+    () => {
+      const deviceConfig = DEVICE_MAPPING[device.value];
+      return inlineSwitch(
+        deviceConfig.type,
+        ['ipad', `iPadOS ${deviceConfig.version}`],
+        { default: `iOS ${deviceConfig.version}` }
+      ) 
+    },
+    [device]
+  )
   const formRef = ref<HTMLFormElement>();
   const [isInputOpen, setIsInputOpen] = signal<boolean>(false);
   const { isFullscreen } = useFullscreen()
-    const classMemo = memo(() => {
-      return isFullscreen.value ?  'tws-hidden' : 'tws-flex'
-    }, [isFullscreen])
+  const classMemo = memo(() => {
+    return isFullscreen.value ? 'tws-hidden' : 'tws-flex'
+  }, [isFullscreen])
   return (
     <VStack className={concat`tws-w-screen tws-max-w-[386px] tws-max-h-[45px] tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-mt-1 tws-py-2 tws-px-6 tws-bg-[#474844] tws-relative tws-overflow-x-clip ${classMemo} `}>
       <Container
@@ -45,7 +56,7 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           {deviceDisplayName.displayName}
         </Paragragh>
         <Paragragh className="tws-text-[#B0B0AD] tws-font-medium ">
-          iOS {deviceDisplayName.iosVersion}
+          {versionMemo}
         </Paragragh>
       </Container>
       <FormField
@@ -78,7 +89,7 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           <Button
             type="submit"
             className="tws-absolute tws-right-6 tws-bottom-3 tws-z-30"
-            on:click={() => {}}
+            on:click={() => { }}
           >
             <SearchIcon
               className={"tws-w-[18px] tws-h-[18px] tws-fill-[#CFCFCC]"}
