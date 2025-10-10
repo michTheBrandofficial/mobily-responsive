@@ -17,7 +17,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
-    "types": ["./src/types.d.ts"],
 
     "strict": true,
     "noUnusedLocals": true,
