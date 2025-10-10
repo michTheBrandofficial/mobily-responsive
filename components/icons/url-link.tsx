@@ -1,6 +1,8 @@
+import { FC } from "react";
+
 type Props = App.SVGProps;
 
-const UrlLink: Nixix.FC<Props> = (props): someView => {
+const UrlLink: FC<Props> = (props) => {
   return (
     <svg
       width="258"

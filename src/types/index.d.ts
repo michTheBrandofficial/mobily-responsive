@@ -1,17 +1,16 @@
 /// <reference types="vite/client" />
-import { Signal } from "nixix/primitives";
 
 export {};
 
 declare global {
 	namespace App {
 		type DeviceProps = {
-			iframeSrc: Signal<string>;
+			iframeSrc: string;
 		};
 
 		type Display = " tws-flex " | " tws-hidden " | " tws-block ";
 
-		type SVGProps = JSX.IntrinsicElements["svg"];
+		type SVGProps = React.JSX.IntrinsicElements["svg"];
 
 		type ExtensionInstallStatistic = {
 			statisticName: "install";
