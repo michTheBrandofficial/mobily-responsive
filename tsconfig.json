@@ -1,40 +1,15 @@
 {
+  "files": [],
   "compilerOptions": {
-    "paths": {
-      "@/*": ["./*"],
-      "~/*": ["./src/*"],
-    },
     "baseUrl": ".",
-    "experimentalDecorators": true,
-    "types": [
-      "nixix/router",
-      "nixix/dom",
-      "nixix/primitives",
-      "nixix/hoc",
-      "nixix/view-components",
-      "@tauri-apps/api"
-    ],
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable", "ES2022"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsxdev",
-    "jsxImportSource": "nixix/types",
-
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
   },
-  "include": ["src", "lib", "components"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

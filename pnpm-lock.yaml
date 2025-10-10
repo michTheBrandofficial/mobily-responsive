@@ -11,12 +11,6 @@ importers:
       '@tauri-apps/api':
         specifier: ^1.6.0
         version: 1.6.0
-      '@types/react':
-        specifier: ^19.2.2
-        version: 19.2.2
-      '@types/react-dom':
-        specifier: ^19.2.1
-        version: 19.2.1(@types/react@19.2.2)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -45,6 +39,12 @@ importers:
       '@types/node':
         specifier: ^20.19.10
         version: 20.19.10
+      '@types/react':
+        specifier: ^19.2.2
+        version: 19.2.2
+      '@types/react-dom':
+        specifier: ^19.2.1
+        version: 19.2.1(@types/react@19.2.2)
       autoprefixer:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.6)
