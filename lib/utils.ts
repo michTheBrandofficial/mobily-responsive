@@ -1,6 +1,6 @@
-import { CSSProperties } from "nixix";
+import { CSSProperties } from "react";
 
-export const getDims = ({ width, height }: CSSStyleDeclaration) => {
+export const getDims = ({ width, height }: Pick<CSSStyleDeclaration, 'width' | 'height'>) => {
 	return {
 		width: Number(width.replace("px", "")),
 		height: Number(height.replace("px", "")),
@@ -137,4 +137,28 @@ export function inlineSwitch<Check, Case extends Check, Return>(
 
 export const objectKeys = <T extends Record<string, any>>(obj: T) => {
   return Object.keys(obj) as Array<keyof T>
+}
+
+export function entries<T extends Record<string, any>, K extends keyof T>(
+  obj: T
+) {
+  return Object.entries(obj) as [K, T[K]][];
+}
+
+type FindAndPipePredicate<T> =  (value: T, index: number) => unknown
+
+export function findAndPipe<T, R>(array: T[], predicate: FindAndPipePredicate<T>, fn: (value: T) => R) {
+  const valueInArray = array.find(predicate);
+  if (!valueInArray)
+    return undefined
+  else return fn(valueInArray)
+}
+
+/**
+ * @dev should just be awaited
+ */
+export async function sleep(delay: number) {
+  return new Promise((res, _) => {
+    setTimeout(() => res("done sleeping"), delay);
+  });
 }
