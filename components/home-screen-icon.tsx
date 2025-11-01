@@ -1,34 +1,30 @@
-import { memo, Signal, Store } from "nixix/primitives";
-import { MouseEventHandler } from "nixix/types/eventhandlers";
-import { Container } from "nixix/view-components";
+import React, { MouseEventHandler } from "react";
 import Tools from "@/assets/images/tools icon.png";
+import { motion } from "motion/react";
 
-/**
- * @todo extract to file later on
- */
-const HomeScreenIcon: Nixix.FC<{
-  iframeSrc: Signal<string>;
-  icon: Store<{
+const HomeScreenIcon: React.FC<{
+  icon: {
     name: string;
     icon: string;
-  }>;
-  "on:click": MouseEventHandler<HTMLDivElement>;
-}> = ({ iframeSrc, icon: { icon, name }, ...rest }) => {
-  const isUntitled = icon.value === Tools;
+  };
+  onClick: MouseEventHandler<HTMLDivElement>;
+}> = ({ icon: { icon, name }, ...rest }) => {
+  const isUntitled = icon === Tools;
 
   return (
-    <Container
-      on:click={rest["on:click"]}
+    <motion.div
+      whileTap={{ scale: 0.95 }}
+      onClick={rest.onClick}
       className="tws-w-[60px] tws-h-fit tws-rounded-[16px] tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer tws-overflow-x-visible "
     >
       {isUntitled ? (
-        <Container className="tws-w-[60px] tws-h-[60px] tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] ">
+        <div className="tws-w-[60px] tws-h-[60px] tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] ">
           <img
             src={Tools}
             alt={"Untitled"}
             className="tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] "
           />
-        </Container>
+        </div>
       ) : (
         <img
           src={icon}
@@ -39,15 +35,9 @@ const HomeScreenIcon: Nixix.FC<{
       <p
         className={`/tws-text-white tws-min-w-[75px] tws-overflow-visible tws-text-center tws-text-[#474844] tws-text-[11px] tws-whitespace-nowrap tws-max-w-full tws-font-Rubik tws-font-normal `}
       >
-        {memo(
-          () =>
-            name.value.length > 10
-              ? name.value.slice(0, 10).concat("...")
-              : name.value,
-          [name]
-        )}
+        {name.length > 10 ? name.slice(0, 10).concat("...") : name}
       </p>
-    </Container>
+    </motion.div>
   );
 };
 
