@@ -1,24 +1,55 @@
-import * as Nixix from "nixix"
-import { cn } from "@/lib/cn"
-import { Button as VButton } from 'nixix/view-components'
+import { cn } from "@/lib/cn";
+import { HTMLMotionProps, motion } from "motion/react";
+import React, { PropsWithChildren } from "react";
 
-type Variants = 'full' | 'outline' | 'icon' | 'ghost'
+type Variants = "full" | "outline" | "icon" | "ghost" | "dormant";
 
-type ButtonProps = Nixix.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: Variants
-}
+type ButtonProps = PropsWithChildren<HTMLMotionProps<"button">> & {
+  variant?: Variants;
+  loading?: boolean;
+};
 
 /**
- * @dev this is not animated with scale because of render issue from Webview2 on Windows.
+ * @animated with motion.button
  */
-export const Button: Nixix.FC<ButtonProps> = ({ children, variant = 'full', className, ...props }) => {
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  variant = "full",
+  className,
+  onTap,
+  loading,
+  ...props
+}) => {
   return (
-    <VButton
+    <motion.button
+      whileTap={{ scale: props.disabled ? 1 : 0.9 }}
+      whileHover={{ scale: props.disabled ? 1 : 1.05 }}
       {...props}
+      onTap={
+        onTap
+          ? (e, info) => {
+              if (props.disabled) return;
+              else onTap(e, info);
+            }
+          : undefined
+      }
       className={cn(
-        // `active:tws-scale-90 active:tws-rotate-2 hover:tws-scale-105 tws-transition-transform tws-duration-150 `,
+        `font-semibold rounded-xl  `,
+        { "bg-primary-500 text-white": variant === "full" },
+        {
+          "border-2 border-primary-500 text-primary-400 ":
+            variant === "outline",
+        },
+        { "text-primary-500": variant === "ghost" },
+        { "text-paragraph bg-stone-200 ": variant === "dormant" },
+        { "px-4 py-2 text-sm": variant !== "icon" },
+        { "bg-primary-500 text-white px-2 py-2": variant === "icon" },
+        { "cursor-not-allowed opacity-50": props.disabled },
+        { "flex items-center gap-x-3 justify-center ": loading },
         className,
       )}
-    >{children}</VButton>
-  )
-}
+    >
+      {children}
+    </motion.button>
+  );
+};

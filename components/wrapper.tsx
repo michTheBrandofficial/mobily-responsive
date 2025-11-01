@@ -1,14 +1,21 @@
 import { cn } from "@/lib/cn";
-import { HTMLAttributes } from "nixix";
-import { HStack } from "nixix/view-components";
+import { HTMLAttributes } from "react";
+import React from "react";
 
-interface Props extends HTMLAttributes<HTMLElement> {
-};
+interface Props extends HTMLAttributes<HTMLElement> {}
 
-const Wrapper: Nixix.FC<Props> = ({ className, children, ...rest }): someView => {
+const Wrapper: React.FC<Props> = ({ className, children, ...rest }) => {
   return (
-    <HStack {...rest} className={cn('tws-flex tws-w-fit tws-h-fit tws-relative tws-items-center tws-justify-center ', className)} >{children}</HStack>
-  )
-}
+    <section
+      {...rest}
+      className={cn(
+        "tws-flex tws-w-fit tws-h-fit tws-relative tws-items-center tws-justify-center ",
+        className,
+      )}
+    >
+      {children}
+    </section>
+  );
+};
 
 export default Wrapper;

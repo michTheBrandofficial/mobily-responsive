@@ -1,5 +1,5 @@
 import { BaseDirectory } from "@tauri-apps/api/fs";
-import { ref, signal } from "nixix/primitives";
+import { useState } from "react";
 import { Device } from "./device-mapping";
 import { useFullscreen } from "./stores/fullscreen";
 
@@ -29,8 +29,6 @@ export const FSOptions = {
 } as const;
 
 export const homeScreenIconScale = 1.4;
-
-export const iframeRef = ref<HTMLIFrameElement>();
 
 export const LOCALSTORAGE_ALWAYS_ON_TOP_KEY = "MobilyResponsive_always_on_top";
 

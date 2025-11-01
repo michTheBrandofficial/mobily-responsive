@@ -1,204 +1,227 @@
+import { pick, sleep } from "@/lib/utils";
 import { cn } from "@/lib/cn";
-import { createContext } from "@/lib/context";
-import { FC, NixixAttributes, NixixNode } from "nixix";
-import { Show } from "nixix/hoc";
-import { ref, effect, memo, Store, store } from "nixix/primitives";
+import {
+  AnimatePresence,
+  HTMLMotionProps,
+  motion,
+} from "motion/react";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-type TPopoverContext = {
-	open: boolean;
-	config: {
-		transformOrigin:
-			| "center"
-			| "top-left"
-			| "top-right"
-			| "bottom-left"
-			| "bottom-right";
-	};
-	setOpen: (open: boolean) => void;
+type PopoverContextType = {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<PopoverContextType["open"]>>;
+  config: {
+    transformOrigin:
+    | "center"
+    | "top"
+    | "bottom"
+    | "top-left"
+    | "top-right"
+    | "bottom-left"
+    | "bottom-right";
+  };
+  onClose?: VoidFunction;
+  onOpen?: VoidFunction
 };
 
-const { Provider, context } = createContext<Store<TPopoverContext>>();
+const PopoverContext = createContext<PopoverContextType | null>(null);
 
-type DoNotUseProps = {
-	do_not_use_this_prop?: boolean;
+const usePopover = () => {
+  const popoverContent = useContext(PopoverContext);
+  if (!popoverContent) {
+    throw new Error("usePopover must be used within a PopoverProvider");
+  }
+  return popoverContent;
 };
 
-type PopoverProps = {
-	children: () => NixixNode;
-	transformOrigin?:
-		| "center"
-		| "top-left"
-		| "top-right"
-		| "bottom-left"
-		| "bottom-right";
+type PopoverProps = Pick<Props, "children"> & Pick<PopoverContextType, 'onClose' | 'onOpen'> & {
+  transformOrigin?:
+  PopoverContextType['config']['transformOrigin'];
 };
 
-/**
- * @dev children is a function, till we finish rendering provider, so provider can set state.
- */
 const PopoverProvider = ({
-	children,
-	transformOrigin = "bottom-right",
-	do_not_use_this_prop = false,
-}: PopoverProps & DoNotUseProps) => {
-	const [popoverState, setPopoverState] = store<TPopoverContext>({
-		open: do_not_use_this_prop,
-		config: {
-			transformOrigin: transformOrigin,
-		},
-		setOpen(open) {
-			setPopoverState((p) => ({ ...p, open }));
-		},
-	});
-	return (
-		<Provider value={popoverState}>
-			{() => (
-				<section className={"tws-w-fit tws-h-fit tws-relative"}>
-					{children()}
-				</section>
-			)}
-		</Provider>
-	);
+  children,
+  transformOrigin = "center",
+  ...props
+}: PopoverProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <PopoverContext.Provider
+      value={{
+        open: isOpen,
+        setOpen: setIsOpen,
+        config: {
+          transformOrigin,
+        },
+        ...pick(props, 'onClose', 'onOpen')
+      }}
+    >
+      <section className={cn("w-fit h-fit relative")}>{children}</section>
+    </PopoverContext.Provider>
+  );
 };
 
 type Props = {
-	children?: NixixNode;
-	className?: string;
+  children?: React.ReactNode;
+  className?: string;
 };
 
 /**
  * @dev wraps the children in <div> and adds the popover class
  */
-const PopoverTrigger: FC<Pick<Props, "children" | "className">> = ({
-	children,
-	className,
-}) => {
-	const { setOpen, open } = context();
-	const styleMemo = memo(
-		() =>
-			open.value
-				? {
-						zIndex: 100000,
-						scale: 1.2,
-					}
-				: {
-						zIndex: 10,
-						scale: 1,
-					},
-		[open],
-	);
-	return (
-		<div
-			className={cn(
-				"tws-w-fit tws-min-h-fit tws-relative tws-transition-[scale] tws-duration-500",
-				className,
-			)}
-			style={styleMemo}
-			on:click={() => setOpen(true)}
-		>
-			{children}
-		</div>
-	);
+const PopoverTrigger: React.FC<
+  Pick<Props, "children" | "className"> &
+  HTMLMotionProps<"div"> & {
+    triggerRef?: React.Ref<HTMLDivElement>;
+  }
+> = ({ children, className, triggerRef, ...props }) => {
+  const { setOpen, open, onOpen } = usePopover();
+  const [shouldHaveHighZIndex, setShouldHaveHighZIndex] = useState(false);
+  useEffect(() => {
+    if (open === false) setTimeout(() => setShouldHaveHighZIndex(false), 500);
+  }, [open]);
+  return (
+    <motion.div
+      whileTap={{ scale: 0.95 }}
+      {...props}
+      ref={triggerRef}
+      className={cn("w-fit h-fit ", className, {
+        "relative z-[100000000]": shouldHaveHighZIndex,
+      })}
+      onTap={async () => {
+        setShouldHaveHighZIndex(true);
+        await sleep(50)
+        setOpen(true);
+        onOpen?.()
+      }}
+    >
+      {children}
+    </motion.div>
+  );
 };
 
 /**
  * @dev wraps the children in <div> and adds the popover class
  */
-const PopoverClose: FC<
-	Pick<Props, "children" | "className"> & {
-		onClose?: (close: () => void) => void;
-	} & NixixAttributes<HTMLDivElement>
-> = ({ children, className, onClose, ...props }) => {
-	const { setOpen } = context();
-	return (
-		<div
-			{...props}
-			className={cn("tws-w-fit tws-h-fit ", className)}
-			on:click={() =>
-				onClose ? onClose(() => setOpen(false)) : setOpen(false)
-			}
-		>
-			{children}
-		</div>
-	);
+const PopoverClose: React.FC<
+  Pick<Props, "children" | "className"> & {
+    onClose?: (close: () => void) => void;
+  }
+> = ({ children, className, onClose }) => {
+  const { setOpen } = usePopover();
+  return (
+    <div
+      className={cn("w-fit h-fit ", className)}
+      onClick={() => (onClose ? onClose(() => setOpen(false)) : setOpen(false))}
+    >
+      {children}
+    </div>
+  );
 };
 
-const PopoverContent: FC<Props> = ({ children, className }) => {
-	const { open, config, setOpen } = context();
-	const containerRef = ref<HTMLElement>();
-	effect(() => {
-		if (open.value) containerRef.current?.focus();
-	});
-	return (
-		<Show when={() => open.value === true}>
-			{(isOpen) =>
-				isOpen ? (
-					<>
-						<section
-							on:click_self={() => {
-								setOpen(false);
-							}}
-							className="tws-fixed tws-h-screen tws-w-screen !tws-bg-transparent !tws-mt-0 tws-top-0 tws-left-0 tws-z-[99999]"
-						></section>
-						<section
-							bind:ref={containerRef}
-							data-open={open}
-							tabindex={0}
-							className={`tws-transition-transform tws-duration-150 tws-ease-[ease] tws-scale-50 data-[open=true]:tws-scale-100 ${cn(
-								` tws-bg-white tws-absolute tws-z-[100000] `,
-								className,
-								{
-									"tws-origin-center":
-										config.transformOrigin.value === "center",
-								},
-								{
-									"tws-origin-top-right tws-top-[140%] tws-right-0":
-										config.transformOrigin.value === "top-right",
-								},
-								{
-									"tws-origin-top-left tws-top-[140%] tws-left-0":
-										config.transformOrigin.value === "top-left",
-								},
-								{
-									"tws-origin-bottom-left tws-bottom-[140%] tws-left-0":
-										config.transformOrigin.value === "bottom-left",
-								},
-								{
-									"tws-origin-bottom-right tws-bottom-[140%] tws-right-0":
-										config.transformOrigin.value === "bottom-right",
-								},
-							)} `}
-						>
-							{children}
-						</section>
-					</>
-				) : (
-					""
-				)
-			}
-		</Show>
-	);
+/**
+ * @dev adding classnames right-0, left-0 to change the position of the popover
+ */
+const PopoverContent: React.FC<Props> = ({ children, className }) => {
+  const { open, setOpen, config, onClose } = usePopover();
+  const containerRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (open) containerRef.current?.focus();
+  }, [open]);
+  return (
+    <AnimatePresence mode="wait" >
+      {open ? (
+        <>
+          <motion.section
+            key={'popover-underlay'}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+              transition: {
+                duration: 0.2
+              }
+            }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) (setOpen(false), onClose?.());
+            }}
+            className="fixed h-screen w-screen bg-white/25 backdrop-blur-[2px] !mt-0 top-0 left-0 z-[10000000]"
+          ></motion.section>
+          <motion.section
+            ref={containerRef}
+            key={'popover'}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              transition: {
+                type: 'keyframes',
+                duration: 0.2
+              }
+            }}
+            exit={{
+              scale: 0.8,
+              opacity: 0,
+              transition: {
+                duration: 0.25,
+                ease: "easeInOut"
+              }
+            }}
+            tabIndex={0}
+            className={cn(
+              `min-h-[400px] min-w-[300px] top-[120%] bg-white rounded-3xl absolute z-[100000000] border border-gray-100`,
+              className,
+              { "origin-center": config.transformOrigin === "center" },
+              { "origin-top": config.transformOrigin === "top" },
+              { "origin-bottom": config.transformOrigin === "bottom" },
+              { "origin-top-right": config.transformOrigin === "top-right" },
+              { "origin-top-left": config.transformOrigin === "top-left" },
+              {
+                "origin-bottom-left": config.transformOrigin === "bottom-left",
+              },
+              {
+                "origin-bottom-right":
+                  config.transformOrigin === "bottom-right",
+              }
+            )}
+          >
+            {children}
+          </motion.section>
+        </>
+      ) : (
+        ""
+      )}
+    </AnimatePresence>
+  );
 };
 
 /**
  * @example
  * ```jsx
  * <Popover className="" open={open} >
- *  <Popover.Trigger className="tws-p-5 tws-flex tws-justify-between tws-items-center" >
+ *  <Popover.Trigger className="p-5 flex justify-between items-center" >
  *    <Button variant='icon' >
  *      <User />
  *    </Button>
  *  </Popover.Trigger>
- *  <Popover.Content className="tws-p-5" >
+ *  <Popover.Content className="p-5" >
  *    ...children
  *  </Popover.Content>
  * </Popover>
  * ```
  */
 const Popover = Object.assign(PopoverProvider, {
-	Trigger: PopoverTrigger,
-	Content: PopoverContent,
-	Close: PopoverClose,
+  Trigger: PopoverTrigger,
+  Content: PopoverContent,
+  Close: PopoverClose,
 });
 
 export default Popover;

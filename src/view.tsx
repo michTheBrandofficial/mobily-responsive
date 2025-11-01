@@ -7,7 +7,6 @@ import {
   prefixWithSlash,
   px,
   sleep,
-  wait,
 } from "@/lib/utils";
 import {
   BaseDirectory,
@@ -23,16 +22,16 @@ import {
   setDeviceFrameHeightClass,
 } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
-import { useBasePhoneConfig } from "./contexts/base-phone-config";
-import { useDevice } from "./contexts/device";
-import { useDeviceScreen } from "./contexts/device-screen.context";
-import { useDeviceSettings } from "./contexts/device-settings";
-import { useIphoneConfig } from "./contexts/iphone-config";
+import { useBasePhoneConfig } from "./stores/base-phone-config";
+import { useDevice } from "./stores/device";
+import { useDeviceScreen } from "./stores/device-screen.context";
+import { useDeviceSettings } from "./stores/device-settings";
+import { useIphoneConfig } from "./stores/iphone-config";
 import TopNavbar from "@/components/top-navbar";
 import MinimizeFullscreen from "@/components/icons/minimize";
-import { useFullscreen } from "./contexts/fullscreen";
+import { useFullscreen } from "./stores/fullscreen";
 import { FC, useEffect, useState } from "react";
-import { IframeSrcContext } from "./contexts/iframe-src.context";
+import { IframeSrcContext } from "./stores/iframe-src.context";
 import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
 
