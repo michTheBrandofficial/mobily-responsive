@@ -2,16 +2,16 @@ import { Dispatch } from "react";
 import { create } from "zustand/react";
 
 type DeviceScreen = {
-  src: string;
-  setSrc: Dispatch<string>;
+  deviceScreen: 'app-screen' | 'home-screen';
+  setDeviceScreen: Dispatch<DeviceScreen['deviceScreen']>;
 };
 
 export const useDeviceScreen = create<DeviceScreen>((set, get) => ({
-  src: "",
-  setSrc: (src) => {
+  deviceScreen: 'home-screen',
+  setDeviceScreen: (screen) => {
     set({
       ...get(),
-      src: src
+      deviceScreen: screen
     });
   },
 }));
