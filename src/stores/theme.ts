@@ -19,7 +19,7 @@ type ThemeStore = {
   setTheme: Dispatch<Theme>;
 };
 
-export const useDevice = create<ThemeStore>((set, get) => ({
+export const useTheme = create<ThemeStore>((set, get) => ({
   theme: lastUsedTheme,
   setTheme(theme) {
     localStorage.setItem(LOCALSTORAGE_KEY, theme);
