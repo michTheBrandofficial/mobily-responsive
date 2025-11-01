@@ -23,4 +23,4 @@ export const useDevice = create<DeviceStore>((set, get) => ({
       device: device
     })
   },
-})
+}))
