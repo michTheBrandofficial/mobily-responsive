@@ -1,24 +1,31 @@
-import { signal } from "nixix/primitives";
+import { pipe } from "@/lib/pipe";
+import { Dispatch } from "react";
+import { create } from "zustand/react";
 
 const LOCALSTORAGE_KEY = "MobilyResponsive_lastUsedTheme";
 
-type Theme = 'dark' | 'light';
+type Theme = "dark" | "light";
 
-const lastUsedTheme = ((): Theme => {
-  const lastUsed = localStorage.getItem(LOCALSTORAGE_KEY) as Theme | null;
-  if (!lastUsed) return 'dark';
-  else return lastUsed;
-})();
+const lastUsedTheme = pipe(
+  localStorage.getItem(LOCALSTORAGE_KEY) as Theme | null,
+  (lastUsed) => {
+    if (!lastUsed) return "dark";
+    else return lastUsed;
+  },
+);
 
-export const useTheme = (function () {
-  const [theme, setTheme] = signal<Theme>(lastUsedTheme);
-  return () => {
-    return {
+type ThemeStore = {
+  theme: Theme;
+  setTheme: Dispatch<Theme>;
+};
+
+export const useDevice = create<ThemeStore>((set, get) => ({
+  theme: lastUsedTheme,
+  setTheme(theme) {
+    localStorage.setItem(LOCALSTORAGE_KEY, theme);
+    set({
+      ...get(),
       theme,
-      setTheme: (theme: Theme) => {
-        localStorage.setItem(LOCALSTORAGE_KEY, theme.toString());
-        setTheme(theme);
-      },
-    };
-  };
-})();
+    });
+  },
+}));
