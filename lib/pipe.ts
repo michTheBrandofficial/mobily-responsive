@@ -61,7 +61,7 @@ function pipe(...fns: Array<(arg: any) => any>): any {
   let first = fns[0]
   let result = typeof first === 'function' ? (first as () => any)() : first;
   for (let i = 1; i < fns.length; i++) {
-    result = fns[i](result);
+    result = fns[i]?.(result);
   }
   return result;
 }

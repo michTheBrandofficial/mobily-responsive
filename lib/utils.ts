@@ -144,7 +144,7 @@ export function inlineSwitch<
   );
 
   for (let i = 0; i < caseArrays.length; i++) {
-    let [caseValue, returnValue] = caseArrays[i];
+    let [caseValue, returnValue] = caseArrays[i] || [];
     let actualCaseValue = Array.isArray(caseValue)
       ? (caseValue as Check[])
       : ([caseValue] as Check[]);
