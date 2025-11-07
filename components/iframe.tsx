@@ -5,6 +5,7 @@ import React, { useState } from "react";
 
 interface Props extends React.IframeHTMLAttributes<HTMLIFrameElement> {
   src: string;
+  ref?: React.Ref<HTMLIFrameElement>;
 }
 
 /**
