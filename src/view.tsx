@@ -18,43 +18,49 @@ import {
 import {
   dataDir,
   FSOptions,
-  iframeRef,
-  setDeviceFrameHeightClass,
+  useDeviceFrameHeight
 } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { useBasePhoneConfig } from "./stores/base-phone-config";
 import { useDevice } from "./stores/device";
-import { useDeviceScreen } from "./stores/device-screen.context";
+import { useDeviceScreen } from "./stores/device-screen";
 import { useDeviceSettings } from "./stores/device-settings";
 import { useIphoneConfig } from "./stores/iphone-config";
 import TopNavbar from "@/components/top-navbar";
 import MinimizeFullscreen from "@/components/icons/minimize";
 import { useFullscreen } from "./stores/fullscreen";
 import { FC, useEffect, useState } from "react";
-import { IframeSrcContext } from "./stores/iframe-src.context";
+import { IframeSrcContext } from "./stores/iframe-src";
 import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
+import { err, ok, okAsync, Result } from "neverthrow";
+import { pipe } from "@/lib/pipe";
 
 const [safeAreaInset, setSafeAreaInset] = signal<string>(px(0));
 
+/**
+ * @dev fetches icons to save to storage and render on screen.
+ */
 const fetchIconBlob = async (
   icons: App.WebManifest["icons"],
   iframeOrigin: string,
-) => {
-  return new Promise<Blob>((resolve, reject) => {
-    const icon192or512 = icons.find((value) => {
-      return ["192x192", "512x512", "180x180"].includes(value.sizes);
-    })?.src;
-    if (icon192or512)
-      fetch(`${iframeOrigin}${prefixWithSlash(icon192or512)}`).then(
-        async (val) => {
-          if (val.ok) {
-            resolve(await val.blob());
-          }
-        },
-      );
-    else reject(`No app icon found for ${iframeOrigin}`);
-  });
+): Promise<
+  Result<Blob, App.DisplayableError>
+> => {
+    const result = pipe(
+      icons.find((value) => {
+        return ["192x192", "512x512", "180x180"].includes(value.sizes);
+      })?.src,
+      async (icon192or512) => {
+        if (icon192or512) {
+          const iconBlob = await fetch(`${iframeOrigin}${prefixWithSlash(icon192or512)}`)
+            .then(async val => ok(await val.blob()))
+            .catch(_ => err({ message: 'App Icon not found' } satisfies App.DisplayableError))
+          return iconBlob
+        } else return err({ message: 'App Icon not found' } satisfies App.DisplayableError)
+      }
+    )
+    return result
 };
 
 const storeAppHomeScreenData = async (

@@ -18,6 +18,11 @@ declare global {
       error: boolean;
     };
 
+    type DisplayableError = {
+      message: string;
+      details?: string;
+    }
+
     type WebManifest = {
       display: "fullscreen" | (string & {});
       theme_color: string;
