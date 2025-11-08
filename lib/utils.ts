@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import { pipe } from "./pipe";
 
 export const getDims = ({
   width,
@@ -172,6 +173,10 @@ export function entries<T extends Record<string, any>, K extends keyof T>(
 
 type FindAndPipePredicate<T> = (value: T, index: number) => unknown;
 
+/**
+ * @dev find an array item in an array and then pipe it through
+ * @madeobsoleteby {@link pipe}
+ */
 export function findAndPipe<T, R>(
   array: T[],
   predicate: FindAndPipePredicate<T>,
@@ -238,4 +243,12 @@ export function and<T>(values: T[]) {
  * */
 export function negate(value: any) {
   return !value;
+}
+
+export function iife<T>(fn: () => T) {
+  return fn();
+}
+
+export function isFunction(value: any): value is Function {
+  return typeof value === 'function';
 }

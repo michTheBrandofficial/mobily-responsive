@@ -1,6 +1,6 @@
 import clothoidize from "@/lib/clothoidize";
-import { getDims, px, round } from "@/lib/utils";
-import { Dispatch, RefObject, useEffect } from "react";
+import { getDims, isFunction, px, round } from "@/lib/utils";
+import { Dispatch, RefObject, SetStateAction, useEffect } from "react";
 import { create } from "zustand/react";
 
 export interface BasePhoneConfig<T = string> {
@@ -32,7 +32,7 @@ export const basePhoneConfig: BasePhoneConfig = {
 
 type BasePhoneConfigStore = {
   basePhoneConfig: BasePhoneConfig;
-  setBasePhoneConfig: Dispatch<BasePhoneConfig>;
+  setBasePhoneConfig: Dispatch<SetStateAction<BasePhoneConfig>>;
 };
 
 export const useBasePhoneConfig = create<BasePhoneConfigStore>((set, get) => ({
@@ -40,7 +40,9 @@ export const useBasePhoneConfig = create<BasePhoneConfigStore>((set, get) => ({
   setBasePhoneConfig: (config) => {
     set({
       ...get(),
-      basePhoneConfig: config,
+      basePhoneConfig: isFunction(config)
+        ? config(get().basePhoneConfig)
+        : config,
     });
   },
 }));

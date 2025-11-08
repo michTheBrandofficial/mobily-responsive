@@ -1,8 +1,8 @@
-import { getDims, px, round } from "@/lib/utils";
+import { getDims, isFunction, px, round } from "@/lib/utils";
 import { BasePhoneConfig, basePhoneConfig } from "./base-phone-config";
 import clothoidize from "@/lib/clothoidize";
 import { lastHasBezels } from "../constants";
-import { Dispatch, RefObject, useEffect } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect } from "react";
 import { create } from "zustand/react";
 
 export interface IphoneConfig extends BasePhoneConfig {}
@@ -15,7 +15,7 @@ export const iphoneConfig: IphoneConfig = {
 
 type IPhoneConfigStore = {
   iphoneConfig: IphoneConfig;
-  setIphoneConfig: Dispatch<IphoneConfig>;
+  setIphoneConfig: Dispatch<SetStateAction<IphoneConfig>>;
 };
 
 export const useIphoneConfig = create<IPhoneConfigStore>((set, get) => ({
@@ -23,7 +23,7 @@ export const useIphoneConfig = create<IPhoneConfigStore>((set, get) => ({
   setIphoneConfig: (config) => {
     set({
       ...get(),
-      iphoneConfig: config,
+      iphoneConfig: isFunction(config) ? config(get().iphoneConfig) : config,
     });
   },
 }));
