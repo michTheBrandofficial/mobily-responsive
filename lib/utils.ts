@@ -53,7 +53,7 @@ export const pick = <O extends Record<string, any>, K extends keyof O>(
   ...keys: K[]
 ) => {
   const emptyObj = {} as Record<K, any>;
-  keys.forEach((k) => (emptyObj[k] = obj[k]));
+  keys.forEach((k) => (emptyObj[k] = obj?.[k]));
   return emptyObj;
 };
 

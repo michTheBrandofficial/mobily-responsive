@@ -15,6 +15,7 @@ import {
 } from "@/src/constants";
 import { useIphoneConfig } from "@/src/stores/iphone-config";
 import { Button } from "./ui/buttons";
+import Menu from "./ui/ui/menu";
 
 const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (
@@ -244,23 +245,21 @@ const AppMenu = () => {
     appWindow.setAlwaysOnTop(lastAlwaysOnTop === "true");
   }, []);
   return (
-    <Popover transformOrigin="top-right">
-      <Popover.Trigger className="tws-flex tws-flex-col tws-justify-center">
-        <Button className="">
+    <Menu transformOrigin="top-right">
+      <Menu.Trigger>
+        <Button className="!rounded-full !p-0 bg-transparent " variant="icon">
           <Settings className={"tws-h-5 tws-w-5 tws-fill-[#CFCFCC]"} />
         </Button>
-      </Popover.Trigger>
-      <Popover.Close />
-      <Popover.Content className="!tws-bg-white/80 tws-min-w-[200px] tws-rounded-xl !tws-min-h-fit tws-h-fit !tws-border-none tws-font-Rubik">
+      </Menu.Trigger>
+      <Menu.Content className="h-fit min-w-[240px] !min-h-0 font-Satoshi">
         <div className=" tws-text-white tws-flex tws-flex-col ">
           {menuOptions.map((item) => (
-            <div
+            <Menu.Item
               onClick={() => {
                 optionHandlers?.[item.setting as keyof typeof optionHandlers]?.(
                   item,
                 );
               }}
-              className="tws-font-normal tws-bg-[#E9E0E3]/20 tws-blur-32 tws-text-[#020003] hover:tws-bg-[#D0D0D2]/80 tws-flex tws-cursor-pointer tws-items-center tws-gap-x-1.5 last:tws-border-none tws-border-b tws-border-[#C5BCBD] tws-px-2.5 tws-text-sm first:tws-rounded-t-xl last:tws-rounded-b-xl tws-min-h-[36px] "
             >
               {item.icon_prop && iconsMap[item.icon_prop as "theme"]}
               {item.type && item.type === "checkbox" && (
@@ -283,11 +282,11 @@ const AppMenu = () => {
                   src={DevIcon}
                 />
               )}
-            </div>
+            </Menu.Item>
           ))}
         </div>
-      </Popover.Content>
-    </Popover>
+      </Menu.Content>
+    </Menu>
   );
 };
 

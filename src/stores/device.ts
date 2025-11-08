@@ -1,11 +1,11 @@
-import { type Device } from "../device-mapping";
+import { type Device, DEVICE_MAPPIING_KEYS } from "../device-mapping";
 import { create } from "zustand/react";
 
 const LOCALSTORAGE_KEY = "MobilyResponsive_lastUsedDevice";
 
 const defaultSelectedDevice: Device = ((): Device => {
   const lastUsed = localStorage.getItem(LOCALSTORAGE_KEY) as Device;
-  if (!lastUsed) return "iphone-16-pro";
+  if (!lastUsed || !(DEVICE_MAPPIING_KEYS.includes(lastUsed))) return DEVICE_MAPPIING_KEYS.at(0)!;
   else return lastUsed;
 })();
 

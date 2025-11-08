@@ -18,12 +18,13 @@ import { Button } from "./ui/buttons";
 const TopNavbar: React.FC = () => {
   const { setSrc, src: iframeSrc } = useIframeSrc();
   const { device } = useDevice();
+  console.log(device)
   const deviceDisplayName = pick(
-    DEVICE_MAPPING[device],
+    DEVICE_MAPPING[device] ?? {},
     "displayName",
     "version",
   );
-  const versionMemo = pipe(DEVICE_MAPPING[device], ({ type, version }) => {
+  const versionMemo = pipe(DEVICE_MAPPING[device] ?? {}, ({ type, version }) => {
     return inlineSwitch(type, ["ipad", `iPadOS ${version}`], {
       default: `iOS ${version}`,
     });
