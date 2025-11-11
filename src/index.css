@@ -5,11 +5,11 @@
 @layer base {
   @font-face {
     font-family: Rubik;
-    src: url('../assets/fonts/Rubik/Rubik-VariableFont_wght.ttf');
+    src: url("../assets/fonts/Rubik/Rubik-VariableFont_wght.ttf");
   }
   @font-face {
     font-family: Helvetica_Neue;
-    src: url('../assets/fonts/Helvetica Neue/HelveticaNeueBold.otf');
+    src: url("../assets/fonts/Helvetica Neue/HelveticaNeueBold.otf");
   }
 
   :root {
@@ -48,24 +48,23 @@
   }
 
   .tws-shadow-select {
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, .25);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
   }
-
 
   .tws-blur-32 {
     backdrop-filter: blur(32px);
   }
 
   .tws-shadow-all {
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, .25);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
   }
 
   .tws-shadow-sidebar {
-    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, .25);
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.25);
   }
 
   .tws-blue-bordered {
-    @apply tws-border-[2px] tws-shadow-select tws-border-[#0000FF]/30 tws-bg-[#F5F5F5] dark:tws-bg-[#242124] dark:tws-border-stone-600
+    @apply tws-border-[2px] tws-shadow-select tws-border-[#0000FF]/30 tws-bg-[#F5F5F5] dark:tws-bg-[#242124] dark:tws-border-stone-600;
   }
 
   .data-closed[data-state] {
@@ -84,7 +83,7 @@
   }
 
   .tws-fade-animation {
-    animation: fade 1s linear infinite;;
+    animation: fade 1s linear infinite;
   }
 
   @keyframes fade {
@@ -95,5 +94,26 @@
       opacity: 0.25;
     }
   }
+}
 
+.liquid-glass {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(-8px -10px 46px #0000005f);
+  backdrop-filter: brightness(1.1) blur(0px) url(#displacementFilter);
+}
+
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 28px;
+  -webkit-box-shadow:
+    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+    inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 6px 6px 0px -6px rgba(255, 255, 255, 0.7),
+    inset 0 0 8px 1px rgba(255, 255, 255, 0.7);
 }

@@ -1,7 +1,6 @@
 import { appWindow } from "@tauri-apps/api/window";
 import Settings from "./icons/settings";
 import { SVGAttributes, useEffect, useRef, useState } from "react";
-import Popover from "./ui/ui/popover";
 import DevIcon from "@/assets/images/developer-icon.jpg";
 import { useTheme } from "@/src/stores/theme";
 import { capitalize } from "@/lib/utils";
@@ -15,7 +14,7 @@ import {
 } from "@/src/constants";
 import { useIphoneConfig } from "@/src/stores/iphone-config";
 import { Button } from "./ui/buttons";
-import Menu from "./ui/ui/menu";
+import Menu from "./ui/menu";
 
 const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (

@@ -1,5 +1,5 @@
 import { SVGAttributes, useState } from "react";
-import Popover from "./ui/ui/popover";
+import Popover from "./ui/popover";
 import DeviceFrameIcon from "./icons/device-frame";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
 import { useDevice } from "@/src/stores/device";

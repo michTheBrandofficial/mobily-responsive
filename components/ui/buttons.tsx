@@ -34,18 +34,18 @@ export const Button: React.FC<ButtonProps> = ({
           : undefined
       }
       className={cn(
-        `font-semibold rounded-xl  `,
-        { "bg-primary-500 text-white": variant === "full" },
+        `tws-font-semibold tws-rounded-xl  `,
+        { "tws-bg-primary-500 tws-text-white": variant === "full" },
         {
-          "border-2 border-primary-500 text-primary-400 ":
+          "tws-border-2 tws-border-primary-500 tws-text-primary-400 ":
             variant === "outline",
         },
-        { "text-primary-500": variant === "ghost" },
-        { "text-paragraph bg-stone-200 ": variant === "dormant" },
-        { "px-4 py-2 text-sm": variant !== "icon" },
-        { "bg-primary-500 text-white px-2 py-2": variant === "icon" },
-        { "cursor-not-allowed opacity-50": props.disabled },
-        { "flex items-center gap-x-3 justify-center ": loading },
+        { "tws-text-primary-500": variant === "ghost" },
+        { "tws-text-paragraph tws-bg-stone-200 ": variant === "dormant" },
+        { "tws-px-4 tws-py-2 tws-text-sm": variant !== "icon" },
+        { "tws-bg-primary-500 tws-text-white tws-px-2 tws-py-2": variant === "icon" },
+        { "tws-cursor-not-allowed tws-opacity-50": props.disabled },
+        { "tws-flex tws-items-center tws-gap-x-3 tws-justify-center ": loading },
         className,
       )}
     >

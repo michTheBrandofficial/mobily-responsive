@@ -40,6 +40,7 @@ import { useFullscreen } from "./stores/fullscreen";
 import { IframeSrcContext } from "./stores/iframe-src";
 import { useIphoneConfig } from "./stores/iphone-config";
 import { IframeRefContext } from "./stores/iframe-ref";
+import Components from "@/components";
 
 /**
  * @dev fetches icons to save to storage and render on screen.
@@ -302,7 +303,7 @@ const Application: FC = () => {
 };
 
 const View = () => {
-  return <Application />;
+  return <Components />;
 };
 
 export default View;
