@@ -9,7 +9,7 @@ interface LiquidGlassProps extends React.HTMLAttributes<HTMLDivElement> {}
 export default function LiquidGlass({ children, ...props }: LiquidGlassProps) {
   return (
     <>
-      <div className="tws-absolute -tws-top-[200px] -tws-left-[400px] ">
+      <div className="tws-absolute -tws-top-[200px] -tws-left-[40px] ">
         <div className="wrapper">
           <div className="liquidGlass-wrapper menu">
             <div className="liquidGlass-effect"></div>
