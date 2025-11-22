@@ -1,14 +1,25 @@
-import * as React from "react";
-import "./liquid-glass.css";
 import { cn } from "@/lib/cn";
 import { uint8 } from "@/lib/number";
 import { pipe } from "@/lib/pipe";
 import { hexToRgbArray, rgbArrayToHex } from "@/lib/utils";
+import { HTMLMotionProps, motion } from "motion/react";
+import * as React from "react";
+import "./liquid-glass.css";
+
+type HexColor = `#${string}`;
+
+type RgbColor = [uint8, uint8, uint8];
 
 interface LiquidGlassProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "color"> {
-  children?: React.ReactElement;
-  color?: `#${string}` | [uint8, uint8, uint8];
+  extends Omit<HTMLMotionProps<"div">, "children" | "color"> {
+  children?: React.ReactNode;
+  color?: HexColor | RgbColor;
+  /**
+   * @dev tint is the white tint around the liquid glass,
+   * @default white
+   * @cancustomize to use {@link LiquidGlassProps.color} or custom color
+   */
+  tint?: "use-color" | RgbColor;
 }
 
 /**
@@ -17,20 +28,33 @@ interface LiquidGlassProps
 export default function LiquidGlass({
   children,
   className,
-  style,
+  style = {},
   color = `#bbbbbc`,
+  tint,
   ...props
 }: LiquidGlassProps) {
-  const glassColor = pipe(color, (color) => {
-    if (typeof color === "string") return color;
-    else if (Array.isArray(color)) return rgbArrayToHex(color);
+  const [hex, rgb] = pipe(color, (color): [HexColor, RgbColor] => {
+    if (typeof color === "string") return [color, hexToRgbArray(color)];
+    else if (Array.isArray(color)) return [rgbArrayToHex(color), color];
+    return ["#bbbbbc", hexToRgbArray("#bbbbbc")];
   });
   return (
-    <div className={cn("liquid-glass", className)}
+    <motion.div
+      {...props}
+      className={cn("liquid-glass", className)}
       style={{
         // this is what styles the glass color
         // @ts-ignore
-        "--c-glass": glassColor || `#bbbbbc`
+        "--c-glass": hex,
+        ...(tint
+          ? {
+              // pass the color here for the tint around
+              "--c-light": tint === 'use-color'
+                ? `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, .07)`
+                : `rgba(${tint[0]}, ${tint[1]}, ${tint[2]}, .07)`
+            }
+          : {}),
+        ...style,
       }}
     >
       {children}
@@ -87,6 +111,6 @@ export default function LiquidGlass({
           </filter>
         </svg>
       </div>
-    </div>
+    </motion.div>
   );
 }

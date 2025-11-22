@@ -117,6 +117,14 @@ export function last<T>(value: T[] | string) {
   return value[value.length - 1];
 }
 
+export function first<T>(value: T[]): T;
+
+export function first(value: string): string;
+
+export function first<T>(value: T[] | string) {
+  return value[0];
+}
+
 type CaseArray<C, R> = [C, R];
 
 /**

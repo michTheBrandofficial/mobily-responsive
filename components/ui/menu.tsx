@@ -1,6 +1,6 @@
-import { omit } from "@/lib/utils";
+import { first, last, omit } from "@/lib/utils";
 import { cn } from "@/lib/cn";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, HTMLMotionProps, motion } from "motion/react";
 import React, {
   createContext,
   Dispatch,
@@ -10,19 +10,21 @@ import React, {
   useRef,
   useState,
 } from "react";
+import LiquidGlass from "./liquid-glass";
 
 type MenuContextType = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<MenuContextType["open"]>>;
   config: {
     transformOrigin:
-    | "center"
-    | "top-left"
-    | "top-right"
-    | "bottom-left"
-    | "bottom-right";
-    noBlur: boolean | undefined
+      | "center"
+      | "top-left"
+      | "top-right"
+      | "bottom-left"
+      | "bottom-right";
+    noBlur: boolean | undefined;
   };
+  containerRef: React.RefObject<HTMLDivElement | null>;
 };
 
 const MenuContext = createContext<MenuContextType | null>(null);
@@ -37,11 +39,11 @@ const useMenu = () => {
 
 type MenuProps = Pick<Props, "children"> & {
   transformOrigin?:
-  | "center"
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right";
+    | "center"
+    | "top-left"
+    | "top-right"
+    | "bottom-left"
+    | "bottom-right";
   noBlur?: boolean;
   className?: string;
 };
@@ -49,9 +51,12 @@ type MenuProps = Pick<Props, "children"> & {
 const MenuProvider = ({
   children,
   transformOrigin = "center",
+  // for here I'd like noblur
+  noBlur = true,
   ...props
 }: MenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   return (
     <MenuContext.Provider
       value={{
@@ -59,11 +64,14 @@ const MenuProvider = ({
         setOpen: setIsOpen,
         config: {
           transformOrigin,
-          noBlur: props.noBlur
+          noBlur: noBlur,
         },
+        containerRef,
       }}
     >
-      <section className={cn(props.className, " w-fit h-fit relative")}>
+      <section
+        className={cn(props.className, " tws-w-fit tws-h-fit tws-relative")}
+      >
         {children}
       </section>
     </MenuContext.Provider>
@@ -91,9 +99,13 @@ const MenuTrigger: React.FC<Pick<Props, "children" | "className">> = ({
     <motion.div
       whileTap={{ scale: 0.95 }}
       whileHover={{ scale: 1.05 }}
-      className={cn("w-fit h-fit p-0 bg-transparent text-inherit ", className, {
-        "relative z-[100000000]": shouldHaveHighZIndex,
-      })}
+      className={cn(
+        "tws-w-fit tws-h-fit tws-relative tws-p-0 tws-bg-transparent tws-text-inherit ",
+        className,
+        {
+          "tws-relative tws-z-[100000000]": shouldHaveHighZIndex,
+        },
+      )}
       onTap={() => {
         setShouldHaveHighZIndex(true);
         setTimeout(() => {
@@ -107,62 +119,72 @@ const MenuTrigger: React.FC<Pick<Props, "children" | "className">> = ({
 };
 
 const MenuContent: React.FC<Props> = ({ children, className }) => {
-  const { open, setOpen, config } = useMenu();
-  const containerRef = useRef<HTMLElement>(null);
+  const { open, setOpen, config, containerRef } = useMenu();
   useEffect(() => {
-    if (open) containerRef.current?.focus();
+    // focus on first menu item
+    if (!open) return;
+    const firstMenuItem =
+      containerRef.current?.querySelector<HTMLDivElement>(".lg-menu-item");
+    if (firstMenuItem) firstMenuItem.focus();
   }, [open]);
   return (
-    <AnimatePresence mode="sync" >
+    <AnimatePresence mode="sync">
       {open ? (
         <>
           <motion.section
-            key={'menu-underlay'}
+            key={"menu-underlay"}
             layout
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{
               opacity: 0,
               transition: {
-                duration: 0.2
-              }
+                duration: 0.2,
+              },
             }}
             onClick={(e) => {
               if (e.target === e.currentTarget) setOpen(false);
             }}
-            className={cn("fixed h-screen w-screen bg-transparent !mt-0 top-0 left-0 z-[10000000]", {
-              'bg-white/25 backdrop-blur-[2px]': !config.noBlur
-            })}
+            className={cn(
+              "tws-fixed tws-h-screen tws-w-screen tws-bg-transparent !tws-mt-0 tws-top-0 tws-left-0 tws-z-[10000000]",
+              {
+                "tws-bg-white/25 tws-backdrop-blur-[2px]": !config.noBlur,
+              },
+            )}
           ></motion.section>
-          <motion.section
+          <LiquidGlass
             ref={containerRef}
-            key={'menu'}
+            key={"menu"}
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             exit={{
-              scale: 0.5, opacity: 0,
+              scale: 0.5,
+              opacity: 0,
               transition: {
-                duration: 0.2
-              }
+                duration: 0.2,
+              },
             }}
             tabIndex={0}
             className={cn(
-              `min-h-[400px] min-w-[300px] top-[120%] bg-white rounded-2xl absolute z-[100000000] border border-gray-100 `,
+              `tws-min-h-[220px] tws-min-w-[240px] tws-top-[120%] tws-rounded-[32px] tws-absolute tws-z-[100000000] tws-p-2 `,
               className,
-              { "origin-center": config.transformOrigin === "center" },
-              { "origin-top-right": config.transformOrigin === "top-right" },
-              { "origin-top-left": config.transformOrigin === "top-left" },
+              { "tws-origin-center": config.transformOrigin === "center" },
               {
-                "origin-bottom-left": config.transformOrigin === "bottom-left",
+                "tws-origin-top-right": config.transformOrigin === "top-right",
+              },
+              { "tws-origin-top-left": config.transformOrigin === "top-left" },
+              {
+                "tws-origin-bottom-left":
+                  config.transformOrigin === "bottom-left",
               },
               {
-                "origin-bottom-right":
+                "tws-origin-bottom-right":
                   config.transformOrigin === "bottom-right",
-              }
+              },
             )}
           >
             {children}
-          </motion.section>
+          </LiquidGlass>
         </>
       ) : (
         ""
@@ -171,39 +193,63 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
   );
 };
 
-type MenuItemProps = Props & React.JSX.IntrinsicElements['div'] & {
-  /**
-   * @dev this should be used over the onClick
-   * @dev this passes a calllback which can then be used to close the menu
-   * */
-  onTap?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, close: VoidFunction) => void
-}
+type MenuItemProps = Props &
+  Omit<HTMLMotionProps<"div">, "onClick" | "onTap"> & {
+    onTap?: (close: VoidFunction) => void;
+  };
 
 const MenuItem: React.FC<MenuItemProps> = ({
   children,
   className,
   ...props
 }) => {
-  const { setOpen } = useMenu();
+  const { setOpen, containerRef } = useMenu();
   return (
-    <div
-      {...omit(props, 'onTap')}
-      tabIndex={0}
-      onClick={(e) => {
-        if (props.onTap)
-          props.onTap(e, () => setOpen(false))
-        else {
+    <motion.div
+      tabIndex={1}
+      {...omit(props, "onTap")}
+      whileTap={{ scale: 0.9 }}
+      onTap={() => {
+        props.onTap?.(() => setOpen(false));
+      }}
+      onKeyUp={(e) => {
+        if (e.key === "Enter") {
+          props.onTap?.(() => setOpen(false));
+        } else if (e.key === "Escape") {
           setOpen(false);
-          props.onClick?.(e);
+        } else if (e.key === "ArrowUp") {
+          // go to last item
+          const items = Array.from(
+            containerRef.current?.querySelectorAll(".lg-menu-item") || [],
+          );
+          const index = items.indexOf(e.target as HTMLElement);
+          (
+            ((items[index - 1] ||
+              last(items)) /* focus trap here */ as HTMLElement) || null
+          )?.focus();
+        } else if (e.key === "ArrowDown") {
+          // go to next item
+          const items = Array.from(
+            containerRef.current?.querySelectorAll(".lg-menu-item") || [],
+          );
+          const index = items.indexOf(e.target as HTMLElement);
+          (
+            ((items[index + 1] ||
+              first(items)) /* focus trap here */ as HTMLElement) || null
+          )?.focus();
         }
       }}
-      className={cn(
-        "w-full h-fit focus:outline-none focus:bg-gray-100 hover:bg-gray-100 first:rounded-t-[inherit] last:rounded-b-[inherit] px-5 py-3 cursor-pointer border-b border-gray-100 flex items-center justify-between gap-x-3 ",
-        className
-      )}
+      className="lg-menu-item focus:tws-outline-none focus:tws-bg-gray-100/30 hover:tws-bg-gray-100/30 tws-rounded-[24px]"
     >
-      {children}
-    </div>
+      <motion.div
+        className={cn(
+          "tws-w-full tws-h-fit tws-rounded-[inherit] tws-px-5 tws-py-3 tws-cursor-pointer tws-flex tws-items-center tws-justify-between tws-gap-x-3 ",
+          className,
+        )}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
   );
 };
 
