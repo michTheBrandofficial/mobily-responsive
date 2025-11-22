@@ -3,7 +3,7 @@ import "./liquid-glass.css";
 import { cn } from "@/lib/cn";
 import { uint8 } from "@/lib/number";
 import { pipe } from "@/lib/pipe";
-import { hexToRgbArray } from "@/lib/utils";
+import { hexToRgbArray, rgbArrayToHex } from "@/lib/utils";
 
 interface LiquidGlassProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "color"> {
@@ -18,16 +18,21 @@ export default function LiquidGlass({
   children,
   className,
   style,
-  color,
+  color = `#bbbbbc`,
   ...props
 }: LiquidGlassProps) {
   const glassColor = pipe(color, (color) => {
-    if (typeof color === "string") return hexToRgbArray(color as `#${string}`);
-    if (Array.isArray(color)) return color;
-    return [uint8(100), uint8(100), uint8(100)];
+    if (typeof color === "string") return color;
+    else if (Array.isArray(color)) return rgbArrayToHex(color);
   });
   return (
-    <div className={cn("liquid-glass", className)}>
+    <div className={cn("liquid-glass", className)}
+      style={{
+        // this is what styles the glass color
+        // @ts-ignore
+        "--c-glass": glassColor || `#bbbbbc`
+      }}
+    >
       {children}
       <div className="liquid-glass-filter">
         <svg>

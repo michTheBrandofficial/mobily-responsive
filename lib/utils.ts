@@ -270,3 +270,17 @@ export function hexToRgbArray(hex: `#${string}`) {
 
   return [r, g, b] as [uint8, uint8, uint8];
 }
+
+export function rgbArrayToHex([r, g, b]: [uint8, uint8, uint8]): `#${string}` {
+  // Ensure values are within valid range (0-255) and are integers
+  const clampedR = Math.max(0, Math.min(255, Math.round(r)));
+  const clampedG = Math.max(0, Math.min(255, Math.round(g)));
+  const clampedB = Math.max(0, Math.min(255, Math.round(b)));
+
+  // Convert to hex and pad with zeros if necessary
+  const hexR = clampedR.toString(16).padStart(2, '0');
+  const hexG = clampedG.toString(16).padStart(2, '0');
+  const hexB = clampedB.toString(16).padStart(2, '0');
+
+  return `#${hexR}${hexG}${hexB}` as `#${string}`;
+}
