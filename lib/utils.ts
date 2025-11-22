@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import { pipe } from "./pipe";
+import { uint8 } from "./number";
 
 export const getDims = ({
   width,
@@ -251,4 +252,21 @@ export function iife<T>(fn: () => T) {
 
 export function isFunction(value: any): value is Function {
   return typeof value === 'function';
+}
+
+export function hexToRgbArray(hex: `#${string}`) {
+  // Remove the # if present
+  hex = hex.replace(/^#/, '') as typeof hex;
+
+  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+  if (hex.length === 3) {
+    hex = hex.split('').map(char => char + char).join('') as typeof hex;
+  }
+
+  // Parse the hex values
+  const r = uint8(parseInt(hex.substring(0, 2), 16));
+  const g = uint8(parseInt(hex.substring(2, 4), 16));
+  const b = uint8(parseInt(hex.substring(4, 6), 16));
+
+  return [r, g, b] as [uint8, uint8, uint8];
 }
