@@ -152,7 +152,7 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
               },
             )}
           ></motion.section>
-          <LiquidGlass
+          <LiquidGlass.div
             ref={containerRef}
             key={"menu"}
             initial={{ scale: 0.5 }}
@@ -184,7 +184,7 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
             )}
           >
             {children}
-          </LiquidGlass>
+          </LiquidGlass.div>
         </>
       ) : (
         ""
@@ -213,6 +213,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         props.onTap?.(() => setOpen(false));
       }}
       onKeyUp={(e) => {
+        e.preventDefault()
         if (e.key === "Enter") {
           props.onTap?.(() => setOpen(false));
         } else if (e.key === "Escape") {
