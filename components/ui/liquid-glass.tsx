@@ -5,11 +5,15 @@ import { hexToRgbArray, percentage, rgbArrayToHex } from "@/lib/utils";
 import { HTMLElements, HTMLMotionProps, motion } from "motion/react";
 import * as React from "react";
 import "./liquid-glass.css";
+import { memo } from "react";
 
-const LiquidGlassFilter = () => {
+/**
+ * @dev not used yet
+ */
+export const LiquidGlassFilter = () => {
   return (
     <div className="liquid-glass-filter">
-      <svg className="tws-hidden">
+      <svg className="">
         <filter id="glass-filter" primitiveUnits="objectBoundingBox">
           <feImage
             result="map"
@@ -101,50 +105,66 @@ type LiquidGlassHtmlElements = {
   >;
 };
 
+const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
+  children,
+  className,
+  style = {},
+  color = `#bbbbbc`,
+  tint,
+  mixingPercentage = 12,
+  tag,
+  ...props
+}: LiquidGlassProps & { tag: keyof HTMLElements }) {
+  const [hex, rgb] = pipe(color, (color): [HexColor, RgbColor] => {
+    if (typeof color === "string") return [color, hexToRgbArray(color)];
+    else if (Array.isArray(color)) return [rgbArrayToHex(color), color];
+    return ["#bbbbbc", hexToRgbArray("#bbbbbc")];
+  });
+  const MotionComponent = motion[tag as "div"];
+  return (
+    <MotionComponent
+      {...props}
+      className={cn("liquid-glass", className)}
+      style={{
+        // this is what styles the glass color
+        ...style,
+        // @ts-ignore
+        "--c-glass": hex,
+        "--mixing-percentage": percentage(mixingPercentage),
+        ...(tint
+          ? {
+              // pass the color here for the tint around
+              "--c-light":
+                tint === "use-color"
+                  ? `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, .07)`
+                  : `rgba(${tint[0]}, ${tint[1]}, ${tint[2]}, .07)`,
+            }
+          : {}),
+      }}
+    >
+      {children}
+    </MotionComponent>
+  );
+})
+
+const componentCache = new Map<string, React.FunctionComponent<any>>();
+
 const LiquidGlass = new Proxy({} as LiquidGlassHtmlElements, {
   get(_, property) {
     const tag = property as string;
-    return function LiquidGlass({
-      children,
-      className,
-      style = {},
-      color = `#bbbbbc`,
-      tint,
-      mixingPercentage = 12,
-      ...props
-    }: LiquidGlassProps) {
-      const [hex, rgb] = pipe(color, (color): [HexColor, RgbColor] => {
-        if (typeof color === "string") return [color, hexToRgbArray(color)];
-        else if (Array.isArray(color)) return [rgbArrayToHex(color), color];
-        return ["#bbbbbc", hexToRgbArray("#bbbbbc")];
-      });
-      const MotionComponent = motion[tag as "div"];
-      return (
-        <MotionComponent
-          {...props}
-          className={cn("liquid-glass", className)}
-          style={{
-            // this is what styles the glass color
-            ...style,
-            // @ts-ignore
-            "--c-glass": hex,
-            "--mixing-percentage": percentage(mixingPercentage),
-            ...(tint
-              ? {
-                  // pass the color here for the tint around
-                  "--c-light":
-                    tint === "use-color"
-                      ? `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, .07)`
-                      : `rgba(${tint[0]}, ${tint[1]}, ${tint[2]}, .07)`,
-                }
-              : {}),
-          }}
-        >
-          {children}
-          <LiquidGlassFilter />
-        </MotionComponent>
-      );
-    };
+
+    // Return cached component if it exists
+    if (componentCache.has(tag)) {
+      return componentCache.get(tag)!;
+    }
+
+    // Create and cache the component
+    const Component = (props: any) => (
+      <LiquidGlassImplMemoized {...props} tag={tag} />
+    );
+
+    componentCache.set(tag, Component);
+    return Component;
   },
 });
 

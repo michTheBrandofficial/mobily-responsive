@@ -26,7 +26,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
   return (
     <div
       className={cn(
-        "tws-flex tws-font-Switzer tws-flex-col tws-relative ",
+        "tws-flex tws-bg- tws-font-Switzer tws-flex-col tws-relative ",
         {
           "tws-opacity-[.4]": props.disabled,
           "tws-border-b-2 tws-border-b-[#E6E6E6]": Boolean(props.bottomBorder),
@@ -35,7 +35,6 @@ const TextInput: React.FC<TextInputProps> = (props) => {
         "data-[focused=true]:tws-border-b-sky-400 data-[error=true]:tws-border-b-red-400 data-[disabled=true]:tws-border-b-gray-400 data-[disabled=true]:tws-cursor-not-allowed ",
         props.className,
       )}
-      onClick={() => setIsFocused(true)}
       data-focused={isFocused}
       data-error={Boolean(error)}
       data-name={props.name}
@@ -51,7 +50,6 @@ const TextInput: React.FC<TextInputProps> = (props) => {
         ref={inputRef}
         value={props.value}
         disabled={props.disabled}
-        defaultValue={props.defaultValue || ""}
         onBlur={({ currentTarget: { value } }) => {
           if (value === "" && props.required)
             setError(`This field is required`);
