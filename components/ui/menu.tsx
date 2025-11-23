@@ -155,6 +155,7 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
           <LiquidGlass.div
             ref={containerRef}
             key={"menu"}
+            mixingPercentage={24}
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             exit={{

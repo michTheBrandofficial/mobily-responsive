@@ -8,6 +8,9 @@ const Components = () => {
       <Menu transformOrigin="top-left">
         <Menu.Trigger>
           <Button.LiquidGlass
+            color={'#fff'}
+            className="!tws-rounded-full"
+            mixingPercentage={12}
           // color={[uint8(14), uint8(165), uint8(233)]}
           >
             Open Modal

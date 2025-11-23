@@ -57,6 +57,11 @@ const ButtonImpl: React.FC<ButtonProps> = ({
 
 interface LiquidGlassButtonProps extends Omit<ButtonProps, 'color'> {
   color?: HexColor | RgbColor
+  /**
+   * @dev mixing percentage meaning the percentage of {@link LiquidGlassProps.color} contributed to the glass. Expressed in whole numbers from 0 to 100.
+   * @default 12
+   */
+  mixingPercentage?: number;
 }
 
 /**

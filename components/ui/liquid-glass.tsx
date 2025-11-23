@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 import { uint8 } from "@/lib/number";
 import { pipe } from "@/lib/pipe";
-import { hexToRgbArray, rgbArrayToHex } from "@/lib/utils";
+import { hexToRgbArray, percentage, rgbArrayToHex } from "@/lib/utils";
 import { HTMLElements, HTMLMotionProps, motion } from "motion/react";
 import * as React from "react";
 import "./liquid-glass.css";
@@ -9,7 +9,7 @@ import "./liquid-glass.css";
 const LiquidGlassFilter = () => {
   return (
     <div className="liquid-glass-filter">
-      <svg className="tws-hidden" >
+      <svg className="tws-hidden">
         <filter id="glass-filter" primitiveUnits="objectBoundingBox">
           <feImage
             result="map"
@@ -78,22 +78,27 @@ interface LiquidGlassProps
    * @cancustomize to use {@link LiquidGlassProps.color} or custom color
    */
   tint?: "use-color" | RgbColor;
+  mixingPercentage?: number;
 }
 
 type LiquidGlassHtmlElements = {
-  [Tag in keyof HTMLElements]: React.FunctionComponent<Omit<
-    HTMLMotionProps<Tag>,
-    "children" | "color"
-  > & {
-    children?: React.ReactNode;
-    color?: HexColor | RgbColor;
-    /**
-     * @dev tint is the white tint around the liquid glass,
-     * @default white
-     * @cancustomize to use {@link LiquidGlassProps.color} or custom color
-     */
-    tint?: "use-color" | RgbColor;
-  }>;
+  [Tag in keyof HTMLElements]: React.FunctionComponent<
+    Omit<HTMLMotionProps<Tag>, "children" | "color"> & {
+      children?: React.ReactNode;
+      color?: HexColor | RgbColor;
+      /**
+       * @dev tint is the white tint around the liquid glass,
+       * @default white
+       * @cancustomize to use {@link LiquidGlassProps.color} or custom color
+       */
+      tint?: "use-color" | RgbColor;
+      /**
+       * @dev mixing percentage meaning the percentage of {@link LiquidGlassProps.color} contributed to the glass. Expressed in whole numbers from 0 to 100.
+       * @default 12
+       */
+      mixingPercentage?: number;
+    }
+  >;
 };
 
 const LiquidGlass = new Proxy({} as LiquidGlassHtmlElements, {
@@ -105,6 +110,7 @@ const LiquidGlass = new Proxy({} as LiquidGlassHtmlElements, {
       style = {},
       color = `#bbbbbc`,
       tint,
+      mixingPercentage = 12,
       ...props
     }: LiquidGlassProps) {
       const [hex, rgb] = pipe(color, (color): [HexColor, RgbColor] => {
@@ -122,6 +128,7 @@ const LiquidGlass = new Proxy({} as LiquidGlassHtmlElements, {
             ...style,
             // @ts-ignore
             "--c-glass": hex,
+            "--mixing-percentage": percentage(mixingPercentage),
             ...(tint
               ? {
                   // pass the color here for the tint around
