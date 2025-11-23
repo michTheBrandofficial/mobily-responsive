@@ -1,17 +1,27 @@
 import { sleep } from "@/lib/utils";
 import { Button } from "./ui/buttons";
 import Menu from "./ui/menu";
+import { Input } from "./ui/inputs/input";
+import { useState } from "react";
 
 const Components = () => {
+  const [value, setValue] = useState("");
   return (
     <section className="tws-w-full tws-bg-transparent tws-h-screen tws-overflow-x-auto tws-p-3 tws-space-y-5 tws-no-scrollbar tws-relative">
+      <div className="tws-w-[280px] tws-h-fit tws-p-6 tws-bg-[#787880]/[.16] tws-rounded-[32px] ">
+        <Input.Text
+          value={value}
+          required
+          onChange={(e) => setValue(e.target.value)}
+          bottomBorder className=" " name="url" placeholder="Url" />
+      </div>
       <Menu transformOrigin="top-left">
         <Menu.Trigger>
           <Button.LiquidGlass
-            color={'#fff'}
+            color={"#fff"}
             className="!tws-rounded-full"
             mixingPercentage={12}
-          // color={[uint8(14), uint8(165), uint8(233)]}
+            // color={[uint8(14), uint8(165), uint8(233)]}
           >
             Open Modal
           </Button.LiquidGlass>

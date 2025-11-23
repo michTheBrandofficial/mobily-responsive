@@ -101,7 +101,7 @@ const HomeScreen: React.FC = () => {
       style={{
         paddingTop: `${90 - parseInt(`${iphoneConfig.safeAreaInset}`)}px`,
       }}
-      className="tws-h-full tws-w-full tws-flex tws-flex-col tws-justify-between tws-font-Helvetica_Neue tws-tracking-wide"
+      className="tws-h-full tws-w-full tws-flex tws-flex-col tws-justify-between tws-font-Switzer tws-tracking-wide"
     >
       <section
         className={cn(
@@ -129,7 +129,7 @@ const HomeScreen: React.FC = () => {
       <section className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] ">
         <div
           className={cn(
-            "tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-Rubik tws-flex tws-items-center tws-gap-x-1 tws-text-xs",
+            "tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-Switzer tws-flex tws-items-center tws-gap-x-1 tws-text-xs",
             ipadConfigMemo.searchButtonClass,
           )}
         >

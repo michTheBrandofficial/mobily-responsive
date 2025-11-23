@@ -41,7 +41,7 @@ const DeviceSelectMenu = () => {
           <DeviceFrameIcon color="#CFCFCC" className={"tws-h-5 "} />
         </Button>
       </Popover.Trigger>
-      <Popover.Content className="!tws-bg-white/80 tws-min-w-[200px] tws-rounded-xl !tws-min-h-fit tws-h-fit !tws-border-none tws-font-Rubik -tws-right-[225%] ">
+      <Popover.Content className="!tws-bg-white/80 tws-min-w-[200px] tws-rounded-xl !tws-min-h-fit tws-h-fit !tws-border-none tws-font-Switzer -tws-right-[225%] ">
         <div className=" tws-text-white tws-flex tws-flex-col ">
             {deviceList.map((device, index) => (
               <div

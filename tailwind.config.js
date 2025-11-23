@@ -21,7 +21,6 @@ const WallPapersConfig = plugin(({ addUtilities }) => {
 export default {
   content: [
     "index.html",
-    "./node_modules/nixix/view-components/index.tsx",
     "./src/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./pages/**/*.{ts,tsx}",
@@ -31,6 +30,8 @@ export default {
       fontFamily: {
         Rubik: ["Rubik", "sans-serif"],
         Helvetica_Neue: ["Helvetica_Neue", "Arial"],
+        Switzer: ["Switzer", "sans-serif"],
+        Open_Sans: ["Open_Sans", "sans-serif"],
       },
       backgroundColor: {
         "sidebar-button": "#939393",
