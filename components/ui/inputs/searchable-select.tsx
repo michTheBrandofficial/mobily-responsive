@@ -110,10 +110,10 @@ const SearchableSelectImpl = <T = {},>({
         setIsOpen(false);
         setIsFocused(false);
 
-        if (and([required, !value]))
+        if (and([required, !value])) {
           // set error here
           setError("This field is required");
-        else setError("");
+        } else setError("");
       }
     };
 
@@ -212,15 +212,28 @@ const SearchableSelectImpl = <T = {},>({
           data-disabled={rest.disabled}
           data-focused={isFocused}
         >
-          <input
+          <motion.input
+            initial={false}
+            // shake from left to right ios animation
+            animate={
+              Boolean(error)
+                ? {
+                    x: [-4, 8, -16, 16, -16, 8, -4, 0],
+                    transition: {
+                      duration: 0.82,
+                      ease: [0.36, 0.07, 0.19, 0.97],
+                    },
+                  }
+                : { x: 0 }
+            }
             ref={inputRef}
             type="text"
             name={name}
             required={required}
             className={cn(
-              `tws-font-normal tws-text-[#080808] placeholder:tws-font-normal placeholder:tws-text-[#3C3C43]/30 tws-caret-sky-500 selection:tws-bg-sky-500 selection:tws-text-white  tws-w-full tws-text-base tws-bg-transparent tws-py-1.5 tws-pb-2.5 focus:tws-outline-none`,
+              `tws-font-normal tws-text-[#080808] placeholder:tws-font-normal placeholder:tws-text-[#f1f1f1]/80 tws-caret-sky-500 selection:tws-bg-sky-500 selection:tws-text-white  tws-w-full tws-text-base tws-bg-transparent tws-py-1.5 tws-pb-2.5 focus:tws-outline-none`,
               {
-                "placeholder:!tws-text-red-400": Boolean(error && !isFocused),
+                "placeholder:!tws-text-red-400 placeholder:!tws-text-sm placeholder:tws-pt-1 ": Boolean(error && !isFocused),
               },
             )}
             placeholder={error && !isFocused ? error : placeholder}
@@ -261,7 +274,7 @@ const SearchableSelectImpl = <T = {},>({
                   setIsFocused(shouldBeOpen);
                 });
               }}
-              className="!tws-p-0 !tws-w-fit tws-bg-transparent tws-flex tws-flex-col -tws-space-y-1.5 tws-text-[#3C3C43]/30 "
+              className="!tws-p-0 !tws-w-fit tws-bg-transparent tws-flex tws-flex-col -tws-space-y-[7px] tws-text-[#3C3C43]/30 "
               aria-label={isOpen ? "Close dropdown" : "Open dropdown"}
             >
               <ChevronUp size={16} />
