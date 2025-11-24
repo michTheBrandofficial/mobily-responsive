@@ -155,7 +155,8 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
           <LiquidGlass.div
             ref={containerRef}
             key={"menu"}
-            mixingPercentage={24}
+            color={"#e3e3e3"}
+            mixingPercentage={90}
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             exit={{
@@ -167,7 +168,7 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
             }}
             tabIndex={0}
             className={cn(
-              `tws-min-h-[220px] tws-min-w-[240px] tws-top-[120%] tws-rounded-[32px] tws-absolute tws-z-[100000000] tws-p-2`,
+              "tws-min-h-[220px] tws-min-w-[240px] tws-top-[120%] tws-rounded-[32px] tws-absolute tws-z-[100000000] tws-p-2 tws-space-y-2 ",
               className,
               { "tws-origin-center": config.transformOrigin === "center" },
               {
@@ -241,7 +242,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
           )?.focus();
         }
       }}
-      className="lg-menu-item focus:tws-outline-none focus:tws-bg-gray-100/30 hover:tws-bg-gray-100/30 tws-rounded-[24px]"
+      className="lg-menu-item focus:tws-outline-none focus:tws-bg-stone-400/40 hover:tws-bg-stone-400/60 tws-rounded-[24px] tws-cursor-pointer tws-transition-colors tws-duration-150"
     >
       <motion.div
         className={cn(
