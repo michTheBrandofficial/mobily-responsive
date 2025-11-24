@@ -1,251 +1,309 @@
+import MinimizeFullscreen from "@/components/icons/minimize";
+import TopNavbar from "@/components/top-navbar";
+import { Button } from "@/components/ui/buttons";
+import { cn } from "@/lib/cn";
 import { ErrorMatcher } from "@/lib/error-matcher";
 import { handleDirCreation } from "@/lib/file-handle";
-import { blobToBinary, prefixWithSlash, px, wait } from "@/lib/utils";
+import { pipe } from "@/lib/pipe";
 import {
-	BaseDirectory,
-	exists,
-	readTextFile,
-	writeBinaryFile,
-	writeFile,
+  blobToBinary,
+  entries,
+  findAndPipe,
+  iife,
+  prefixWithSlash,
+  px,
+  sleep,
+} from "@/lib/utils";
+import {
+  BaseDirectory,
+  exists,
+  readTextFile,
+  writeBinaryFile,
+  writeFile,
 } from "@tauri-apps/api/fs";
-import { concat, effect, memo, reaction, signal } from "nixix/primitives";
-import { Container, VStack } from "nixix/view-components";
+import { err, ok, Result } from "neverthrow";
 import {
-	dataDir,
-	FSOptions,
-	iframeRef,
-	setDeviceFrameHeightClass,
-} from "./constants";
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { dataDir, FSOptions, useDeviceFrameHeight } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { useBasePhoneConfig } from "./stores/base-phone-config";
 import { useDevice } from "./stores/device";
 import { useDeviceScreen } from "./stores/device-screen";
 import { useDeviceSettings } from "./stores/device-settings";
-import { useIphoneConfig } from "./stores/iphone-config";
-import TopNavbar from "@/components/top-navbar";
-import MinimizeFullscreen from "@/components/icons/minimize";
 import { useFullscreen } from "./stores/fullscreen";
+import { IframeSrcContext } from "./stores/iframe-src";
+import { useIphoneConfig } from "./stores/iphone-config";
+import { IframeRefContext } from "./stores/iframe-ref";
+import Components from "@/components";
 
-const [safeAreaInset, setSafeAreaInset] = signal<string>(px(0));
-
+/**
+ * @dev fetches icons to save to storage and render on screen.
+ */
 const fetchIconBlob = async (
-	icons: App.WebManifest["icons"],
-	iframeOrigin: string,
-) => {
-	return new Promise<Blob>((resolve, reject) => {
-		const icon192or512 = icons.find((value) => {
-			return ["192x192", "512x512", "180x180"].includes(value.sizes);
-		})?.src;
-		if (icon192or512)
-			fetch(`${iframeOrigin}${prefixWithSlash(icon192or512)}`).then(
-				async (val) => {
-					if (val.ok) {
-						resolve(await val.blob());
-					}
-				},
-			);
-		else reject(`No app icon found for ${iframeOrigin}`);
-	});
+  icons: App.WebManifest["icons"],
+  iframeOrigin: string,
+): Promise<Result<Blob, App.DisplayableError>> => {
+  const result = pipe(
+    icons.find((value) => {
+      return ["192x192", "512x512", "180x180"].includes(value.sizes);
+    })?.src,
+    async (icon192or512) => {
+      if (icon192or512) {
+        const iconBlob = await fetch(
+          `${iframeOrigin}${prefixWithSlash(icon192or512)}`,
+        )
+          .then(async (val) => ok(await val.blob()))
+          .catch((_) =>
+            err({
+              message: "App Icon not found",
+            } satisfies App.DisplayableError),
+          );
+        return iconBlob;
+      } else
+        return err({
+          message: "App Icon not found",
+        } satisfies App.DisplayableError);
+    },
+  );
+  return result;
 };
 
 const storeAppHomeScreenData = async (
-	name: string,
-	blob: Blob,
-	origin: string,
+  name: string,
+  blob: Blob,
+  origin: string,
 ) => {
-	// unique name using the short_name from the webmanifest combined with a base64 string formed from the origin
-	const iconFileName = `${name.replace(" ", "")}-${btoa(origin).replace(
-		/=/g,
-		"",
-	)}`;
-	const iconFilePath = `${dataDir}/AppIcons/${iconFileName}.png` as const;
-	const binary = await blobToBinary(blob);
-	await writeBinaryFile(
-		{
-			contents: binary,
-			path: iconFilePath,
-		},
-		FSOptions,
-	);
-	const iconsJsonFilePath = `${dataDir}/icons.json`;
-	if (await exists(iconsJsonFilePath, FSOptions)) {
-		const jsonFile = await readTextFile(iconsJsonFilePath, FSOptions);
-		const fileAsJsonObject: App.HomeScreenIconMapping = JSON.parse(jsonFile);
-		if (iconFileName in fileAsJsonObject) return;
-		else {
-			fileAsJsonObject[iconFileName] = {
-				name,
-				icon: iconFilePath,
-				origin,
-			};
-			await writeFile(
-				{
-					contents: JSON.stringify(fileAsJsonObject),
-					path: `${dataDir}/icons.json`,
-				},
-				FSOptions,
-			);
-		}
-	} else {
-		await writeFile(
-			{
-				contents: JSON.stringify({
-					[iconFileName]: {
-						name,
-						icon: iconFilePath,
-						origin,
-					},
-				}),
-				path: `${dataDir}/icons.json`,
-			},
-			{
-				dir: BaseDirectory.AppLocalData,
-			},
-		);
-	}
+  // unique name using the short_name from the webmanifest combined with a base64 string formed from the origin
+  const iconFileName = `${name.replace(" ", "")}-${btoa(origin).replace(
+    /=/g,
+    "",
+  )}`;
+  const iconFilePath = `${dataDir}/AppIcons/${iconFileName}.png` as const;
+  const binary = await blobToBinary(blob);
+  await writeBinaryFile(
+    {
+      contents: binary,
+      path: iconFilePath,
+    },
+    FSOptions,
+  );
+  const iconsJsonFilePath = `${dataDir}/icons.json`;
+  if (await exists(iconsJsonFilePath, FSOptions)) {
+    const jsonFile = await readTextFile(iconsJsonFilePath, FSOptions);
+    const fileAsJsonObject: App.HomeScreenIconMapping = JSON.parse(jsonFile);
+    if (iconFileName in fileAsJsonObject) return;
+    else {
+      fileAsJsonObject[iconFileName] = {
+        name,
+        icon: iconFilePath,
+        origin,
+      };
+      await writeFile(
+        {
+          contents: JSON.stringify(fileAsJsonObject),
+          path: `${dataDir}/icons.json`,
+        },
+        FSOptions,
+      );
+    }
+  } else {
+    await writeFile(
+      {
+        contents: JSON.stringify({
+          [iconFileName]: {
+            name,
+            icon: iconFilePath,
+            origin,
+          },
+        }),
+        path: `${dataDir}/icons.json`,
+      },
+      {
+        dir: BaseDirectory.AppLocalData,
+      },
+    );
+  }
 };
 
-const setupPWAConfig = (src: string | null) => {
-	if (!src) return;
-	const { origin: iframeOrigin } = new URL(src);
-	fetch(`${iframeOrigin}/manifest.json`)
-		.then(async (val) => {
-			// webmanifest data
-			if (!val.ok) return;
-			const manifest: App.WebManifest = await val.json();
-			if (manifest) {
-				const { display, theme_color, short_name, icons } = manifest;
-				const isFullScreen = display === "fullscreen";
-				if (isFullScreen) {
-					const { basePhoneConfig, setBasePhoneConfig } = useBasePhoneConfig();
-					const { iphoneConfig, setIphoneConfig } = useIphoneConfig();
-					const {
-						device: { value },
-					} = useDevice();
-					setSafeAreaInset((prev) => {
-						const { safeAreaInset } = value.includes("iphone")
-							? iphoneConfig
-							: basePhoneConfig;
-						return parseFloat(safeAreaInset) === 0 ? prev : safeAreaInset;
-					});
-					setBasePhoneConfig((prev) => {
-						prev.safeAreaInset = "0";
-						return prev;
-					});
-					setIphoneConfig((prev) => {
-						prev.safeAreaInset = "0";
-						return prev;
-					});
-				}
-				useDeviceSettings().setDeviceSettings({
-					theme_color:
-						isFullScreen ||
-						useDeviceScreen().deviceScreen.value === "home-screen"
-							? "transparent"
-							: theme_color || "white",
-				});
-				const icon_blob = await fetchIconBlob(icons, iframeOrigin)
-					.then((blob) => blob)
-					.catch((err) => console.warn(err));
-				if (icon_blob)
-					storeAppHomeScreenData(short_name, icon_blob, iframeOrigin);
-			}
-		})
-		.catch((err) => {
-			ErrorMatcher.use(err).match(TypeError, () => {
-				console.log(err);
-			});
-		});
+const setupPWAConfig = (
+  src: string | null,
+  setSafeAreaInset: Dispatch<SetStateAction<string>>,
+) => {
+  if (!src) return;
+  const { origin: iframeOrigin } = new URL(src);
+  fetch(`${iframeOrigin}/manifest.json`)
+    .then(async (val) => {
+      // webmanifest data
+      if (!val.ok) return;
+      const manifest: App.WebManifest = await val.json();
+      if (manifest) {
+        const { display, theme_color, short_name, icons } = manifest;
+        const isFullScreen = display === "fullscreen";
+        if (isFullScreen) {
+          const { basePhoneConfig, setBasePhoneConfig } = useBasePhoneConfig();
+          const { iphoneConfig, setIphoneConfig } = useIphoneConfig();
+          const { device } = useDevice();
+          setSafeAreaInset((prev) => {
+            const { safeAreaInset } = device.includes("iphone")
+              ? iphoneConfig
+              : basePhoneConfig;
+            return parseFloat(safeAreaInset) === 0 ? prev : safeAreaInset;
+          });
+          setBasePhoneConfig((prev) => {
+            prev.safeAreaInset = "0";
+            return prev;
+          });
+          setIphoneConfig((prev) => {
+            prev.safeAreaInset = "0";
+            return prev;
+          });
+        }
+        const { setSettings: setDeviceSettings } = useDeviceSettings();
+        const { deviceScreen } = useDeviceScreen();
+        setDeviceSettings({
+          theme_color:
+            isFullScreen || deviceScreen === "home-screen"
+              ? "transparent"
+              : theme_color || "white",
+        });
+        const icon_blob_result = await fetchIconBlob(icons, iframeOrigin);
+        if (icon_blob_result.isOk())
+          storeAppHomeScreenData(
+            short_name,
+            icon_blob_result.value,
+            iframeOrigin,
+          );
+      }
+    })
+    .catch((err) => {
+      ErrorMatcher.use(err).match(TypeError, () => {
+        console.log(err);
+      });
+    });
 };
 
-const View: Nixix.FC = (): someView => {
-	const [iframeSrc] = signal<string>("");
-	const { deviceScreen } = useDeviceScreen();
-	// setup data dir if it is not created;
-	effect(handleDirCreation);
-	effect(() => {
-		// subscribed
-		const src = iframeSrc.value;
-		if (!src) return;
-		localStorage.setItem("iframeSrc", src);
-		setupPWAConfig(src);
-	});
-	reaction(() => {
-		if (deviceScreen.value === "home-screen") {
-			iframeSrc.value = "";
-			wait(
-				() =>
-					useDeviceSettings().setDeviceSettings((p) => {
-						p.theme_color = "white";
-						return p;
-					}),
-				400,
-			);
-		}
-	}, [deviceScreen]);
-	reaction(() => {
-		setTimeout(() => {
-			const message = {
-				type: "mobily-responsive-safeAreaInset",
-				safeAreaInsetTop: safeAreaInset.value,
-			};
-			if (deviceScreen.value === "app-screen")
-				iframeRef.current?.contentWindow?.postMessage(
-					JSON.stringify(message),
-					new URL(iframeSrc.value).origin,
-				);
-		}, 1000);
-	}, [iframeSrc]);
-	const { isFullscreen, setIsFullscreen } = useFullscreen();
-	const classMemo = memo(() => {
-		return isFullscreen.value ? "" : "tws-hidden";
-	}, [isFullscreen]);
+const Application: FC = () => {
+  const [iframeSrc, setIframeSrc] = useState("");
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [safeAreaInset, setSafeAreaInset] = useState<string>(px(0));
+  const { deviceScreen, setDeviceScreen } = useDeviceScreen();
+  const { setSettings: setDeviceSettings, settings: deviceSettings } =
+    useDeviceSettings();
+  const { setDeviceFrameHeightClass } = useDeviceFrameHeight();
+  const { isFullscreen, setIsFullscreen } = useFullscreen();
+  const { device } = useDevice();
+  // setup data dir if it is not created;
+  useEffect(() => {
+    handleDirCreation();
+  }, []);
+  // set up effect for setting iframeSrc
+  useEffect(() => {
+    const src = iframeSrc;
+    if (!src) return;
+    localStorage.setItem("iframeSrc", src);
+    setupPWAConfig(src, setSafeAreaInset);
+    // send safeAreaInset for clients.
+    iife(async () => {
+      await sleep(1000);
+      const message = {
+        type: "mobily-responsive-safeAreaInset",
+        safeAreaInsetTop: safeAreaInset,
+      };
+      if (deviceScreen === "app-screen")
+        iframeRef.current?.contentWindow?.postMessage(
+          JSON.stringify(message),
+          new URL(iframeSrc).origin,
+        );
+    });
+  }, [iframeSrc]);
+  // set up homescreen theme_color effect
+  useEffect(() => {
+    if (deviceScreen === "home-screen") {
+      setIframeSrc("");
+      iife(async () => {
+        await sleep(400);
+        setDeviceSettings({
+          ...deviceSettings,
+          theme_color: "white",
+        });
+      });
+    }
+  }, [deviceScreen]);
+  useEffect(() => {
+    // set device screen to home
+    setDeviceScreen("home-screen");
+  }, [device]);
 
-	return (
-		<VStack
-			style={{
-				width: "100vw",
-				height: "100vh",
-				backgroundColor: "transparent",
-				display: "flex",
-				alignItems: "center",
-				justifyContent: "center",
-				gap: px(12),
-				paddingInline: px(0),
-				position: "relative",
-			}}
-		>
-			<VStack className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-flex-col tws-items-center tws-justify-between ">
-				<TopNavbar iframeSrc={iframeSrc} />
-				<Container
-					className="tws-flex-grow"
-					bind:ref={({ current }) => {
-						const { device } = useDevice();
-						function refetchFrame() {
-							const Device = DEVICE_MAPPING[device.value].component;
-							current.replaceChildren(<Device iframeSrc={iframeSrc} />);
-							useDeviceScreen().setDeviceScreen("home-screen");
-						}
-						refetchFrame();
-						reaction(() => {
-							refetchFrame();
-							setupPWAConfig(iframeSrc.value);
-						}, [device]);
-					}}
-				></Container>
-				<Container
-					on:click={() => {
-						setIsFullscreen(false);
-						// go back to normal height
-						setDeviceFrameHeightClass(" tws-max-h-[93.6vh] ");
-					}}
-					className={concat`tws-p-2 tws-border-[#44433E] tws-bg-[#474844] tws-rounded-full tws-absolute tws-bottom-1 tws-right-2 tws-z-[1000000000] ${classMemo} `}
-				>
-					<MinimizeFullscreen width={12} height={12} fill="white" />
-				</Container>
-			</VStack>
-		</VStack>
-	);
+  return (
+    <IframeSrcContext.Provider
+      value={{
+        src: iframeSrc,
+        setSrc: setIframeSrc,
+      }}
+    >
+      <IframeRefContext.Provider
+        value={{
+          ref: iframeRef,
+        }}
+      >
+        <section
+          style={{
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "transparent",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: px(12),
+            paddingInline: px(0),
+            position: "relative",
+          }}
+        >
+          <section className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-flex-col tws-items-center tws-justify-between ">
+            <TopNavbar />
+            <div className="tws-flex-grow">
+              {findAndPipe(
+                entries(
+                  DEVICE_MAPPING as Helpers.DeepMutable<typeof DEVICE_MAPPING>,
+                ),
+                ([deviceName]) => deviceName === device,
+                (device) => {
+                  const [_name, config] = device;
+                  const DeviceComponent = config.component;
+                  return <DeviceComponent />;
+                },
+              )}
+            </div>
+            <Button
+              onTap={() => {
+                setIsFullscreen(false);
+                // go back to normal height
+                setDeviceFrameHeightClass(" tws-max-h-[93.6vh] ");
+              }}
+              className={cn(
+                `tws-p-2 tws-border-[#44433E] tws-bg-[#474844] tws-rounded-full tws-absolute tws-bottom-1 tws-right-2 tws-z-[1000000000] `,
+                {
+                  "tws-hidden": !isFullscreen,
+                },
+              )}
+            >
+              <MinimizeFullscreen width={12} height={12} fill="white" />
+            </Button>
+          </section>
+        </section>
+      </IframeRefContext.Provider>
+    </IframeSrcContext.Provider>
+  );
+};
+
+const View = () => {
+  return <Components />;
 };
 
 export default View;

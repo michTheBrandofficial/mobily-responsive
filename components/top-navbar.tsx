@@ -1,86 +1,85 @@
-import { concat, effect, memo, ref, signal, Signal } from "nixix/primitives";
-import {
-  Container,
-  FormField,
-  Paragragh,
-  TextField,
-  VStack,
-} from "nixix/view-components";
-import Home from "./icons/home";
-import { Button } from "./ui/buttons";
-import { useDevice } from "@/src/stores/device";
+import { cn } from "@/lib/cn";
+import { pipe } from "@/lib/pipe";
+import { inlineSwitch, noop, pick, sleep } from "@/lib/utils";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
-import { inlineSwitch, pick, wait } from "@/lib/utils";
-import Reload from "./icons/reload";
+import { useDevice } from "@/src/stores/device";
 import { useDeviceScreen } from "@/src/stores/device-screen";
-import AppMenu from "./app-menu";
-import { SearchIcon } from "./icons/search";
-import DeviceSelectMenu from "./device-select-menu";
-import { useScreenState } from "@/src/stores/screen-state";
 import { useFullscreen } from "@/src/stores/fullscreen";
+import { useIframeSrc } from "@/src/stores/iframe-src";
+import { useScreenState } from "@/src/stores/screen-state";
+import React, { useEffect, useRef, useState } from "react";
+import AppMenu from "./app-menu";
+import DeviceSelectMenu from "./device-select-menu";
+import Home from "./icons/home";
+import Reload from "./icons/reload";
+import { SearchIcon } from "./icons/search";
+import { Button } from "./ui/buttons";
 
-type Props = {
-  iframeSrc: Signal<string>;
-};
-
-const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
+const TopNavbar: React.FC = () => {
+  const { setSrc, src: iframeSrc } = useIframeSrc();
   const { device } = useDevice();
-  const deviceDisplayName = memo(
-    () => pick(DEVICE_MAPPING[device.value], "displayName", "version"),
-    [device]
+  console.log(device)
+  const deviceDisplayName = pick(
+    DEVICE_MAPPING[device] ?? {},
+    "displayName",
+    "version",
   );
-  const versionMemo = memo(
-    () => {
-      const deviceConfig = DEVICE_MAPPING[device.value];
-      return inlineSwitch(
-        deviceConfig.type,
-        ['ipad', `iPadOS ${deviceConfig.version}`],
-        { default: `iOS ${deviceConfig.version}` }
-      ) 
-    },
-    [device]
-  )
-  const formRef = ref<HTMLFormElement>();
-  const [isInputOpen, setIsInputOpen] = signal<boolean>(false);
-  const { isFullscreen } = useFullscreen()
-  const classMemo = memo(() => {
-    return isFullscreen.value ? 'tws-hidden' : 'tws-flex'
-  }, [isFullscreen])
+  const versionMemo = pipe(DEVICE_MAPPING[device] ?? {}, ({ type, version }) => {
+    return inlineSwitch(type, ["ipad", `iPadOS ${version}`], {
+      default: `iOS ${version}`,
+    });
+  });
+  const formRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isInputOpen, setIsInputOpen] = useState<boolean>(false);
+  const { isFullscreen } = useFullscreen();
+  const { setScreenState } = useScreenState();
+  const { setDeviceScreen, deviceScreen } = useDeviceScreen();
+  const classMemo = isFullscreen ? "tws-hidden" : "tws-flex";
+  useEffect(() => {
+    const focus = async () => {
+      if (isInputOpen) {
+        await sleep(500);
+        inputRef.current?.focus();
+      }
+    };
+    focus();
+  }, [isInputOpen]);
+
   return (
-    <VStack className={concat`tws-w-screen tws-max-w-[386px] tws-max-h-[45px] tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-mt-1 tws-py-2 tws-px-6 tws-bg-[#474844] tws-relative tws-overflow-x-clip ${classMemo} `}>
-      <Container
+    <section
+      className={cn(
+        "tws-w-screen tws-max-w-[386px] tws-max-h-[45px] tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-mt-1 tws-py-2 tws-px-6 tws-bg-[#474844] tws-relative tws-overflow-x-clip",
+        classMemo,
+      )}
+    >
+      <div
         data-inputopen={isInputOpen}
         className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 data-[inputopen=true]:-tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear "
       >
-        <Paragragh className="tws-text-[#ECEDE9] tws-font-bold ">
+        <p className="tws-text-[#ECEDE9] tws-font-bold ">
           {deviceDisplayName.displayName}
-        </Paragragh>
-        <Paragragh className="tws-text-[#B0B0AD] tws-font-medium ">
-          {versionMemo}
-        </Paragragh>
-      </Container>
-      <FormField
-        bind:ref={formRef}
+        </p>
+        <p className="tws-text-[#B0B0AD] tws-font-medium ">{versionMemo}</p>
+      </div>
+      <form
+        ref={formRef}
         data-open={isInputOpen}
-        on:submit={(e) => {
+        onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.currentTarget);
-          iframeSrc.value = formData.get("url") as string;
+          setSrc(formData.get("url") as string);
           setIsInputOpen(false);
         }}
         className="tws-min-w-full tws-h-full tws-transition-[transform] tws-duration-300 tws-ease-linear tws-delay-200 tws-origin-center tws-scale-x-0 data-[open=true]:tws-scale-x-100 tws-absolute tws-top-[92%] tws-left-1/2 -tws-translate-x-1/2 "
       >
-        <Container className="tws-relative">
-          <TextField
-            // bind:ref reaction to focus when inputOpen === true
-            bind:ref={({ current }) => {
-              effect(() => {
-                if (isInputOpen.value) wait(() => current.focus(), 500);
-              });
-            }}
+        <div className="tws-relative">
+          <input
+            type="text"
+            ref={inputRef}
             value={iframeSrc}
             name="url"
-            on:blur={() => {
+            onBlur={() => {
               formRef.current?.requestSubmit();
               setIsInputOpen(false);
             }}
@@ -89,47 +88,46 @@ const TopNavbar: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           <Button
             type="submit"
             className="tws-absolute tws-right-6 tws-bottom-3 tws-z-30"
-            on:click={() => { }}
+            onTap={noop}
           >
             <SearchIcon
               className={"tws-w-[18px] tws-h-[18px] tws-fill-[#CFCFCC]"}
             />
           </Button>
-        </Container>
-      </FormField>
-      <Container
+        </div>
+      </form>
+      <div
         data-inputopen={isInputOpen}
         className="tws-flex tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear"
       >
         <Button
-          on:click={() => {
-            useScreenState().setScreenState('before-close-app')
-            useDeviceScreen().setDeviceScreen("home-screen");
+          onTap={() => {
+            setScreenState("before-close-app");
+            setDeviceScreen("home-screen");
           }}
         >
           <Home className={"tws-w-5 tws-h-5 tws-fill-[#CFCFCC]"} />
         </Button>
         <Button
-          on:click={() => {
-            const url = iframeSrc.value;
-            iframeSrc.value = "";
-            iframeSrc.value = url;
+          onTap={() => {
+            const url = iframeSrc;
+            setSrc("");
+            setSrc(url);
           }}
         >
           <Reload className={"tws-w-5 tws-fill-[#CFCFCC]"} />
         </Button>
         <Button
-          on:click={() => {
-            if (useDeviceScreen().deviceScreen.value === "app-screen")
-              setIsInputOpen(true);
+          onTap={() => {
+            if (deviceScreen === "app-screen") setIsInputOpen(true);
           }}
         >
           <SearchIcon className={"tws-w-5 tws-h-[18px] tws-fill-[#CFCFCC]"} />
         </Button>
         <DeviceSelectMenu />
         <AppMenu />
-      </Container>
-    </VStack>
+      </div>
+    </section>
   );
 };
 

@@ -1,6 +1,8 @@
+import { FC } from "react";
+
 type Props = App.SVGProps;
 
-const Home: Nixix.FC<Props> = (props): someView => {
+const Home: FC<Props> = (props) => {
   return (
     <svg
       width="190"

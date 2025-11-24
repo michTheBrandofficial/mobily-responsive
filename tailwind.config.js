@@ -9,19 +9,18 @@ const WallPapersConfig = plugin(({ addUtilities }) => {
       background: `url(../assets/images/iphone-16-pro-wallpaper.jpg)`,
     },
     ".wallpaper-ipad-pro-i13": {
-      background: `url(../assets/images/ipad-pro-i13-wallpaper.jpg)`
+      background: `url(../assets/images/ipad-pro-i13-wallpaper.jpg)`,
     },
     ".wallpaper-after-app-launch": {
       background: "black",
     },
   });
-})
+});
 
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "index.html",
-    "./node_modules/nixix/view-components/index.tsx",
     "./src/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./pages/**/*.{ts,tsx}",
@@ -31,6 +30,8 @@ export default {
       fontFamily: {
         Rubik: ["Rubik", "sans-serif"],
         Helvetica_Neue: ["Helvetica_Neue", "Arial"],
+        Switzer: ["Switzer", "sans-serif"],
+        Open_Sans: ["Open_Sans", "sans-serif"],
       },
       backgroundColor: {
         "sidebar-button": "#939393",
@@ -38,5 +39,35 @@ export default {
     },
   },
   prefix: "tws-",
-  plugins: [WallPapersConfig],
-}
+  plugins: [
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        ".no-scrollbar::-webkit-scrollbar": {
+          display: "none",
+        },
+        ".no-scrollbar": {
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
+        },
+        ".thin-scrollbar": {
+          "scrollbar-width": "0",
+          "scrollbar-color": "#d3d3d3",
+          "scroll-padding-left": "10px",
+        },
+        ".thin-scrollbar::-webkit-scrollbar": {
+          width: "3px",
+          height: "3px",
+          "background-color": "transparent",
+        },
+        ".thin-scrollbar::-webkit-scrollbar-thumb:hover": {
+          scale: "2",
+        },
+        ".thin-scrollbar::-webkit-scrollbar-thumb": {
+          "background-color": "#d3d3d3",
+          "border-radius": "10px",
+        },
+      });
+    }),
+    WallPapersConfig,
+  ],
+};

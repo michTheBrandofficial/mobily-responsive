@@ -1,13 +1,15 @@
-import { render } from "nixix";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import "./index.css";
 import View from "./view";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-/* @module-refresh */
-const root = document.querySelector<HTMLBodyElement>("body");
-const Mount = () => {
-  render(() => <View />, root!);
-  return 0;
-};
+const queryClient = new QueryClient();
 
-Mount();
-export default Mount;
+createRoot(document.querySelector<HTMLBodyElement>("body")!).render(
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <View />
+    </QueryClientProvider>
+  </StrictMode>,
+);
