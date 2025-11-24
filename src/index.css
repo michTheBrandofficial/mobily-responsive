@@ -30,15 +30,6 @@
 }
 
 @layer components {
-  /* wallpapers */
-  .tws-no-scroll {
-    scrollbar-width: none;
-  }
-
-  .tws-no-scroll::-webkit-scrollbar {
-    width: 0px;
-  }
-
   .tws-grid-cols-4-60 {
     grid-template-columns: repeat(4, minmax(0, 60px));
   }

@@ -22,7 +22,7 @@ const Iframe: React.FC<Props> = ({ style = {}, className, src, ...props }) => {
         {...props}
         src={src}
         onLoad={() => setLoading(false)}
-        className={cn("tws-no-scroll ", className)}
+        className={cn("tws-no-scrollbar ", className)}
         allow="clipboard-read; clipboard-write"
         style={{
           ...style,

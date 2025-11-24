@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { motion } from "motion/react";
 import React, { RefObject, useEffect, useRef, useState } from "react";
 
 type TextInputProps = {
@@ -26,7 +27,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
   return (
     <div
       className={cn(
-        "tws-flex tws-bg- tws-font-Switzer tws-flex-col tws-relative ",
+        "tws-flex tws-font-Switzer tws-flex-col tws-relative ",
         {
           "tws-opacity-[.4]": props.disabled,
           "tws-border-b-2 tws-border-b-[#E6E6E6]": Boolean(props.bottomBorder),
@@ -40,13 +41,23 @@ const TextInput: React.FC<TextInputProps> = (props) => {
       data-name={props.name}
       data-disabled={props.disabled}
     >
-      <input
-        className={cn(`tws-font-normal tws-text-[#080808] placeholder:tws-font-normal placeholder:tws-text-[#3C3C43]/30 tws-caret-sky-500 selection:tws-bg-sky-500 selection:tws-text-white  tws-w-full tws-text-base tws-bg-transparent tws-py-1.5 tws-pb-2.5 focus:tws-outline-none`,
+      <motion.input
+        initial={false}
+        // shake from left to right ios animation
+        animate={Boolean(error) ? {
+          x: [-4, 8, -16, 16, -16, 8, -4, 0],
+          transition: {
+            duration: 0.82,
+            ease: [0.36, 0.07, 0.19, 0.97]
+          }
+        } : { x: 0 }}
+        className={cn(
+          `tws-font-normal tws-text-[#080808] placeholder:tws-font-normal placeholder:tws-text-[#3C3C43]/30 tws-caret-sky-500 selection:tws-bg-sky-500 selection:tws-text-white  tws-w-full tws-text-base tws-bg-transparent tws-py-2.5 tws-p focus:tws-outline-none`,
           {
             "placeholder:!tws-text-red-400": Boolean(error && !isFocused),
-          }
+          },
         )}
-        placeholder={(error && !isFocused) ? error : props.placeholder}
+        placeholder={error && !isFocused ? error : props.placeholder}
         ref={inputRef}
         value={props.value}
         disabled={props.disabled}

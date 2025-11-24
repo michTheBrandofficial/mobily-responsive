@@ -91,10 +91,10 @@ export const LiquidGlassButton: React.FC<LiquidGlassButtonProps> = ({
           : undefined
       }
       className={cn(
-        `tws-font-semibold tws-rounded-xl  `,
+        `tws-font-semibold tws-rounded-xl tws-cursor-pointer `,
         {
           "tws-bg-sky-500 tws-text-white": variant === "full",
-          "tws-px-4 tws-py-2 tws-text-sm": variant !== "icon",
+          "tws-px-4 tws-py-3 tws-text-sm": variant !== "icon",
           "tws-px-2 tws-py-2":
             variant === "icon",
           "tws-cursor-not-allowed tws-opacity-50": props.disabled,

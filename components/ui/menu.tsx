@@ -100,7 +100,7 @@ const MenuTrigger: React.FC<Pick<Props, "children" | "className">> = ({
       whileTap={{ scale: 0.95 }}
       whileHover={{ scale: 1.05 }}
       className={cn(
-        "tws-w-fit tws-h-fit tws-relative tws-p-0 tws-bg-transparent tws-text-inherit ",
+        "tws-w-fit tws-h-fit tws-relative tws-p-0 tws-bg-transparent tws-text-inherit tws-cursor-pointer ",
         className,
         {
           "tws-relative tws-z-[100000000]": shouldHaveHighZIndex,
@@ -167,7 +167,7 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
             }}
             tabIndex={0}
             className={cn(
-              `tws-min-h-[220px] tws-min-w-[240px] tws-top-[120%] tws-rounded-[32px] tws-absolute tws-z-[100000000] tws-p-2 `,
+              `tws-min-h-[220px] tws-min-w-[240px] tws-top-[120%] tws-rounded-[32px] tws-absolute tws-z-[100000000] tws-p-2`,
               className,
               { "tws-origin-center": config.transformOrigin === "center" },
               {
