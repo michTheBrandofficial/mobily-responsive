@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "../buttons";
 import LiquidGlass from "../liquid-glass";
+import { pipe } from "@/lib/pipe";
 
 export type Option<AdditionalData = {}> = {
   value: string;
@@ -140,6 +141,7 @@ const SearchableSelectImpl = <T = {},>({
     inputRef.current?.blur();
     await sleep(100);
     setIsOpen(false);
+    setIsFocused(false);
   };
 
   const handleClearClick = () => {
@@ -254,7 +256,10 @@ const SearchableSelectImpl = <T = {},>({
                 const { top } = inputRef.current.getBoundingClientRect();
                 const positionRatio = top / window.innerHeight;
                 setDropDownPosition(positionRatio >= 0.5 ? "top" : "bottom");
-                setIsOpen(!isOpen);
+                pipe(!isOpen, (shouldBeOpen) => {
+                  setIsOpen(shouldBeOpen);
+                  setIsFocused(shouldBeOpen);
+                });
               }}
               className="!tws-p-0 !tws-w-fit tws-bg-transparent tws-flex tws-flex-col -tws-space-y-1.5 tws-text-[#3C3C43]/30 "
               aria-label={isOpen ? "Close dropdown" : "Open dropdown"}

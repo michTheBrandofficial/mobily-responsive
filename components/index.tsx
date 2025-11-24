@@ -7,6 +7,7 @@ import LiquidGlass from "./ui/liquid-glass";
 import SearchableSelect from "./ui/inputs/searchable-select";
 import { Check } from "lucide-react";
 import { motion } from "motion/react";
+import Settings from "./icons/settings";
 
 const AnimatedCheckIcon = motion.create(Check);
 
@@ -14,13 +15,13 @@ const Components = () => {
   const [value, setValue] = useState("");
   const [optValue, setOptValue] = useState("");
   return (
-    <section className="tws-w-full tws-bg-transparent tws-h-screen tws-overflow-x-auto tws-p-3 tws-space-y-5 tws-no-scrollbar tws-relative tws-flex tws-flex-col  tws-items-center tws-justify-center ">
+    <section className="tws-w-full tws-bg-transparent tws-h-screen tws-overflow-x-auto tws-p-3 tws-space-y-5 tws-no-scrollbar tws-relative tws-flex tws-flex-col tws-items-center tws-justify-center ">
       <LiquidGlass.div
         className="tws-p-4 tws-pt-12 tws-w-fit tws-rounded-[48px]  "
-        color={"#e5e7eb"}
-        mixingPercentage={90}
+        color={"#fff"}
+        mixingPercentage={80}
       >
-        <div className="tws-w-[280px] tws-h-fit tws-py-4 tws-px-6 tws-bg-[#787880]/[.30] tws-rounded-[32px] ">
+        <div className="tws-w-[280px] tws-h-fit tws-py-4 tws-px-6 tws-bg-[#bfb9c9] tws-rounded-[32px] ">
           <SearchableSelect
             bottomBorder
             className="tws-w-full "
@@ -67,7 +68,7 @@ const Components = () => {
               </SearchableSelect.Option>
             )}
           </SearchableSelect>
-          <Input.Text
+          <Input.TextArea
             value={value}
             required
             onChange={(e) => {
@@ -80,7 +81,7 @@ const Components = () => {
         </div>
         <div className="tws-mt-4 tws-flex tws-items-center tws-gap-x-3 ">
           <Button
-            className="!tws-rounded-full tws-w-full tws-py-3"
+            className="!tws-rounded-full !tws-bg-[#bfb9c9] tws-w-full tws-py-3"
             variant="dormant"
           >
             Cancel
@@ -93,11 +94,12 @@ const Components = () => {
         <Menu.Trigger>
           <Button.LiquidGlass
             color={"#fff"}
-            className="!tws-rounded-full tws-relative -tws-z-20"
+            variant="icon"
+            className="!tws-rounded-full tws-relative !tws-p-3 -tws-z-20"
             mixingPercentage={12}
             // color={[uint8(14), uint8(165), uint8(233)]}
           >
-            Open Modal
+            <Settings className="tws-size-6 tws-fill-white " />
           </Button.LiquidGlass>
         </Menu.Trigger>
         <Menu.Content className="h-fit min-w-[240px] !min-h-0 ">
