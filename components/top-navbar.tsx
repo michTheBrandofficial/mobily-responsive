@@ -1,4 +1,6 @@
 import { cn } from "@/lib/cn";
+import { useModalsBuilder } from "@/lib/modals-builder";
+import { uint8 } from "@/lib/number";
 import { pipe } from "@/lib/pipe";
 import { inlineSwitch, noop, pick, sleep } from "@/lib/utils";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
@@ -14,92 +16,111 @@ import Home from "./icons/home";
 import Reload from "./icons/reload";
 import { SearchIcon } from "./icons/search";
 import { Button } from "./ui/buttons";
+import LiquidGlass from "./ui/liquid-glass";
+import Modal from "./ui/modal";
+import SearchableSelect from "./ui/inputs/searchable-select";
+import { Input } from "./ui/inputs/input";
+import { useFormik } from "formik";
 
 const TopNavbar: React.FC = () => {
   const { setSrc, src: iframeSrc } = useIframeSrc();
   const { device } = useDevice();
-  console.log(device)
   const deviceDisplayName = pick(
     DEVICE_MAPPING[device] ?? {},
     "displayName",
     "version",
   );
-  const versionMemo = pipe(DEVICE_MAPPING[device] ?? {}, ({ type, version }) => {
-    return inlineSwitch(type, ["ipad", `iPadOS ${version}`], {
-      default: `iOS ${version}`,
-    });
+  const versionMemo = pipe(
+    DEVICE_MAPPING[device] ?? {},
+    ({ type, version }) => {
+      return inlineSwitch(type, ["ipad", `iPadOS ${version}`], {
+        default: `iOS ${version}`,
+      });
+    },
+  );
+  const { modals, modalFunctions } = useModalsBuilder({
+    url: {
+      open: false,
+    },
   });
-  const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isInputOpen, setIsInputOpen] = useState<boolean>(false);
   const { isFullscreen } = useFullscreen();
   const { setScreenState } = useScreenState();
-  const { setDeviceScreen, deviceScreen } = useDeviceScreen();
+  const { setDeviceScreen } = useDeviceScreen();
   const classMemo = isFullscreen ? "tws-hidden" : "tws-flex";
+  const [mixingPercentage, setMixingPercentage] = useState(12);
   useEffect(() => {
-    const focus = async () => {
-      if (isInputOpen) {
-        await sleep(500);
-        inputRef.current?.focus();
-      }
+    function onBlur() {
+      setMixingPercentage(0);
+    }
+    function onFocus() {
+      setMixingPercentage(12);
+    }
+    window.addEventListener("blur", onBlur);
+    window.addEventListener("focus", onFocus);
+    return () => {
+      window.removeEventListener("blur", onBlur);
+      window.removeEventListener("focus", onFocus);
     };
-    focus();
-  }, [isInputOpen]);
+  }, []);
+  const formik = useFormik({
+    initialValues: {
+      // load these from frameSrc variable
+      protocol: 'http://',
+      url: ''
+    },
+    enableReinitialize: true,
+    validateOnMount: true,
+    onSubmit: noop
+  })
 
   return (
     <section
       className={cn(
-        "tws-w-screen tws-max-w-[386px] tws-max-h-[45px] tws-border tws-border-[#44433E] tws-rounded-xl tws-items-center tws-justify-between tws-gap-5 tws-mt-1 tws-py-2 tws-px-6 tws-bg-[#474844] tws-relative tws-overflow-x-clip",
+        "tws-w-screen tws-max-w-[384px] tws-border tws-border-gray-100/40 tws-rounded-full tws-items-center tws-justify-between tws-gap-3 tws-mt-1 tws-p-2 tws-bg-[#474844] tws-relative ",
         classMemo,
       )}
     >
-      <div
-        data-inputopen={isInputOpen}
-        className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 data-[inputopen=true]:-tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear "
-      >
+      <div className="tws-p-2 tws-px-3 tws-flex tws-items-center tws-gap-x-3 tws-rounded-full">
+        <Button className="tws-size-3.5 !tws-p-0 tws-rounded-full tws-bg-[#ef6562] " />
+        <Button className="tws-size-3.5 !tws-p-0 tws-rounded-full tws-bg-[#eec14a] " />
+        <Button className="tws-size-3.5 !tws-p-0 tws-rounded-full tws-bg-[#57c957] " />
+      </div>
+      <div className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 ">
         <p className="tws-text-[#ECEDE9] tws-font-bold ">
           {deviceDisplayName.displayName}
         </p>
         <p className="tws-text-[#B0B0AD] tws-font-medium ">{versionMemo}</p>
       </div>
-      <form
-        ref={formRef}
-        data-open={isInputOpen}
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.currentTarget);
-          setSrc(formData.get("url") as string);
-          setIsInputOpen(false);
-        }}
-        className="tws-min-w-full tws-h-full tws-transition-[transform] tws-duration-300 tws-ease-linear tws-delay-200 tws-origin-center tws-scale-x-0 data-[open=true]:tws-scale-x-100 tws-absolute tws-top-[92%] tws-left-1/2 -tws-translate-x-1/2 "
+      <LiquidGlass.div
+        className="tws-p-2 tws-px-3 tws-flex tws-ml-auto tws-items-center tws-gap-x-4 tws-rounded-full"
+        tint={[uint8(255), uint8(255), uint8(255)]}
+        tintOpacity={0.3}
+        mixingPercentage={mixingPercentage}
       >
-        <div className="tws-relative">
-          <input
-            type="text"
-            ref={inputRef}
-            value={iframeSrc}
-            name="url"
-            onBlur={() => {
-              formRef.current?.requestSubmit();
-              setIsInputOpen(false);
-            }}
-            className="tws-w-[90%] tws-absolute tws-left-1/2 -tws-translate-x-1/2 tws-bottom-1.5 focus:tws-outline-none tws-bg-transparent tws-border-b-2 tws-border-[#CFCFCC] tws-pb-1 tws-caret-white tws-text-white tws-text-sm tws-text-center tws-font-medium "
-          />
-          <Button
-            type="submit"
-            className="tws-absolute tws-right-6 tws-bottom-3 tws-z-30"
-            onTap={noop}
-          >
-            <SearchIcon
-              className={"tws-w-[18px] tws-h-[18px] tws-fill-[#CFCFCC]"}
-            />
-          </Button>
-        </div>
-      </form>
-      <div
-        data-inputopen={isInputOpen}
-        className="tws-flex tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear"
-      >
+        <Button
+          onTap={() => {
+            setScreenState("before-close-app");
+            setDeviceScreen("home-screen");
+          }}
+          className="!tws-p-0 tws-bg-transparent "
+        >
+          <Home className={"tws-size-5 tws-fill-white"} />
+        </Button>
+        <Button
+          onTap={async () => {
+            modalFunctions.openModal("url", {});
+            await sleep(500);
+            inputRef.current?.focus();
+          }}
+          className="!tws-p-0 tws-bg-transparent "
+        >
+          <SearchIcon className={"tws-size-5 tws-h-[18px] tws-fill-white"} />
+        </Button>
+        <Home className={"tws-size-5 tws-fill-white"} />
+      </LiquidGlass.div>
+
+      <div className="tws-hidden tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear">
         <Button
           onTap={() => {
             setScreenState("before-close-app");
@@ -117,16 +138,90 @@ const TopNavbar: React.FC = () => {
         >
           <Reload className={"tws-w-5 tws-fill-[#CFCFCC]"} />
         </Button>
-        <Button
-          onTap={() => {
-            if (deviceScreen === "app-screen") setIsInputOpen(true);
-          }}
-        >
-          <SearchIcon className={"tws-w-5 tws-h-[18px] tws-fill-[#CFCFCC]"} />
-        </Button>
         <DeviceSelectMenu />
         <AppMenu />
       </div>
+      <Modal open={modals.url.open} onClose={modalFunctions.returnClose("url")}>
+        <Modal.Body className="">
+          <LiquidGlass.div
+            className="tws-p-4 tws-pt-12 tws-w-fit tws-rounded-[48px]  "
+            color={"#fff"}
+            mixingPercentage={80}
+          >
+            <div className="tws-w-[280px] tws-h-fit tws-py-4 tws-px-6 tws-bg-[#bfb9c9] tws-rounded-[32px] ">
+              <SearchableSelect
+                bottomBorder
+                required
+                className="tws-w-full "
+                placeholder="Protocol e.g HTTP"
+                options={[
+                  { label: "HTTP", value: "http://" },
+                  { label: "HTTPS", value: "https://" },
+                ]}
+                onChange={(value) => formik.setFieldValue('protocol', value?.value || "")}
+                value={formik.values.protocol}
+              >
+                {(option, index) => (
+                  <SearchableSelect.Option
+                    option={option}
+                    index={index}
+                    key={index}
+                  >
+                    <div className="tws-flex tws-items-center tws-gap-x-2">
+                      <AnimatedCheckIcon
+                        size={16}
+                        variants={{
+                          hidden: { pathLength: 0, opacity: 0 },
+                          visible: {
+                            pathLength: 1,
+                            opacity: 1,
+                            transition: {
+                              pathLength: {
+                                delay: 0.2,
+                                type: "spring",
+                                duration: 1.5,
+                                bounce: 0,
+                              },
+                              opacity: { delay: 0.2, duration: 0.01 },
+                            },
+                          },
+                        }}
+                        initial={"hidden"}
+                        animate={option.isSelected ? "visible" : "hidden"}
+                      />
+                      <span className="tws-text-sm tws-font-medium">
+                        {option.label}
+                      </span>
+                    </div>
+                  </SearchableSelect.Option>
+                )}
+              </SearchableSelect>
+              <Input.TextArea
+                value={value}
+                required
+                onChange={(e) => {
+                  setValue(e.target.value);
+                }}
+                className=" "
+                name="url"
+                placeholder="Url e.g acme.com"
+              />
+            </div>
+            <div className="tws-mt-4 tws-flex tws-items-center tws-gap-x-3 ">
+              <Button
+                className="!tws-rounded-full !tws-bg-[#bfb9c9] tws-w-full tws-py-3"
+                variant="dormant"
+              >
+                Cancel
+              </Button>
+              <Button className="!tws-rounded-full tws-w-full tws-py-3">
+                Ok
+              </Button>
+            </div>
+          </LiquidGlass.div>
+        </Modal.Body>
+      </Modal>
+
     </section>
   );
 };

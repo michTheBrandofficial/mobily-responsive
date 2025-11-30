@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
 import { pipe } from "./pipe";
 import { uint8 } from "./number";
+import { err, ok, Result } from "neverthrow";
 
 export const getDims = ({
   width,
@@ -291,4 +292,29 @@ export function rgbArrayToHex([r, g, b]: [uint8, uint8, uint8]): `#${string}` {
   const hexB = clampedB.toString(16).padStart(2, '0');
 
   return `#${hexR}${hexG}${hexB}` as `#${string}`;
+}
+
+/**
+ * Separates the protocol (with ://) from the rest of the URL
+ * @param url - The full URL to parse
+ * @returns An object with protocol and rest properties, or null if no supported protocol found
+ * @example
+ * separateProtocol("https://example.com/path")
+ */
+export function separateProtocol(url: string): Result<{ protocol: string; rest: string }, 'Protocol not supported'> {
+  if (url.startsWith('https://')) {
+    return ok({
+      protocol: 'https://',
+      rest: url.slice(8) // Remove 'https://'
+    })
+  }
+
+  if (url.startsWith('http://')) {
+    return ok({
+      protocol: 'http://',
+      rest: url.slice(7) // Remove 'http://'
+    })
+  }
+
+  return err('Protocol not supported')
 }

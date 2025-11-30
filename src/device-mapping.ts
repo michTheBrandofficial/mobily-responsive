@@ -5,7 +5,7 @@ import Iphone16Pro from "./frames/iphone-16-pro";
 
 export const DEVICE_MAPPING = {
   "iphone-15": {
-    component: () => 'name',
+    component: () => ['namsl'],
     displayName: "iPhone 15",
     type: 'iphone',
     version: "17.0",

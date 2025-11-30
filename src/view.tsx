@@ -303,7 +303,7 @@ const Application: FC = () => {
 };
 
 const View = () => {
-  return <Components />;
+  return <Application />;
 };
 
 export default View;
