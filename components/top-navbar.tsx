@@ -21,6 +21,7 @@ import { FormikProps, useFormik } from "formik";
 import { Check, Maximize2Icon, MinusIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
+import { object, string } from "yup";
 import AppMenu from "./app-menu";
 import DeviceSelectMenu from "./device-select-menu";
 import DeviceFrameIcon from "./icons/device-frame";
@@ -32,7 +33,6 @@ import { Input } from "./ui/inputs/input";
 import SearchableSelect from "./ui/inputs/searchable-select";
 import LiquidGlass from "./ui/liquid-glass";
 import Modal, { BaseModalProps } from "./ui/modal";
-import { object, string } from "yup";
 import { Typography } from "./ui/typography";
 
 const AnimatedCheckIcon = motion.create(Check);
@@ -174,32 +174,30 @@ const TopNavbar: React.FC = () => {
           }}
           layout
           initial={false}
-          animate={deviceScreen === 'home-screen' ? {
-            opacity: 0,
-            width: 0,
-          } : {
-            opacity: 1,
-            width: 'auto',
-          }}
+          animate={
+            deviceScreen === "home-screen"
+              ? {
+                  opacity: 0,
+                  width: 0,
+                }
+              : {
+                  opacity: 1,
+                  width: "auto",
+                }
+          }
           className={cn("!tws-p-0 tws-bg-transparent ", {
-            '!tws-ml-0': deviceScreen === 'home-screen'
+            "!tws-ml-0": deviceScreen === "home-screen",
           })}
         >
           <SearchIcon className={"tws-size-5 tws-h-[18px] tws-fill-white"} />
         </Button>
         {/* device select popover here */}
-        <Button
-          onTap={async () => {
-            modalFunctions.openModal("url", {});
-          }}
-          className="!tws-p-0 tws-bg-transparent "
-        >
-          <DeviceFrameIcon className={"tws-size-5 "} />
-        </Button>
+        <DeviceSelectMenu
+          trigger={<DeviceFrameIcon className={"tws-size-5 tws-text-white "} />}
+        />
         <Settings className={"tws-size-5 tws-fill-white"} />
       </LiquidGlass.div>
       <div className="tws-hidden tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear">
-        <DeviceSelectMenu />
         <AppMenu />
       </div>
       <UrlModal
@@ -211,8 +209,8 @@ const TopNavbar: React.FC = () => {
           setIframeSrc(
             `${formik.values.protocol}${removeLeadingSlash(formik.values.url)}`,
           );
-          await sleep(400)
-          modalFunctions.closeModal('url')
+          await sleep(400);
+          modalFunctions.closeModal("url");
         }}
       />
     </section>
@@ -236,14 +234,10 @@ const UrlModal: React.FC<UrlModalProps> = (props) => {
           mixingPercentage={80}
         >
           <div className="tws-flex tws-flex-col tws-gap-y-1.5 tws-px-1 ">
-            <Typography.h5
-              className="tws-text-lg tws-font-Switzer tws-text-zinc-900"
-            >
+            <Typography.h5 className="tws-text-lg tws-font-Switzer tws-text-zinc-900">
               Add URL
             </Typography.h5>
-            <Typography.p
-              className="tws-text-base tws-leading-[26px] tws-w-full tws-font-Switzer tws-text-wrap tws-font-normal tws-text-zinc-900"
-            >
+            <Typography.p className="tws-text-base tws-leading-[26px] tws-w-full tws-font-Switzer tws-text-wrap tws-font-normal tws-text-zinc-900">
               Enter your site's URL to preview it on this device.
             </Typography.p>
           </div>

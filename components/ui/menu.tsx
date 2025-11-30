@@ -124,6 +124,8 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
     // focus on first menu item
     if (!open) return;
     const firstMenuItem =
+      // find the active one first then find the first one
+      containerRef.current?.querySelector<HTMLDivElement>(".lg-menu-item.active") ??
       containerRef.current?.querySelector<HTMLDivElement>(".lg-menu-item");
     if (firstMenuItem) firstMenuItem.focus();
   }, [open]);
@@ -155,8 +157,8 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
           <LiquidGlass.div
             ref={containerRef}
             key={"menu"}
-            color={"#e3e3e3"}
-            mixingPercentage={90}
+            color={'#ffffff'}
+            mixingPercentage={50}
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             exit={{
@@ -198,6 +200,7 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
 type MenuItemProps = Props &
   Omit<HTMLMotionProps<"div">, "onClick" | "onTap"> & {
     onTap?: (close: VoidFunction) => void;
+    isActive?: boolean;
   };
 
 const MenuItem: React.FC<MenuItemProps> = ({
@@ -242,7 +245,9 @@ const MenuItem: React.FC<MenuItemProps> = ({
           )?.focus();
         }
       }}
-      className="lg-menu-item focus:tws-outline-none focus:tws-bg-stone-400/40 hover:tws-bg-stone-400/60 tws-rounded-[24px] tws-cursor-pointer tws-transition-colors tws-duration-150"
+      className={cn("lg-menu-item focus:tws-outline-none focus:tws-bg-stone-400/40 hover:tws-bg-stone-400/60 tws-rounded-[24px] tws-cursor-pointer tws-transition-colors tws-duration-150", {
+        'active': props.isActive,
+      })}
     >
       <motion.div
         className={cn(

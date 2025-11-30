@@ -9,6 +9,20 @@ export const DEVICE_MAPPING = {
     displayName: "iPhone 15",
     type: 'iphone',
     version: "17.0",
+    dimensions: {
+      width: 390,
+      height: 844,
+    }
+  },
+  "iphone-16": {
+    component: () => [''],
+    displayName: "iPhone 16",
+    type: 'iphone',
+    version: "18.4",
+    dimensions: {
+      width: 393,
+      height: 852,
+    }
   },
   // "iphone-16-pro": {
   //   component: Iphone16Pro,
