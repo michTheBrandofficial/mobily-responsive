@@ -1,75 +1,57 @@
-import { SVGAttributes, useState } from "react";
-import Popover from "./ui/popover";
-import DeviceFrameIcon from "./icons/device-frame";
+import { cn } from "@/lib/cn";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
 import { useDevice } from "@/src/stores/device";
-import { Button } from "./ui/buttons";
+import { CheckIcon } from "lucide-react";
+import { FC, useState } from "react";
+import Menu from "./ui/menu";
 
-const CheckIcon = (props: SVGAttributes<SVGSVGElement>) => {
-  return (
-    <svg
-      width="24"
-      height="24"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-      stroke="white"
-      {...props}
-      viewBox="0 0 24 24"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-};
+interface Props {
+  trigger: React.ReactNode;
+}
 
-/**
- * @todo change the popover to menu so when clicked will close the menu
- */
-const DeviceSelectMenu = () => {
+const DeviceSelectMenu: FC<Props> = (props) => {
   const [deviceList] = useState(
-    Object.entries(DEVICE_MAPPING).map(([value, { displayName }]) => ({
-      label: displayName,
-      value: value as keyof typeof DEVICE_MAPPING,
-    })),
+    Object.entries(DEVICE_MAPPING).map(
+      ([value, { displayName, dimensions }]) => ({
+        label: displayName,
+        value: value as keyof typeof DEVICE_MAPPING,
+        dimensions: dimensions,
+      }),
+    ),
   );
   const { device: selectedDevice, setDevice: setSelectedDevice } = useDevice();
   return (
-    <Popover transformOrigin="top-right">
-      <Popover.Trigger className="tws-flex tws-flex-col tws-justify-center">
-        <Button className="">
-          <DeviceFrameIcon color="#CFCFCC" className={"tws-h-5 "} />
-        </Button>
-      </Popover.Trigger>
-      <Popover.Content className="!tws-bg-white/80 tws-min-w-[200px] tws-rounded-xl !tws-min-h-fit tws-h-fit !tws-border-none tws-font-Switzer -tws-right-[225%] ">
-        <div className=" tws-text-white tws-flex tws-flex-col ">
-            {deviceList.map((device, index) => (
-              <div
-                key={index}
-                onClick={() => setSelectedDevice(device.value)}
-                className="tws-font-normal tws-bg-[#E9E0E3]/20 tws-blur-32 tws-text-[#020003] hover:tws-bg-[#D0D0D2]/80 tws-flex tws-cursor-pointer tws-items-center tws-gap-x-1.5 last:tws-border-none tws-border-b tws-border-[#C5BCBD] tws-px-2.5 tws-text-sm first:tws-rounded-t-xl last:tws-rounded-b-xl tws-min-h-[36px] "
-              >
+    <Menu transformOrigin="top-right">
+      <Menu.Trigger>{props.trigger}</Menu.Trigger>
+      <Menu.Content className="tws-min-h-fit tws-max-h-48 tws-min-w-[240px] -tws-right-2 tws-top-8 ">
+        {deviceList.map((device, index) => {
+          return (
+            <Menu.Item
+              isActive={device.value === selectedDevice}
+              className="tws-pr-2.5"
+              key={`${device.value}-${index}`}
+              onTap={async (close) => {
+                setSelectedDevice(device.value);
+                close();
+              }}
+            >
+              <div className="tws-flex tws-gap-x-2 tws-items-center">
                 <CheckIcon
-                  style={{
-                    opacity: selectedDevice === device.value ? "1" : "0",
-                  }}
-                  fill="none"
-                  stroke={"#020003"}
-                  stroke-width={2.5}
-                  width={18}
-                  height={18}
+                  size={16}
+                  className={cn("tws-mt-1 ", {
+                    "tws-hidden": !(device.value === selectedDevice),
+                  })}
                 />
                 {device.label}
-                <DeviceFrameIcon
-                  color="#020003"
-                  className={"tws-ml-auto"}
-                  height={18}
-                />
               </div>
-            ))}
-        </div>
-      </Popover.Content>
-    </Popover>
+              <span className="tws-text-xs tws-px-2 tws-py-1 tws-rounded-full tws-bg-green-50/50 tws-text-green-500 tws-font-medium ">
+                {device.dimensions.width}x{device.dimensions.height}
+              </span>
+            </Menu.Item>
+          );
+        })}
+      </Menu.Content>
+    </Menu>
   );
 };
 

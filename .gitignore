@@ -24,3 +24,5 @@ shell.ps1
 *.njsproj
 *.sln
 *.sw?
+
+*.env

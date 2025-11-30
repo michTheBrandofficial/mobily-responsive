@@ -11,19 +11,28 @@ import Settings from "./icons/settings";
 import { useModalsBuilder } from "@/lib/modals-builder";
 import Modal from "./ui/modal";
 import { SearchIcon } from "./icons/search";
+import Toggle from "./ui/toggle";
 
 const AnimatedCheckIcon = motion.create(Check);
 
 const Components = () => {
   const [value, setValue] = useState("");
   const [optValue, setOptValue] = useState("http://");
+  const [checked, setChecked] = useState(false);
   const { modals, modalFunctions } = useModalsBuilder({
     url: {
       open: false,
     },
   });
   return (
-    <section className="tws-w-full tws-bg-transparent tws-h-screen tws-overflow-x-auto tws-p-3 tws-space-y-5 tws-no-scrollbar tws-relative tws-flex tws-flex-col tws-items-center tws-justify-center ">
+    <section className="tws-w-full tws-bg-transparent  tws-overflow-x-auto tws-p-3 tws-space-y-5 tws-no-scrollbar tws-relative tws-flex tws-flex-col tws-items-center tws-justify-center ">
+      <Toggle
+        checked={checked}
+        onChange={(checked) => {
+          setChecked(checked);
+        }}
+      />
+
       <Modal open={modals.url.open} onClose={modalFunctions.returnClose("url")}>
         <Modal.Body className="">
           <LiquidGlass.div

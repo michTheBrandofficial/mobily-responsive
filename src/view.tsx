@@ -6,29 +6,29 @@ import { ErrorMatcher } from "@/lib/error-matcher";
 import { handleDirCreation } from "@/lib/file-handle";
 import { pipe } from "@/lib/pipe";
 import {
-  blobToBinary,
-  entries,
-  findAndPipe,
-  iife,
-  prefixWithSlash,
-  px,
-  sleep,
+    blobToBinary,
+    entries,
+    findAndPipe,
+    iife,
+    prefixWithSlash,
+    px,
+    sleep
 } from "@/lib/utils";
 import {
-  BaseDirectory,
-  exists,
-  readTextFile,
-  writeBinaryFile,
-  writeFile,
+    BaseDirectory,
+    exists,
+    readTextFile,
+    writeBinaryFile,
+    writeFile,
 } from "@tauri-apps/api/fs";
 import { err, ok, Result } from "neverthrow";
 import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
+    Dispatch,
+    FC,
+    SetStateAction,
+    useEffect,
+    useRef,
+    useState,
 } from "react";
 import { dataDir, FSOptions, useDeviceFrameHeight } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
@@ -37,10 +37,9 @@ import { useDevice } from "./stores/device";
 import { useDeviceScreen } from "./stores/device-screen";
 import { useDeviceSettings } from "./stores/device-settings";
 import { useFullscreen } from "./stores/fullscreen";
+import { IframeRefContext } from "./stores/iframe-ref";
 import { IframeSrcContext } from "./stores/iframe-src";
 import { useIphoneConfig } from "./stores/iphone-config";
-import { IframeRefContext } from "./stores/iframe-ref";
-import Components from "@/components";
 
 /**
  * @dev fetches icons to save to storage and render on screen.
@@ -276,6 +275,7 @@ const Application: FC = () => {
                 (device) => {
                   const [_name, config] = device;
                   const DeviceComponent = config.component;
+                  // @ts-expect-error
                   return <DeviceComponent />;
                 },
               )}
@@ -303,7 +303,7 @@ const Application: FC = () => {
 };
 
 const View = () => {
-  return <Components />;
+  return <Application />;
 };
 
 export default View;

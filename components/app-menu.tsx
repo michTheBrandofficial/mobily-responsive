@@ -1,20 +1,15 @@
-import { appWindow } from "@tauri-apps/api/window";
-import Settings from "./icons/settings";
-import { SVGAttributes, useEffect, useRef, useState } from "react";
 import DevIcon from "@/assets/images/developer-icon.jpg";
-import { useTheme } from "@/src/stores/theme";
-import { capitalize } from "@/lib/utils";
-import { useFullscreen } from "@/src/stores/fullscreen";
-import {
-  lastAlwaysOnTop,
-  lastHasBezels,
-  LOCALSTORAGE_ALWAYS_ON_TOP_KEY,
-  LOCALSTORAGE_HAS_BEZELS_KEY,
-  useDeviceFrameHeight,
-} from "@/src/constants";
+import { cn } from "@/lib/cn";
+import { sleep } from "@/lib/utils";
 import { useIphoneConfig } from "@/src/stores/iphone-config";
-import { Button } from "./ui/buttons";
+import { useLocalStorage } from "@/src/stores/local-storage";
+import { useTheme } from "@/src/stores/theme";
+import { appWindow } from "@tauri-apps/api/window";
+import { CheckIcon, ChevronDown, ChevronUp } from "lucide-react";
+import { FC, SVGAttributes, useEffect } from "react";
+import Kbd from "./ui/kbd";
 import Menu from "./ui/menu";
+import Toggle from "./ui/toggle";
 
 const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (
@@ -34,44 +29,6 @@ const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
   );
 };
 
-const LinkIcon = (props: SVGAttributes<SVGSVGElement>) => {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M10 1.5C9.58579 1.5 9.25 1.83579 9.25 2.25C9.25 2.66421 9.58579 3 10 3H11.9393L6.96967 7.96967C6.67678 8.26256 6.67678 8.73744 6.96967 9.03033C7.26256 9.32322 7.73744 9.32322 8.03033 9.03033L13 4.06066V6C13 6.41421 13.3358 6.75 13.75 6.75C14.1642 6.75 14.5 6.41421 14.5 6V2.25C14.5 1.83579 14.1642 1.5 13.75 1.5H10ZM7.5 3.25C7.5 2.83579 7.16421 2.5 6.75 2.5H4.5C2.84315 2.5 1.5 3.84315 1.5 5.5V11.5C1.5 13.1569 2.84315 14.5 4.5 14.5H10.5C12.1569 14.5 13.5 13.1569 13.5 11.5V9.25C13.5 8.83579 13.1642 8.5 12.75 8.5C12.3358 8.5 12 8.83579 12 9.25V11.5C12 12.3284 11.3284 13 10.5 13H4.5C3.67157 13 3 12.3284 3 11.5V5.5C3 4.67157 3.67157 4 4.5 4H6.75C7.16421 4 7.5 3.66421 7.5 3.25Z"
-        fill="inherit"
-      />
-    </svg>
-  );
-};
-
-const CheckIcon = (props: SVGAttributes<SVGSVGElement>) => {
-  return (
-    <svg
-      width="24"
-      height="24"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-      stroke="white"
-      {...props}
-      viewBox="0 0 24 24"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-};
-
 const FullscreenIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (
     <svg
@@ -86,8 +43,8 @@ const FullscreenIcon = (props: SVGAttributes<SVGSVGElement>) => {
       viewBox="0 0 16 16"
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M4.5 3C3.67157 3 3 3.67157 3 4.5V6.25C3 6.66421 2.66421 7 2.25 7C1.83579 7 1.5 6.66421 1.5 6.25V4.5C1.5 2.84315 2.84315 1.5 4.5 1.5H6.25C6.66421 1.5 7 1.83579 7 2.25C7 2.66421 6.66421 3 6.25 3H4.5ZM9 2.25C9 1.83579 9.33579 1.5 9.75 1.5H11.5C13.1569 1.5 14.5 2.84315 14.5 4.5V6.25C14.5 6.66421 14.1642 7 13.75 7C13.3358 7 13 6.66421 13 6.25V4.5C13 3.67157 12.3284 3 11.5 3H9.75C9.33579 3 9 2.66421 9 2.25ZM2.25 9C2.66421 9 3 9.33579 3 9.75V11.5C3 12.3284 3.67157 13 4.5 13H6.25C6.66421 13 7 13.3358 7 13.75C7 14.1642 6.66421 14.5 6.25 14.5H4.5C2.84315 14.5 1.5 13.1569 1.5 11.5V9.75C1.5 9.33579 1.83579 9 2.25 9ZM13.75 9C14.1642 9 14.5 9.33579 14.5 9.75V11.5C14.5 13.1569 13.1569 14.5 11.5 14.5H9.75C9.33579 14.5 9 14.1642 9 13.75C9 13.3358 9.33579 13 9.75 13H11.5C12.3284 13 13 12.3284 13 11.5V9.75C13 9.33579 13.3358 9 13.75 9Z"
         fill="inherit"
       />
@@ -95,198 +52,156 @@ const FullscreenIcon = (props: SVGAttributes<SVGSVGElement>) => {
   );
 };
 
-const iconsMap = {
-  about: (
-    <LinkIcon
-      fill="#020003"
-      stroke={""}
-      strokeWidth={6}
-      width={18}
-      height={18}
-    />
-  ),
-  theme: (
-    <ThemeIcon
-      fill="#020003"
-      stroke={""}
-      strokeWidth={6}
-      width={18}
-      height={18}
-    />
-  ),
-  fullscreen: (
-    <FullscreenIcon
-      fill="#020003"
-      stroke={""}
-      strokeWidth={6}
-      width={18}
-      height={18}
-    />
-  ),
-};
+interface Props {
+  trigger: React.ReactNode;
+}
 
-const AppMenu = () => {
-  const { theme, setTheme } = useTheme();
-  const { setIsFullscreen } = useFullscreen();
+const AppSettingsMenu: FC<Props> = (props) => {
   const { setIphoneConfig, iphoneConfig } = useIphoneConfig();
-  const { setDeviceFrameHeightClass } = useDeviceFrameHeight();
-  const optionHandlers: {
-    [index: string]: (menuOption: {
-      checked: boolean;
-      id: number;
-      setting: string;
-    }) => void;
-  } = {
-    "set-on-top": function handler(menuOption) {
-      const checked = menuOption.checked || false;
-      const optionId = menuOption.id;
-      const negateChecked = !checked;
-      appWindow.setAlwaysOnTop(negateChecked);
-      localStorage.setItem(
-        LOCALSTORAGE_ALWAYS_ON_TOP_KEY,
-        negateChecked.toString(),
-      );
-      setMenuOptions((p) => {
-        p.find((val) => val.id === optionId)!.checked = negateChecked;
-        return p;
-      });
-    },
-    fullscreen: function handler() {
-      setIsFullscreen(true);
-      setDeviceFrameHeightClass(" tws-max-h-[100vh] ");
-      closerRef.current?.click();
-    },
-    theme: function handler(menuOption) {
-      // const checked = menuOption.checked.value;
-      const optionId = menuOption.id;
-      const isDarkModeOn = theme === "dark";
-      setTheme(isDarkModeOn ? "light" : "dark");
-      setMenuOptions((p) => {
-        p.find((val) => val.id === optionId)!.title = `Theme: ${capitalize(
-          theme,
-        )}`;
-        return p;
-      });
-    },
-    "has-bezels": function handler(menuOption) {
-      const checked = menuOption.checked;
-      const optionId = menuOption.id;
-      const negateChecked = !checked;
-      setIphoneConfig({
-        ...iphoneConfig,
-        hasBezels: negateChecked,
-      });
-      setMenuOptions((p) => {
-        p.find((val) => val.id === optionId)!.checked = negateChecked;
-        return p;
-      });
-      localStorage.setItem(
-        LOCALSTORAGE_HAS_BEZELS_KEY,
-        negateChecked.toString(),
-      );
-    },
-    about: function handler() {
-      window.open("https://x.com/mich_thedev", "_blank");
-    },
-  };
-  const [menuOptions, setMenuOptions] = useState<
-    Array<{
-      setting: string;
-      checked: boolean;
-      title: string;
-      type: "checkbox" | "link" | "theme" | "click";
-      icon_prop?: string;
-      id: number;
-    }>
-  >([
-    {
-      setting: "set-on-top",
-      title: "Always on top",
-      checked: lastAlwaysOnTop === "true",
-      type: "checkbox",
-      id: 1,
-    },
-    {
-      setting: "has-bezels",
-      title: "Has Bezels",
-      checked: lastHasBezels === "true",
-      type: "checkbox",
-      id: 2,
-    },
-    {
-      setting: "fullscreen",
-      title: `Fullscreen`,
-      checked: false,
-      type: "click",
-      id: 3,
-      icon_prop: "fullscreen",
-    },
-    {
-      setting: "theme",
-      title: `Theme: ${capitalize(theme)}`,
-      checked: false,
-      type: "theme",
-      id: 4,
-      icon_prop: "theme",
-    },
-    {
-      setting: "about",
-      title: "About Developer",
-      checked: false,
-      type: "link",
-      id: 5,
-      icon_prop: "about",
-    },
-  ]);
-  const closerRef = useRef<HTMLDivElement>(null);
-  // effect to set always on top
+  const { setStorage, storage } = useLocalStorage();
   useEffect(() => {
-    appWindow.setAlwaysOnTop(lastAlwaysOnTop === "true");
+    appWindow.setAlwaysOnTop(storage.lastAlwaysOnTop);
   }, []);
   return (
     <Menu transformOrigin="top-right">
-      <Menu.Trigger>
-        <Button className="!rounded-full !p-0 bg-transparent " variant="icon">
-          <Settings className={"tws-h-5 tws-w-5 tws-fill-[#CFCFCC]"} />
-        </Button>
-      </Menu.Trigger>
-      <Menu.Content className="h-fit min-w-[240px] !min-h-0 font-Satoshi">
-        <div className=" tws-text-white tws-flex tws-flex-col ">
-          {menuOptions.map((item) => (
-            <Menu.Item
-              onClick={() => {
-                optionHandlers?.[item.setting as keyof typeof optionHandlers]?.(
-                  item,
-                );
-              }}
-            >
-              {item.icon_prop && iconsMap[item.icon_prop as "theme"]}
-              {item.type && item.type === "checkbox" && (
-                <CheckIcon
-                  style={{
-                    opacity: item.checked ? "1" : "0",
-                  }}
-                  fill="none"
-                  stroke={"#020003"}
-                  strokeWidth={2.5}
-                  width={18}
-                  height={18}
-                />
-              )}
-              {item.title}
-
-              {item.type === "link" && (
-                <img
-                  className="tws-ml-auto tws-size-6 tws-rounded-full"
-                  src={DevIcon}
-                />
-              )}
-            </Menu.Item>
-          ))}
-        </div>
+      <Menu.Trigger>{props.trigger}</Menu.Trigger>
+      <Menu.Content className="tws-min-h-fit tws-min-w-[240px] -tws-right-2 tws-top-8 ">
+        <Menu.Item
+          whileHover={undefined}
+          whileTap={undefined}
+          onTap={undefined}
+          noBgColorStates
+        >
+          Always on top
+          <Toggle
+            checked={storage.lastAlwaysOnTop}
+            onChange={async (checked) => {
+              setStorage("lastAlwaysOnTop", checked);
+              appWindow.setAlwaysOnTop(checked);
+            }}
+          />
+        </Menu.Item>
+        <Menu.Item
+          whileHover={undefined}
+          whileTap={undefined}
+          onTap={undefined}
+          noBgColorStates
+        >
+          Show bezels
+          <Toggle
+            checked={storage.lastHasBezels}
+            onChange={(checked) => {
+              setStorage("lastHasBezels", checked);
+              setIphoneConfig({
+                ...iphoneConfig,
+                hasBezels: checked,
+              });
+            }}
+          />
+        </Menu.Item>
+        <Menu.Item
+          whileHover={undefined}
+          whileTap={undefined}
+          onTap={undefined}
+          noBgColorStates
+        >
+          <div className="tws-flex tws-items-center tws-gap-x-2">
+            <FullscreenIcon
+              fill="#020003"
+              stroke={""}
+              strokeWidth={6}
+              width={18}
+              height={18}
+            />
+            Fullscreen
+          </div>
+          {/*<Kbd className="!tws-text-sm !tws-p-1 !tws-pt-2 !tws-leading-none">⌘</Kbd>*/}
+          <Kbd className="!tws-text-sm !tws-p-1 !tws-leading-none">F11</Kbd>
+        </Menu.Item>
+        <Menu.Item
+          whileHover={undefined}
+          whileTap={undefined}
+          onTap={undefined}
+          noBgColorStates
+        >
+          <div className="tws-flex tws-items-center tws-gap-x-2">
+            <ThemeIcon
+              fill="#020003"
+              stroke={""}
+              strokeWidth={6}
+              width={18}
+              height={18}
+            />
+            Theme
+          </div>
+          <ThemeDropdown />
+        </Menu.Item>
+        <Menu.Item
+          onTap={async (close) => {
+            close();
+            await sleep(400);
+            window.open("https://x.com/mich_thedev", "_blank");
+          }}
+          className="!tws-py-2"
+        >
+          About Developer
+          <img
+            className="tws-ml-auto tws-size-6 tws-rounded-full"
+            src={DevIcon}
+          />
+        </Menu.Item>
       </Menu.Content>
     </Menu>
   );
 };
 
-export default AppMenu;
+const options = [
+  { label: "Light", value: "light" },
+  { label: "Dark", value: "dark" },
+];
+
+/**
+ * @dev this controls it's own state.
+ */
+const ThemeDropdown = () => {
+  const { theme, setTheme } = useTheme();
+  return (
+    <Menu transformOrigin="top-right">
+      <Menu.Trigger>
+        <div className="tws-text-zinc-900 tws-text-sm tws-flex tws-items-center tws-gap-x-1.5 ">
+          {options.find((opt) => opt.value === theme)?.label || "Light"}
+          <div className="tws-w-fit tws-flex tws-flex-col -tws-space-y-[7px]  ">
+            <ChevronUp size={14} />
+            <ChevronDown size={14} />
+          </div>
+        </div>
+      </Menu.Trigger>
+      <Menu.Content className="tws-min-h-fit tws-max-h-48 tws-min-w-[240px] -tws-right-2 tws-top-8 ">
+        {options.map((option) => (
+          <Menu.Item
+            key={option.value}
+            isActive={theme === option.value}
+            className="tws-pr-2.5 !tws-py-2"
+            onTap={async (close) => {
+              setTheme(option.value as "light");
+              await sleep(300);
+              close();
+            }}
+          >
+            <div className="tws-flex tws-gap-x-2 tws-items-center">
+              <CheckIcon
+                size={16}
+                className={cn("tws-mt-1 ", {
+                  "tws-hidden": !(theme === option.value),
+                })}
+              />
+              {option.label}
+            </div>
+          </Menu.Item>
+        ))}
+      </Menu.Content>
+    </Menu>
+  );
+};
+
+export default AppSettingsMenu;

@@ -1,6 +1,9 @@
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
 
 type IframeSrcContextType = {
+  /**
+   * @example http://localhost:5173
+   */
   src: string,
   setSrc: Dispatch<SetStateAction<string>>
 }

@@ -325,6 +325,7 @@ type SelectOptionProps<AdditionalData = {}> = {
   option: OptionSelected<AdditionalData>;
   index: number;
   children: React.ReactNode;
+  className?: string;
 };
 
 const SelectOption = <T extends {}>({
@@ -343,12 +344,13 @@ const SelectOption = <T extends {}>({
       role="option"
       aria-selected={option.isSelected}
       className={cn(
-        "focus:tws-outline-none focus:tws-bg-stone-400/40 hover:tws-bg-stone-400/60 tws-rounded-[24px]",
+        "focus:tws-outline-none focus:tws-bg-white/40 hover:tws-bg-white/60 tws-rounded-[24px]",
         "tws-px-5 tws-py-3 tws-cursor-pointer tws-transition-colors tws-duration-150 ",
         {
-          "tws-bg-stone-400/40": highlightedOptionIndex === index,
+          "tws-bg-white/40": highlightedOptionIndex === index,
         },
-        { "tws-bg-stone-400/40 tws-font-medium": option.isSelected },
+        { "tws-bg-white/40 tws-font-medium": option.isSelected },
+        props.className
       )}
       onTap={() => handleOptionClick(option)}
       onMouseEnter={() => setHighlightedOptionIndex(index)}

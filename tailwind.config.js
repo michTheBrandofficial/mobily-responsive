@@ -36,6 +36,12 @@ export default {
       backgroundColor: {
         "sidebar-button": "#939393",
       },
+      colors: {
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+      },
     },
   },
   prefix: "tws-",
