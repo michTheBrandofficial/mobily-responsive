@@ -34,6 +34,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
         },
         // data states
         "data-[focused=true]:tws-border-b-sky-400 data-[error=true]:tws-border-b-red-400 data-[disabled=true]:tws-border-b-gray-400 data-[disabled=true]:tws-cursor-not-allowed ",
+        "tws-caret-sky-500 selection:tws-bg-sky-500 selection:tws-text-white",
         props.className,
       )}
       data-focused={isFocused}
@@ -52,7 +53,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
           }
         } : { x: 0 }}
         className={cn(
-          `tws-font-normal tws-text-[#080808] placeholder:tws-font-normal placeholder:tws-text-[#f1f1f1]/80 tws-caret-sky-500 selection:tws-bg-sky-500 selection:tws-text-white  tws-w-full tws-text-base tws-bg-transparent tws-py-2.5 tws-p focus:tws-outline-none`,
+          `tws-font-normal tws-text-[#080808] placeholder:tws-font-normal placeholder:tws-text-[#f1f1f1]/80 tws-caret-inherit selection:tws-bg-inherit selection:tws-text-inherit tws-w-full tws-text-base tws-bg-transparent tws-py-2.5 tws-p focus:tws-outline-none`,
           {
             "placeholder:!tws-text-red-400": Boolean(error && !isFocused),
           },
@@ -106,6 +107,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = (props) => {
         },
         // data states
         "data-[focused=true]:tws-border-b-sky-400 data-[error=true]:tws-border-b-red-400 data-[disabled=true]:tws-border-b-gray-400 data-[disabled=true]:tws-cursor-not-allowed ",
+        "tws-caret-sky-500 selection:tws-bg-sky-500 selection:tws-text-white",
         props.className,
       )}
       data-focused={isFocused}
@@ -124,7 +126,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = (props) => {
           }
         } : { x: 0 }}
         className={cn(
-          `tws-font-normal tws-text-[#080808] placeholder:tws-font-normal placeholder:tws-text-base placeholder:tws-text-[#f1f1f1]/80 tws-caret-sky-500 selection:tws-bg-sky-500 selection:tws-text-white tws-w-full tws-text-base tws-bg-transparent tws-py-2.5 focus:tws-outline-none`,
+          `tws-font-normal tws-text-[#080808] placeholder:tws-font-normal placeholder:tws-text-base placeholder:tws-text-[#f1f1f1]/80 tws-caret-inherit selection:tws-bg-inherit selection:tws-text-inherit tws-w-full tws-text-base tws-bg-transparent tws-py-2.5 focus:tws-outline-none`,
           {
             "placeholder:!tws-text-red-400 placeholder:!tws-text-sm placeholder:tws-pt-1 ": Boolean(error && !isFocused),
           },

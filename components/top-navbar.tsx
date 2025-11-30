@@ -33,6 +33,7 @@ import SearchableSelect from "./ui/inputs/searchable-select";
 import LiquidGlass from "./ui/liquid-glass";
 import Modal, { BaseModalProps } from "./ui/modal";
 import { object, string } from "yup";
+import { Typography } from "./ui/typography";
 
 const AnimatedCheckIcon = motion.create(Check);
 
@@ -72,7 +73,7 @@ const TopNavbar: React.FC = () => {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { isFullscreen, setIsFullscreen } = useFullscreen();
   const { setScreenState } = useScreenState();
-  const { setDeviceScreen } = useDeviceScreen();
+  const { setDeviceScreen, deviceScreen } = useDeviceScreen();
   const classMemo = isFullscreen ? "tws-hidden" : "tws-flex";
   const [mixingPercentage, setMixingPercentage] = useState(12);
   useEffect(() => {
@@ -151,7 +152,7 @@ const TopNavbar: React.FC = () => {
         </p>
       </div>
       <LiquidGlass.div
-        className="tws-p-2 tws-px-3 tws-flex tws-ml-auto tws-items-center tws-gap-x-4 tws-rounded-full tws-transition-colors tws-duration-200 tws-ease-linear "
+        className="tws-p-2 tws-px-3 tws-flex tws-ml-auto tws-items-center tws-space-x-4 tws-rounded-full tws-transition-colors tws-duration-200 tws-ease-linear "
         tint={[uint8(255), uint8(255), uint8(255)]}
         tintOpacity={0.3}
         mixingPercentage={mixingPercentage}
@@ -171,7 +172,18 @@ const TopNavbar: React.FC = () => {
             await sleep(500);
             inputRef.current?.focus();
           }}
-          className="!tws-p-0 tws-bg-transparent "
+          layout
+          initial={false}
+          animate={deviceScreen === 'home-screen' ? {
+            opacity: 0,
+            width: 0,
+          } : {
+            opacity: 1,
+            width: 'auto',
+          }}
+          className={cn("!tws-p-0 tws-bg-transparent ", {
+            '!tws-ml-0': deviceScreen === 'home-screen'
+          })}
         >
           <SearchIcon className={"tws-size-5 tws-h-[18px] tws-fill-white"} />
         </Button>
@@ -186,7 +198,6 @@ const TopNavbar: React.FC = () => {
         </Button>
         <Settings className={"tws-size-5 tws-fill-white"} />
       </LiquidGlass.div>
-
       <div className="tws-hidden tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear">
         <DeviceSelectMenu />
         <AppMenu />
@@ -218,13 +229,25 @@ const UrlModal: React.FC<UrlModalProps> = (props) => {
   const { formik, open, onClose, onSave, inputRef } = props;
   return (
     <Modal open={open} onClose={onClose}>
-      <Modal.Body className="">
+      <Modal.Body className="tws-max-w-80 ">
         <LiquidGlass.div
-          className="tws-p-4 tws-pt-12 tws-w-fit tws-rounded-[48px]  "
+          className="tws-p-5 tws-pt-6 tws-w-fit tws-rounded-[48px]  "
           color={"#fff"}
           mixingPercentage={80}
         >
-          <div className="tws-w-[280px] tws-h-fit tws-py-4 tws-px-6 tws-bg-zinc-300 tws-rounded-[32px] ">
+          <div className="tws-flex tws-flex-col tws-gap-y-1.5 tws-px-1 ">
+            <Typography.h5
+              className="tws-text-lg tws-font-Switzer tws-text-zinc-900"
+            >
+              Add URL
+            </Typography.h5>
+            <Typography.p
+              className="tws-text-base tws-leading-[26px] tws-w-full tws-font-Switzer tws-text-wrap tws-font-normal tws-text-zinc-900"
+            >
+              Enter your site's URL to preview it on this device.
+            </Typography.p>
+          </div>
+          <div className="tws-w-[280px] tws-h-fit tws-py-4 tws-px-6 tws-mt-6 tws-bg-zinc-300 tws-rounded-[32px] ">
             <SearchableSelect
               bottomBorder
               required
@@ -283,19 +306,20 @@ const UrlModal: React.FC<UrlModalProps> = (props) => {
             <Input.TextArea
               inputRef={inputRef}
               value={formik.values.url}
+              rows={2}
               required
               onChange={(e) => {
                 formik.setFieldValue("url", e.target.value);
               }}
-              className=" "
+              className="tws-caret-zinc-950 "
               name="url"
               placeholder="Url e.g acme.com"
             />
           </div>
-          <div className="tws-mt-4 tws-flex tws-items-center tws-gap-x-3 ">
+          <div className="tws-mt-6 tws-flex tws-items-center tws-gap-x-3 ">
             <Button
               onTap={onClose}
-              className="!tws-rounded-full !/tws-bg-[#bfb9c9] !tws-bg-zinc-300 tws-w-full tws-py-3"
+              className="!tws-rounded-full !/tws-bg-[#bfb9c9] !tws-bg-zinc-300 tws-w-full tws-py-3.5"
               variant="dormant"
             >
               Cancel
@@ -303,7 +327,7 @@ const UrlModal: React.FC<UrlModalProps> = (props) => {
             <Button
               onTap={onSave}
               disabled={!formik.isValid}
-              className="!tws-rounded-full tws-w-full tws-py-3"
+              className="!tws-rounded-full tws-w-full tws-py-3.5"
             >
               Ok
             </Button>
