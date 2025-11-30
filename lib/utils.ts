@@ -55,8 +55,8 @@ export const pick = <O extends Record<string, any>, K extends keyof O>(
   ...keys: K[]
 ) => {
   const emptyObj = {} as Record<K, any>;
-  keys.forEach((k) => (emptyObj[k] = obj?.[k]));
-  return emptyObj;
+  keys.forEach((k) => (emptyObj[k] = obj[k]));
+  return emptyObj as Helpers.Prettify<Pick<O, K>>;
 };
 
 export const round = Math.round;
@@ -301,18 +301,18 @@ export function rgbArrayToHex([r, g, b]: [uint8, uint8, uint8]): `#${string}` {
  * @example
  * separateProtocol("https://example.com/path")
  */
-export function separateProtocol(url: string): Result<{ protocol: string; rest: string }, 'Protocol not supported'> {
+export function separateProtocol(url: string): Result<{ protocol: string; url: string }, 'Protocol not supported'> {
   if (url.startsWith('https://')) {
     return ok({
       protocol: 'https://',
-      rest: url.slice(8) // Remove 'https://'
+      url: url.slice(8) // Remove 'https://'
     })
   }
 
   if (url.startsWith('http://')) {
     return ok({
       protocol: 'http://',
-      rest: url.slice(7) // Remove 'http://'
+      url: url.slice(7) // Remove 'http://'
     })
   }
 

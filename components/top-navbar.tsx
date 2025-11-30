@@ -2,49 +2,55 @@ import { cn } from "@/lib/cn";
 import { useModalsBuilder } from "@/lib/modals-builder";
 import { uint8 } from "@/lib/number";
 import { pipe } from "@/lib/pipe";
-import { inlineSwitch, noop, pick, sleep } from "@/lib/utils";
+import { inlineSwitch, noop, pick, separateProtocol, sleep } from "@/lib/utils";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
 import { useDevice } from "@/src/stores/device";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import { useFullscreen } from "@/src/stores/fullscreen";
 import { useIframeSrc } from "@/src/stores/iframe-src";
 import { useScreenState } from "@/src/stores/screen-state";
+import { appWindow as simulatorAppWindow } from "@tauri-apps/api/window";
+import { useFormik } from "formik";
+import { Check, Maximize2Icon, MinusIcon, XIcon } from "lucide-react";
+import { motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 import AppMenu from "./app-menu";
 import DeviceSelectMenu from "./device-select-menu";
 import Home from "./icons/home";
 import Reload from "./icons/reload";
 import { SearchIcon } from "./icons/search";
+import Settings from "./icons/settings";
 import { Button } from "./ui/buttons";
+import { Input } from "./ui/inputs/input";
+import SearchableSelect from "./ui/inputs/searchable-select";
 import LiquidGlass from "./ui/liquid-glass";
 import Modal from "./ui/modal";
-import SearchableSelect from "./ui/inputs/searchable-select";
-import { Input } from "./ui/inputs/input";
-import { useFormik } from "formik";
+
+const AnimatedCheckIcon = motion.create(Check);
 
 const TopNavbar: React.FC = () => {
-  const { setSrc, src: iframeSrc } = useIframeSrc();
+  const { setSrc: setIframeSrc, src: iframeSrc } = useIframeSrc();
   const { device } = useDevice();
   const deviceDisplayName = pick(
-    DEVICE_MAPPING[device] ?? {},
+    DEVICE_MAPPING[device],
     "displayName",
     "version",
   );
-  const versionMemo = pipe(
-    DEVICE_MAPPING[device] ?? {},
-    ({ type, version }) => {
-      return inlineSwitch(type, ["ipad", `iPadOS ${version}`], {
+  const versionMemo = pipe(DEVICE_MAPPING[device], ({ type, version }) => {
+    return inlineSwitch(
+      type,
+      /*["ipad", `iPadOS ${version}`]*/ {
         default: `iOS ${version}`,
-      });
-    },
-  );
+      },
+    );
+  });
   const { modals, modalFunctions } = useModalsBuilder({
     url: {
       open: false,
     },
   });
   const inputRef = useRef<HTMLInputElement>(null);
-  const { isFullscreen } = useFullscreen();
+  const { isFullscreen, setIsFullscreen } = useFullscreen();
   const { setScreenState } = useScreenState();
   const { setDeviceScreen } = useDeviceScreen();
   const classMemo = isFullscreen ? "tws-hidden" : "tws-flex";
@@ -63,16 +69,21 @@ const TopNavbar: React.FC = () => {
       window.removeEventListener("focus", onFocus);
     };
   }, []);
+  const protocolResult = separateProtocol(iframeSrc);
+  useEffect(() => {
+    if (protocolResult.isErr()) return; // we should show the in the top navbar.
+  }, [protocolResult]);
   const formik = useFormik({
-    initialValues: {
-      // load these from frameSrc variable
-      protocol: 'http://',
-      url: ''
-    },
+    initialValues: protocolResult.isOk()
+      ? protocolResult.value
+      : {
+          protocol: "http://",
+          url: "",
+        },
     enableReinitialize: true,
     validateOnMount: true,
-    onSubmit: noop
-  })
+    onSubmit: noop,
+  });
 
   return (
     <section
@@ -82,18 +93,44 @@ const TopNavbar: React.FC = () => {
       )}
     >
       <div className="tws-p-2 tws-px-3 tws-flex tws-items-center tws-gap-x-3 tws-rounded-full">
-        <Button className="tws-size-3.5 !tws-p-0 tws-rounded-full tws-bg-[#ef6562] " />
-        <Button className="tws-size-3.5 !tws-p-0 tws-rounded-full tws-bg-[#eec14a] " />
-        <Button className="tws-size-3.5 !tws-p-0 tws-rounded-full tws-bg-[#57c957] " />
+        <Button
+          whileHover={{
+            background: "#460804",
+          }}
+          onTap={() => simulatorAppWindow.close()}
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#460804] !tws-p-0 tws-rounded-full !tws-bg-[#ef6562] "
+        >
+          <XIcon className="tws-size-3 " />
+        </Button>
+        <Button
+          whileHover={{
+            background: "#90591d",
+          }}
+          onTap={() => simulatorAppWindow.minimize()}
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#90591d] !tws-p-0 tws-rounded-full !tws-bg-[#eec14a] "
+        >
+          <MinusIcon className="tws-size-3 " />
+        </Button>
+        <Button
+          whileHover={{
+            background: "#90591d",
+          }}
+          onTap={() => setIsFullscreen(true)}
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#2a6218] !tws-p-0 tws-rounded-full !tws-bg-[#57c957] "
+        >
+          <Maximize2Icon className="tws-size-2 " />
+        </Button>
       </div>
       <div className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 ">
         <p className="tws-text-[#ECEDE9] tws-font-bold ">
           {deviceDisplayName.displayName}
         </p>
-        <p className="tws-text-[#B0B0AD] tws-font-medium ">{versionMemo}</p>
+        <p className="tws-text-[#B0B0AD] tws-font-medium ">
+          {versionMemo as any}
+        </p>
       </div>
       <LiquidGlass.div
-        className="tws-p-2 tws-px-3 tws-flex tws-ml-auto tws-items-center tws-gap-x-4 tws-rounded-full"
+        className="tws-p-2 tws-px-3 tws-flex tws-ml-auto tws-items-center tws-gap-x-4 tws-rounded-full tws-transition-colors tws-duration-200 tws-ease-linear "
         tint={[uint8(255), uint8(255), uint8(255)]}
         tintOpacity={0.3}
         mixingPercentage={mixingPercentage}
@@ -117,7 +154,7 @@ const TopNavbar: React.FC = () => {
         >
           <SearchIcon className={"tws-size-5 tws-h-[18px] tws-fill-white"} />
         </Button>
-        <Home className={"tws-size-5 tws-fill-white"} />
+        <Settings className={"tws-size-5 tws-fill-white"} />
       </LiquidGlass.div>
 
       <div className="tws-hidden tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear">
@@ -132,8 +169,8 @@ const TopNavbar: React.FC = () => {
         <Button
           onTap={() => {
             const url = iframeSrc;
-            setSrc("");
-            setSrc(url);
+            setIframeSrc("");
+            setIframeSrc(url);
           }}
         >
           <Reload className={"tws-w-5 tws-fill-[#CFCFCC]"} />
@@ -158,7 +195,9 @@ const TopNavbar: React.FC = () => {
                   { label: "HTTP", value: "http://" },
                   { label: "HTTPS", value: "https://" },
                 ]}
-                onChange={(value) => formik.setFieldValue('protocol', value?.value || "")}
+                onChange={(value) =>
+                  formik.setFieldValue("protocol", value?.value || "")
+                }
                 value={formik.values.protocol}
               >
                 {(option, index) => (
@@ -197,10 +236,10 @@ const TopNavbar: React.FC = () => {
                 )}
               </SearchableSelect>
               <Input.TextArea
-                value={value}
+                value={formik.values.url}
                 required
                 onChange={(e) => {
-                  setValue(e.target.value);
+                  formik.setFieldValue("url", e.target.value);
                 }}
                 className=" "
                 name="url"
@@ -221,7 +260,6 @@ const TopNavbar: React.FC = () => {
           </LiquidGlass.div>
         </Modal.Body>
       </Modal>
-
     </section>
   );
 };

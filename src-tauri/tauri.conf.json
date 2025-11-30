@@ -15,7 +15,10 @@
 			"window": {
 				"all": false,
 				"setDecorations": true,
-				"setAlwaysOnTop": true
+				"setAlwaysOnTop": true,
+				"hide": true,
+				"minimize": true,
+				"close": true
 			},
 			"fs": {
 				"all": false,

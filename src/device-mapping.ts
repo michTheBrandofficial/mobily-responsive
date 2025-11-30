@@ -1,11 +1,11 @@
 import { objectKeys } from "@/lib/utils";
-import IpadProi13 from "./frames/ipad-pro-i13";
-import Iphone15 from "./frames/iphone-15";
-import Iphone16Pro from "./frames/iphone-16-pro";
+// import IpadProi13 from "./frames/ipad-pro-i13";
+// import Iphone15 from "./frames/iphone-15";
+// import Iphone16Pro from "./frames/iphone-16-pro";
 
 export const DEVICE_MAPPING = {
   "iphone-15": {
-    component: () => ['namsl'],
+    component: () => [''],
     displayName: "iPhone 15",
     type: 'iphone',
     version: "17.0",
