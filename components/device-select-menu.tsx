@@ -5,8 +5,6 @@ import { CheckIcon } from "lucide-react";
 import { FC, useState } from "react";
 import Menu from "./ui/menu";
 
-
-
 interface Props {
   trigger: React.ReactNode;
 }

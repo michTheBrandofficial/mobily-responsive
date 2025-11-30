@@ -51,6 +51,10 @@ declare global {
       [index in keyof T]: T[index];
     } & {};
 
+    type Nullable<T> = T | null;
+
+    type None<T> = T | undefined | null;
+
     type Mutable<T extends Record<string, any>> = Prettify<{
       -readonly [key in keyof T]: T[key];
     }>;

@@ -1,16 +1,18 @@
 import { getDims, isFunction, px, round } from "@/lib/utils";
 import { BasePhoneConfig, basePhoneConfig } from "./base-phone-config";
 import clothoidize from "@/lib/clothoidize";
-import { lastHasBezels } from "../constants";
 import { Dispatch, RefObject, SetStateAction, useEffect } from "react";
 import { create } from "zustand/react";
+import { useLocalStorage } from "./local-storage";
+
+const { storage } = useLocalStorage.getState();
 
 export interface IphoneConfig extends BasePhoneConfig {}
 
 export const iphoneConfig: IphoneConfig = {
   ...basePhoneConfig,
   ...{},
-  hasBezels: lastHasBezels === "true",
+  hasBezels: storage.lastHasBezels,
 };
 
 type IPhoneConfigStore = {
@@ -61,7 +63,7 @@ export const setupResizeEffect = <E extends HTMLElement>(
 
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
-      const [{ target }] = entries;
+      const [{ target } = {}] = entries;
       const { width, height } = getDims(getComputedStyle(target!));
       const { newWidth, newHeight } = (() => ({
         newWidth: width - round(width * deviceWidthRatio),

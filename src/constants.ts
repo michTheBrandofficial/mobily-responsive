@@ -46,26 +46,4 @@ export const FSOptions = {
 
 export const homeScreenIconScale = 1.4;
 
-export const LOCALSTORAGE_ALWAYS_ON_TOP_KEY = "MobilyResponsive_always_on_top";
-
-export const LOCALSTORAGE_HAS_BEZELS_KEY = "MobilyResponsive_has_bezels";
-
-export const lastAlwaysOnTop = ((): "true" | "false" => {
-  const lastUsed = localStorage.getItem(LOCALSTORAGE_ALWAYS_ON_TOP_KEY) as
-    | "true"
-    | "false"
-    | null;
-  if (!lastUsed) return "false";
-  else return lastUsed;
-})();
-
-export const lastHasBezels = ((): "true" | "false" => {
-  const lastUsed = localStorage.getItem(LOCALSTORAGE_HAS_BEZELS_KEY) as
-    | "true"
-    | "false"
-    | null;
-  if (!lastUsed) return "false";
-  else return lastUsed;
-})();
-
 export { type Device };

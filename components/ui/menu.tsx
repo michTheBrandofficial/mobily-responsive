@@ -201,19 +201,22 @@ type MenuItemProps = Props &
   Omit<HTMLMotionProps<"div">, "onClick" | "onTap"> & {
     onTap?: (close: VoidFunction) => void;
     isActive?: boolean;
+    noBgColorStates?: boolean;
   };
 
 const MenuItem: React.FC<MenuItemProps> = ({
   children,
   className,
+  isActive,
+  noBgColorStates,
   ...props
 }) => {
   const { setOpen, containerRef } = useMenu();
   return (
     <motion.div
       tabIndex={1}
-      {...omit(props, "onTap")}
       whileTap={{ scale: 0.9 }}
+      {...omit(props, "onTap")}
       onTap={() => {
         props.onTap?.(() => setOpen(false));
       }}
@@ -245,13 +248,14 @@ const MenuItem: React.FC<MenuItemProps> = ({
           )?.focus();
         }
       }}
-      className={cn("lg-menu-item focus:tws-outline-none focus:tws-bg-stone-400/40 hover:tws-bg-stone-400/60 tws-rounded-[24px] tws-cursor-pointer tws-transition-colors tws-duration-150", {
-        'active': props.isActive,
+      className={cn("lg-menu-item focus:tws-outline-none  tws-rounded-[24px] tws-cursor-pointer tws-transition-colors tws-duration-150", {
+        'active': isActive,
+        'focus:tws-bg-white/50 hover:tws-bg-white/50': !noBgColorStates
       })}
     >
       <motion.div
         className={cn(
-          "tws-w-full tws-h-fit tws-rounded-[inherit] tws-px-5 tws-py-3 tws-cursor-pointer tws-flex tws-items-center tws-justify-between tws-gap-x-3 ",
+          "tws-w-full tws-h-fit tws-rounded-[inherit] tws-px-3.5 tws-py-2 tws-cursor-pointer tws-flex tws-items-center tws-justify-between tws-gap-x-3 ",
           className,
         )}
       >

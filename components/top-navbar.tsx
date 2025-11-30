@@ -22,7 +22,7 @@ import { Check, Maximize2Icon, MinusIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 import { object, string } from "yup";
-import AppMenu from "./app-menu";
+import AppSettingsMenu from "./app-menu";
 import DeviceSelectMenu from "./device-select-menu";
 import DeviceFrameIcon from "./icons/device-frame";
 import Home from "./icons/home";
@@ -34,6 +34,7 @@ import SearchableSelect from "./ui/inputs/searchable-select";
 import LiquidGlass from "./ui/liquid-glass";
 import Modal, { BaseModalProps } from "./ui/modal";
 import { Typography } from "./ui/typography";
+import { useDeviceFrameHeight } from "@/src/constants";
 
 const AnimatedCheckIcon = motion.create(Check);
 
@@ -73,6 +74,7 @@ const TopNavbar: React.FC = () => {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { isFullscreen, setIsFullscreen } = useFullscreen();
   const { setScreenState } = useScreenState();
+  const { setDeviceFrameHeightClass } = useDeviceFrameHeight();
   const { setDeviceScreen, deviceScreen } = useDeviceScreen();
   const classMemo = isFullscreen ? "tws-hidden" : "tws-flex";
   const [mixingPercentage, setMixingPercentage] = useState(12);
@@ -137,7 +139,10 @@ const TopNavbar: React.FC = () => {
           whileHover={{
             background: "#90591d",
           }}
-          onTap={() => setIsFullscreen(true)}
+          onTap={() => {
+            setIsFullscreen(true);
+            setDeviceFrameHeightClass(" tws-max-h-[100vh] ");
+          }}
           className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#2a6218] !tws-p-0 tws-rounded-full !tws-bg-[#57c957] tws-group "
         >
           <Maximize2Icon className="tws-size-2 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
@@ -195,11 +200,10 @@ const TopNavbar: React.FC = () => {
         <DeviceSelectMenu
           trigger={<DeviceFrameIcon className={"tws-size-5 tws-text-white "} />}
         />
-        <Settings className={"tws-size-5 tws-fill-white"} />
+        <AppSettingsMenu
+          trigger={<Settings className={"tws-size-5 tws-fill-white"} />}
+        />
       </LiquidGlass.div>
-      <div className="tws-hidden tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear">
-        <AppMenu />
-      </div>
       <UrlModal
         open={modals.url.open}
         onClose={modalFunctions.returnClose("url")}
@@ -261,6 +265,7 @@ const UrlModal: React.FC<UrlModalProps> = (props) => {
                   option={option}
                   index={index}
                   key={index}
+                  className="tws-pr-2"
                 >
                   <div className="tws-flex tws-items-start tws-gap-x-2">
                     <AnimatedCheckIcon
@@ -289,10 +294,11 @@ const UrlModal: React.FC<UrlModalProps> = (props) => {
                       <span className="tws-text-sm tws-font-medium">
                         {option.label}
                       </span>
-                      <span className="tws-text-xs tws-font-normal tws-text-zinc-600 ">
-                        {option.value}
-                      </span>
+                      <span className="tws-text-xs tws-font-normal tws-text-zinc-600 "></span>
                     </div>
+                    <span className="tws-text-xs tws-ml-auto tws-inline-block tws-px-2 tws-py-1 tws-rounded-full tws-bg-sky-50/50 tws-text-sky-500 tws-font-medium ">
+                      {option.value}
+                    </span>
                   </div>
                 </SearchableSelect.Option>
               )}
