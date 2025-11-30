@@ -98,27 +98,27 @@ const TopNavbar: React.FC = () => {
             background: "#460804",
           }}
           onTap={() => simulatorAppWindow.close()}
-          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#460804] !tws-p-0 tws-rounded-full !tws-bg-[#ef6562] "
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#460804] !tws-p-0 tws-rounded-full !tws-bg-[#ef6562] tws-group "
         >
-          <XIcon className="tws-size-3 " />
+          <XIcon className="tws-size-3 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
         </Button>
         <Button
           whileHover={{
             background: "#90591d",
           }}
           onTap={() => simulatorAppWindow.minimize()}
-          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#90591d] !tws-p-0 tws-rounded-full !tws-bg-[#eec14a] "
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#90591d] !tws-p-0 tws-rounded-full !tws-bg-[#eec14a] tws-group "
         >
-          <MinusIcon className="tws-size-3 " />
+          <MinusIcon className="tws-size-3 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
         </Button>
         <Button
           whileHover={{
             background: "#90591d",
           }}
           onTap={() => setIsFullscreen(true)}
-          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#2a6218] !tws-p-0 tws-rounded-full !tws-bg-[#57c957] "
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#2a6218] !tws-p-0 tws-rounded-full !tws-bg-[#57c957] tws-group "
         >
-          <Maximize2Icon className="tws-size-2 " />
+          <Maximize2Icon className="tws-size-2 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
         </Button>
       </div>
       <div className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 ">
