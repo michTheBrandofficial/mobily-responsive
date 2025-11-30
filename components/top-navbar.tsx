@@ -2,7 +2,14 @@ import { cn } from "@/lib/cn";
 import { useModalsBuilder } from "@/lib/modals-builder";
 import { uint8 } from "@/lib/number";
 import { pipe } from "@/lib/pipe";
-import { inlineSwitch, noop, pick, separateProtocol, sleep } from "@/lib/utils";
+import {
+  inlineSwitch,
+  noop,
+  pick,
+  removeLeadingSlash,
+  separateProtocol,
+  sleep,
+} from "@/lib/utils";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
 import { useDevice } from "@/src/stores/device";
 import { useDeviceScreen } from "@/src/stores/device-screen";
@@ -10,23 +17,36 @@ import { useFullscreen } from "@/src/stores/fullscreen";
 import { useIframeSrc } from "@/src/stores/iframe-src";
 import { useScreenState } from "@/src/stores/screen-state";
 import { appWindow as simulatorAppWindow } from "@tauri-apps/api/window";
-import { useFormik } from "formik";
+import { FormikProps, useFormik } from "formik";
 import { Check, Maximize2Icon, MinusIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 import AppMenu from "./app-menu";
 import DeviceSelectMenu from "./device-select-menu";
+import DeviceFrameIcon from "./icons/device-frame";
 import Home from "./icons/home";
-import Reload from "./icons/reload";
 import { SearchIcon } from "./icons/search";
 import Settings from "./icons/settings";
 import { Button } from "./ui/buttons";
 import { Input } from "./ui/inputs/input";
 import SearchableSelect from "./ui/inputs/searchable-select";
 import LiquidGlass from "./ui/liquid-glass";
-import Modal from "./ui/modal";
+import Modal, { BaseModalProps } from "./ui/modal";
+import { object, string } from "yup";
 
 const AnimatedCheckIcon = motion.create(Check);
+
+interface UrlFormikType {
+  url: string;
+  protocol: string;
+}
+
+const urlValidationSchema = object({
+  protocol: string()
+    .required("Protocol is required")
+    .oneOf(["http://", "https://"]),
+  url: string().required("Url is required"),
+});
 
 const TopNavbar: React.FC = () => {
   const { setSrc: setIframeSrc, src: iframeSrc } = useIframeSrc();
@@ -49,7 +69,7 @@ const TopNavbar: React.FC = () => {
       open: false,
     },
   });
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const { isFullscreen, setIsFullscreen } = useFullscreen();
   const { setScreenState } = useScreenState();
   const { setDeviceScreen } = useDeviceScreen();
@@ -73,13 +93,14 @@ const TopNavbar: React.FC = () => {
   useEffect(() => {
     if (protocolResult.isErr()) return; // we should show the in the top navbar.
   }, [protocolResult]);
-  const formik = useFormik({
+  const formik = useFormik<UrlFormikType>({
     initialValues: protocolResult.isOk()
       ? protocolResult.value
       : {
           protocol: "http://",
           url: "",
         },
+    validationSchema: urlValidationSchema,
     enableReinitialize: true,
     validateOnMount: true,
     onSubmit: noop,
@@ -154,113 +175,135 @@ const TopNavbar: React.FC = () => {
         >
           <SearchIcon className={"tws-size-5 tws-h-[18px] tws-fill-white"} />
         </Button>
+        {/* device select popover here */}
+        <Button
+          onTap={async () => {
+            modalFunctions.openModal("url", {});
+          }}
+          className="!tws-p-0 tws-bg-transparent "
+        >
+          <DeviceFrameIcon className={"tws-size-5 "} />
+        </Button>
         <Settings className={"tws-size-5 tws-fill-white"} />
       </LiquidGlass.div>
 
       <div className="tws-hidden tws-ml-auto tws-gap-x-5 data-[inputopen=true]:tws-translate-x-[200%] tws-transition-[transform] tws-duration-300 tws-ease-linear">
-        <Button
-          onTap={() => {
-            setScreenState("before-close-app");
-            setDeviceScreen("home-screen");
-          }}
-        >
-          <Home className={"tws-w-5 tws-h-5 tws-fill-[#CFCFCC]"} />
-        </Button>
-        <Button
-          onTap={() => {
-            const url = iframeSrc;
-            setIframeSrc("");
-            setIframeSrc(url);
-          }}
-        >
-          <Reload className={"tws-w-5 tws-fill-[#CFCFCC]"} />
-        </Button>
         <DeviceSelectMenu />
         <AppMenu />
       </div>
-      <Modal open={modals.url.open} onClose={modalFunctions.returnClose("url")}>
-        <Modal.Body className="">
-          <LiquidGlass.div
-            className="tws-p-4 tws-pt-12 tws-w-fit tws-rounded-[48px]  "
-            color={"#fff"}
-            mixingPercentage={80}
-          >
-            <div className="tws-w-[280px] tws-h-fit tws-py-4 tws-px-6 tws-bg-[#bfb9c9] tws-rounded-[32px] ">
-              <SearchableSelect
-                bottomBorder
-                required
-                className="tws-w-full "
-                placeholder="Protocol e.g HTTP"
-                options={[
-                  { label: "HTTP", value: "http://" },
-                  { label: "HTTPS", value: "https://" },
-                ]}
-                onChange={(value) =>
-                  formik.setFieldValue("protocol", value?.value || "")
-                }
-                value={formik.values.protocol}
-              >
-                {(option, index) => (
-                  <SearchableSelect.Option
-                    option={option}
-                    index={index}
-                    key={index}
-                  >
-                    <div className="tws-flex tws-items-center tws-gap-x-2">
-                      <AnimatedCheckIcon
-                        size={16}
-                        variants={{
-                          hidden: { pathLength: 0, opacity: 0 },
-                          visible: {
-                            pathLength: 1,
-                            opacity: 1,
-                            transition: {
-                              pathLength: {
-                                delay: 0.2,
-                                type: "spring",
-                                duration: 1.5,
-                                bounce: 0,
-                              },
-                              opacity: { delay: 0.2, duration: 0.01 },
-                            },
-                          },
-                        }}
-                        initial={"hidden"}
-                        animate={option.isSelected ? "visible" : "hidden"}
-                      />
-                      <span className="tws-text-sm tws-font-medium">
-                        {option.label}
-                      </span>
-                    </div>
-                  </SearchableSelect.Option>
-                )}
-              </SearchableSelect>
-              <Input.TextArea
-                value={formik.values.url}
-                required
-                onChange={(e) => {
-                  formik.setFieldValue("url", e.target.value);
-                }}
-                className=" "
-                name="url"
-                placeholder="Url e.g acme.com"
-              />
-            </div>
-            <div className="tws-mt-4 tws-flex tws-items-center tws-gap-x-3 ">
-              <Button
-                className="!tws-rounded-full !tws-bg-[#bfb9c9] tws-w-full tws-py-3"
-                variant="dormant"
-              >
-                Cancel
-              </Button>
-              <Button className="!tws-rounded-full tws-w-full tws-py-3">
-                Ok
-              </Button>
-            </div>
-          </LiquidGlass.div>
-        </Modal.Body>
-      </Modal>
+      <UrlModal
+        open={modals.url.open}
+        onClose={modalFunctions.returnClose("url")}
+        formik={formik}
+        inputRef={inputRef}
+        onSave={() => {
+          setIframeSrc(
+            `${formik.values.protocol}${removeLeadingSlash(formik.values.url)}`,
+          );
+          modalFunctions.closeModal('url')
+        }}
+      />
     </section>
+  );
+};
+
+interface UrlModalProps extends BaseModalProps {
+  formik: FormikProps<UrlFormikType>;
+  inputRef: React.RefObject<HTMLTextAreaElement | null>;
+  onSave(): void;
+}
+
+const UrlModal: React.FC<UrlModalProps> = (props) => {
+  const { formik, open, onClose, onSave, inputRef } = props;
+  return (
+    <Modal open={open} onClose={onClose}>
+      <Modal.Body className="">
+        <LiquidGlass.div
+          className="tws-p-4 tws-pt-12 tws-w-fit tws-rounded-[48px]  "
+          color={"#fff"}
+          mixingPercentage={80}
+        >
+          <div className="tws-w-[280px] tws-h-fit tws-py-4 tws-px-6 tws-bg-zinc-300 tws-rounded-[32px] ">
+            <SearchableSelect
+              bottomBorder
+              required
+              className="tws-w-full "
+              placeholder="Protocol e.g HTTP"
+              options={[
+                { label: "HTTP", value: "http://" },
+                { label: "HTTPS", value: "https://" },
+              ]}
+              onChange={(value) =>
+                formik.setFieldValue("protocol", value?.value || "")
+              }
+              value={formik.values.protocol}
+            >
+              {(option, index) => (
+                <SearchableSelect.Option
+                  option={option}
+                  index={index}
+                  key={index}
+                >
+                  <div className="tws-flex tws-items-center tws-gap-x-2">
+                    <AnimatedCheckIcon
+                      size={16}
+                      variants={{
+                        hidden: { pathLength: 0, opacity: 0 },
+                        visible: {
+                          pathLength: 1,
+                          opacity: 1,
+                          transition: {
+                            pathLength: {
+                              delay: 0.2,
+                              type: "spring",
+                              duration: 1.5,
+                              bounce: 0,
+                            },
+                            opacity: { delay: 0.2, duration: 0.01 },
+                          },
+                        },
+                      }}
+                      initial={"hidden"}
+                      animate={option.isSelected ? "visible" : "hidden"}
+                    />
+                    <span className="tws-text-sm tws-font-medium">
+                      {option.label}
+                    </span>
+                  </div>
+                </SearchableSelect.Option>
+              )}
+            </SearchableSelect>
+            <Input.TextArea
+              inputRef={inputRef}
+              value={formik.values.url}
+              required
+              onChange={(e) => {
+                formik.setFieldValue("url", e.target.value);
+              }}
+              className=" "
+              name="url"
+              placeholder="Url e.g acme.com"
+            />
+          </div>
+          <div className="tws-mt-4 tws-flex tws-items-center tws-gap-x-3 ">
+            <Button
+              onTap={onClose}
+              className="!tws-rounded-full !/tws-bg-[#bfb9c9] !tws-bg-zinc-300 tws-w-full tws-py-3"
+              variant="dormant"
+            >
+              Cancel
+            </Button>
+            <Button
+              onTap={onSave}
+              disabled={!formik.isValid}
+              className="!tws-rounded-full tws-w-full tws-py-3"
+            >
+              Ok
+            </Button>
+          </div>
+        </LiquidGlass.div>
+      </Modal.Body>
+    </Modal>
   );
 };
 

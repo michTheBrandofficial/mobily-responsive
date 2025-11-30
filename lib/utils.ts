@@ -69,6 +69,10 @@ export const prefixWithSlash = (str: string): string => {
   return str.startsWith("/") ? str : `/${str}`;
 };
 
+export const removeLeadingSlash = (str: string): string => {
+  return str.startsWith("/") ? str.slice(1) : str;
+};
+
 export const blobToBinary = async (blob: Blob) => {
   const buffer = await blob.arrayBuffer();
 
