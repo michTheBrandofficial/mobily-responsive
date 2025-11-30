@@ -196,10 +196,11 @@ const TopNavbar: React.FC = () => {
         onClose={modalFunctions.returnClose("url")}
         formik={formik}
         inputRef={inputRef}
-        onSave={() => {
+        onSave={async () => {
           setIframeSrc(
             `${formik.values.protocol}${removeLeadingSlash(formik.values.url)}`,
           );
+          await sleep(400)
           modalFunctions.closeModal('url')
         }}
       />
@@ -244,7 +245,7 @@ const UrlModal: React.FC<UrlModalProps> = (props) => {
                   index={index}
                   key={index}
                 >
-                  <div className="tws-flex tws-items-center tws-gap-x-2">
+                  <div className="tws-flex tws-items-start tws-gap-x-2">
                     <AnimatedCheckIcon
                       size={16}
                       variants={{
@@ -265,10 +266,16 @@ const UrlModal: React.FC<UrlModalProps> = (props) => {
                       }}
                       initial={"hidden"}
                       animate={option.isSelected ? "visible" : "hidden"}
+                      className="tws-mt-1 "
                     />
-                    <span className="tws-text-sm tws-font-medium">
-                      {option.label}
-                    </span>
+                    <div className="tws-flex tws-flex-col t">
+                      <span className="tws-text-sm tws-font-medium">
+                        {option.label}
+                      </span>
+                      <span className="tws-text-xs tws-font-normal tws-text-zinc-600 ">
+                        {option.value}
+                      </span>
+                    </div>
                   </div>
                 </SearchableSelect.Option>
               )}
