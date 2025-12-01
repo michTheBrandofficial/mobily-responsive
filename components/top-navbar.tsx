@@ -116,7 +116,7 @@ const TopNavbar: React.FC = () => {
         classMemo,
       )}
     >
-      <div className="tws-p-2 tws-px-3 tws-flex tws-items-center tws-gap-x-3 tws-rounded-full">
+      <div className="tws-p-2 tws-px-3 tws-flex tws-items-center tws-gap-x-2.5 tws-rounded-full">
         <Button
           whileHover={{
             background: "#460804",

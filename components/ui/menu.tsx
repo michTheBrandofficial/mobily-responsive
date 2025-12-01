@@ -218,6 +218,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       whileTap={{ scale: 0.9 }}
       {...omit(props, "onTap")}
       onTap={() => {
+        console.log('onTap and whileTap handled for Enter key press')
         props.onTap?.(() => setOpen(false));
       }}
       onKeyUp={(e) => {
