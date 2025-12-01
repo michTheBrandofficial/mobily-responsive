@@ -250,7 +250,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       }}
       className={cn("lg-menu-item focus:tws-outline-none  tws-rounded-[24px] tws-cursor-pointer tws-transition-colors tws-duration-150", {
         'active': isActive,
-        'focus:tws-bg-white/50 hover:tws-bg-white/50': !noBgColorStates
+        'focus:tws-bg-zinc-300/50 hover:tws-bg-zinc-300/50': !noBgColorStates
       })}
     >
       <motion.div

@@ -22,7 +22,7 @@ const AppScreen = ({ config = "iphone" }: { config: "base" | "iphone" }) => {
   const { setScreenState } = useScreenState();
   const newIconSize = homeScreenIconScale * 64;
   // leave this animation here for reversal;
-  let animation: Animation | null = null;
+  let animation = useRef<Animation | null>(null);
   useEffect(() => {
     const isAppScreenOpen = deviceScreen === "app-screen";
     const appScreenEl = appScreenRef.current;
@@ -69,13 +69,12 @@ const AppScreen = ({ config = "iphone" }: { config: "base" | "iphone" }) => {
             translate: `0px`,
           },
         ];
-        animation = appScreenEl.animate(animationKeyFrames, animationOptions);
-        animation.addEventListener("finish", function finish() {
+        animation.current = appScreenEl.animate(animationKeyFrames, animationOptions);
+        animation.current.addEventListener("finish", function finish() {
           setScreenState("after-app-launch");
-          animation?.removeEventListener("finish", finish);
+          animation.current?.removeEventListener("finish", finish);
         });
-      } else animation?.reverse();
-      // home button transition
+      } else animation.current?.reverse();
     }
   }, [deviceScreen]);
   let phoneConfig: IphoneConfig =

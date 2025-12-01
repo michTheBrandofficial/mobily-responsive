@@ -7,20 +7,20 @@ import { handleDirCreation } from "@/lib/file-handle";
 import { pipe } from "@/lib/pipe";
 import { blobToBinary, iife, prefixWithSlash, px, sleep } from "@/lib/utils";
 import {
-  BaseDirectory,
-  exists,
-  readTextFile,
-  writeBinaryFile,
-  writeFile,
+    BaseDirectory,
+    exists,
+    readTextFile,
+    writeBinaryFile,
+    writeFile,
 } from "@tauri-apps/api/fs";
 import { err, ok, Result } from "neverthrow";
 import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
+    Dispatch,
+    FC,
+    SetStateAction,
+    useEffect,
+    useRef,
+    useState,
 } from "react";
 import { dataDir, FSOptions, useDeviceFrameHeight } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
@@ -270,7 +270,7 @@ const Application: FC = () => {
               onTap={() => {
                 setIsFullscreen(false);
                 // go back to normal height
-                setDeviceFrameHeightClass(" tws-max-h-[92.2vh] ");
+                setDeviceFrameHeightClass(" tws-max-h-[92.3vh] ");
               }}
               className={cn(
                 `tws-p-2 tws-border-[#44433E] tws-bg-[#474844] tws-rounded-full tws-absolute tws-bottom-1 tws-right-2 tws-z-[1000000000] `,

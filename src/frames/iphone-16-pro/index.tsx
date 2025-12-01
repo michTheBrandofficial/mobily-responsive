@@ -28,7 +28,6 @@ const clothoidRadiusRatio = 58 / dimensions.w;
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const;
 
 const Iphone16Pro: FC = () => {
-  console.log('yep, still re-rendering oh, chai')
 	const wrapperRef = useRef<HTMLElement>(null);
 	const { iphoneConfig } = useIphoneConfig();
 	setupResizeEffect(wrapperRef, {

@@ -184,14 +184,18 @@ const TopNavbar: React.FC = () => {
               ? {
                   opacity: 0,
                   width: 0,
+                  marginLeft: 0
                 }
               : {
                   opacity: 1,
                   width: "auto",
+                  marginLeft: 16
                 }
           }
+          transition={{
+            delay: .9
+          }}
           className={cn("!tws-p-0 tws-bg-transparent ", {
-            "!tws-ml-0": deviceScreen === "home-screen",
           })}
         >
           <SearchIcon className={"tws-size-5 tws-h-[18px] tws-fill-white"} />

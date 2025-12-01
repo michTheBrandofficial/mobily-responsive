@@ -21,7 +21,8 @@ const HomeScreen: React.FC = () => {
   const { deviceScreen, setDeviceScreen } = useDeviceScreen();
   const homeScreenIconRef = useRef<HTMLDivElement>(null);
   let isInFirstTwoIcons = true;
-  let animation: Animation | null = null;
+  // leave this animation here for reversal;
+  let animation = useRef<Animation | null>(null);
   const untitledIcon: App.HomeScreenIconMapping[string] = {
     name: "Untitled",
     origin: "http://localhost:5173",
@@ -60,7 +61,7 @@ const HomeScreen: React.FC = () => {
     if (deviceScreen === "app-screen") {
       const { x, y } = homeScreenIconRef.current!.getBoundingClientRect();
       setIconCoordinates([x, y, isInFirstTwoIcons as true]);
-      animation = homeScreenIconRef.current!.animate(
+      animation.current = homeScreenIconRef.current!.animate(
         [
           {
             opacity: 0.3,
@@ -80,7 +81,7 @@ const HomeScreen: React.FC = () => {
           easing: "cubic-bezier(0.33, 1, 0.68, 1)",
         },
       );
-    } else animation?.reverse();
+    } else animation.current?.reverse();
   }, [deviceScreen]);
   const { storage: { lastUsedDevice: device } } = useLocalStorage()
   const { iphoneConfig } = useIphoneConfig();

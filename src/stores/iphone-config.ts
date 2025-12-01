@@ -1,8 +1,8 @@
-import { debounce, getDims, iife, isFunction, px, round } from "@/lib/utils";
-import { BasePhoneConfig, basePhoneConfig } from "./base-phone-config";
 import clothoidize from "@/lib/clothoidize";
+import { getDims, iife, isFunction, px, round } from "@/lib/utils";
 import { Dispatch, RefObject, SetStateAction, useEffect } from "react";
 import { create } from "zustand/react";
+import { BasePhoneConfig, basePhoneConfig } from "./base-phone-config";
 import { useLocalStorage } from "./local-storage";
 
 const { storage } = useLocalStorage.getState();
@@ -63,7 +63,7 @@ export const setupResizeEffect = <E extends HTMLElement>(
 
   useEffect(() => {
     const observer = new ResizeObserver(
-      debounce((entries) => {
+      (entries) => {
         const [{ target } = {}] = entries;
         const { width, height } = getDims(getComputedStyle(target!));
         const { newWidth, newHeight } = iife(() => ({
@@ -89,7 +89,7 @@ export const setupResizeEffect = <E extends HTMLElement>(
           safeAreaInset: px(round(height * safeAreaInsetRatio)),
         });
         fn?.(wrapperRef.current!);
-      }, 30),
+      },
     );
     observer.observe(wrapperRef.current!);
     return () => {
