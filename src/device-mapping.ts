@@ -5,7 +5,7 @@ import Iphone16Pro from "./frames/iphone-16-pro";
 
 export const DEVICE_MAPPING = {
   "iphone-15": {
-    component: () => [''],
+    component: Iphone16Pro,
     displayName: "iPhone 15",
     type: 'iphone',
     version: "17.0",
@@ -24,12 +24,6 @@ export const DEVICE_MAPPING = {
       height: 852,
     }
   },
-  // "iphone-16-pro": {
-  //   component: Iphone16Pro,
-  //   displayName: "iPhone 16 Pro",
-  //   type: 'iphone',
-  //   version: "18.2"
-  // },
   // 'ipad-pro-i13': {
   //   component: IpadProi13,
   //   displayName: 'iPad Pro 13"',

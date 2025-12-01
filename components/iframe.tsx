@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 import { percentage } from "@/lib/utils";
-import Loaders from "./loaders";
 import React, { useState } from "react";
+import Loaders from "./loaders";
 
 interface Props extends React.IframeHTMLAttributes<HTMLIFrameElement> {
   src: string;
@@ -20,7 +20,7 @@ const Iframe: React.FC<Props> = ({ style = {}, className, src, ...props }) => {
       {loading && <Loaders.IOSSpinner />}
       <iframe
         {...props}
-        src={src || null}
+        src={src || undefined}
         onLoad={() => setLoading(false)}
         className={cn("tws-no-scrollbar ", className)}
         allow="clipboard-read; clipboard-write"

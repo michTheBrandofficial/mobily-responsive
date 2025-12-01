@@ -93,5 +93,5 @@ export const setupResizeEffect = <E extends HTMLElement>(
     return () => {
       observer.disconnect();
     };
-  }, [resizeEffectConfig]);
+  }, []);
 };

@@ -5,29 +5,22 @@ import { cn } from "@/lib/cn";
 import { ErrorMatcher } from "@/lib/error-matcher";
 import { handleDirCreation } from "@/lib/file-handle";
 import { pipe } from "@/lib/pipe";
+import { blobToBinary, iife, prefixWithSlash, px, sleep } from "@/lib/utils";
 import {
-    blobToBinary,
-    iife,
-    prefixWithSlash,
-    px,
-    sleep
-} from "@/lib/utils";
-import {
-    BaseDirectory,
-    exists,
-    readTextFile,
-    writeBinaryFile,
-    writeFile,
+  BaseDirectory,
+  exists,
+  readTextFile,
+  writeBinaryFile,
+  writeFile,
 } from "@tauri-apps/api/fs";
 import { err, ok, Result } from "neverthrow";
 import {
-    Dispatch,
-    FC,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
 import { dataDir, FSOptions, useDeviceFrameHeight } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
@@ -241,9 +234,7 @@ const Application: FC = () => {
     // set device screen to home
     setDeviceScreen("home-screen");
   }, [device]);
-  const DeviceComponent = useCallback(DEVICE_MAPPING[device].component, [
-    device,
-  ]);
+  const DeviceComponent = DEVICE_MAPPING[device].component;
 
   return (
     <IframeSrcContext.Provider
@@ -273,7 +264,7 @@ const Application: FC = () => {
           <section className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-flex-col tws-items-center tws-justify-between ">
             <TopNavbar />
             <div className="tws-flex-grow">
-              <DeviceComponent />;
+              <DeviceComponent key={device} />;
             </div>
             <Button
               onTap={() => {

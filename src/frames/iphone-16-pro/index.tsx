@@ -4,7 +4,7 @@ import Wrapper from "@/components/wrapper";
 import { cn } from "@/lib/cn";
 import { percentage, pick, px } from "@/lib/utils";
 import { useScreenState } from "@/src/stores/screen-state";
-import { FC, useMemo, useRef } from "react";
+import { FC, memo, useMemo, useRef } from "react";
 import { containerStyles } from "~/constants";
 import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
@@ -28,6 +28,7 @@ const clothoidRadiusRatio = 58 / dimensions.w;
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const;
 
 const Iphone16Pro: FC = () => {
+  console.log('yep, still re-rendering oh, chai')
 	const wrapperRef = useRef<HTMLElement>(null);
 	const { iphoneConfig } = useIphoneConfig();
 	setupResizeEffect(wrapperRef, {
@@ -90,4 +91,4 @@ const Iphone16Pro: FC = () => {
 	);
 };
 
-export default Iphone16Pro;
+export default memo(Iphone16Pro);
