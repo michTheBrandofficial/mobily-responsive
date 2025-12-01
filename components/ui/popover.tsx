@@ -38,7 +38,7 @@ const usePopover = () => {
   return popoverContent;
 };
 
-type PopoverProps = Pick<Props, "children" | 'className'> &
+type PopoverProps = Pick<Props, "children" | "className"> &
   Pick<PopoverContextType, "onClose" | "onOpen"> & {
     transformOrigin?: PopoverContextType["config"]["transformOrigin"];
   };
@@ -128,7 +128,9 @@ const PopoverClose: React.FC<
 };
 
 type PopoverContentProps = Omit<Props, "children"> & {
-  children?: React.ReactNode | ((closePopover: VoidFunction) => React.ReactNode);
+  children?:
+    | React.ReactNode
+    | ((closePopover: VoidFunction) => React.ReactNode);
 };
 
 /**
@@ -165,21 +167,15 @@ const PopoverContent: React.FC<PopoverContentProps> = ({
           <motion.section
             ref={containerRef}
             key={"popover"}
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.5 }}
             animate={{
               scale: 1,
-              opacity: 1,
-              transition: {
-                type: "keyframes",
-                duration: 0.2,
-              },
             }}
             exit={{
-              scale: 0.8,
+              scale: 0.5,
               opacity: 0,
               transition: {
-                duration: 0.25,
-                ease: "easeInOut",
+                duration: 0.2,
               },
             }}
             tabIndex={0}

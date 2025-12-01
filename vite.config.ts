@@ -23,6 +23,8 @@ export default defineConfig({
         entryFileNames: "assets/index.js",
       },
     },
+    // allow our js bundle to be 1MB
+    chunkSizeWarningLimit: 1000
   },
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

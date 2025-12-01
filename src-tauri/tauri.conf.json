@@ -7,8 +7,8 @@
 		"distDir": "../dist"
 	},
 	"package": {
-		"productName": "Mobily Responsive",
-		"version": "0.8.1"
+		"productName": "Mobily Responsive (Beta)",
+		"version": "../package.json"
 	},
 	"tauri": {
 		"allowlist": {

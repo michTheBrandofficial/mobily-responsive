@@ -1,12 +1,12 @@
 {
 	"name": "mobily-responsive",
 	"displayName": "Mobily Responsive",
-	"description": "A Tool For Simulating Popular Devices",
-	"version": "0.8.1",
+	"description": "Simulate popular devices for web development.",
+	"version": "0.8.0",
 	"author": "Charles Ikechukwu <michthebrand@gmail.com>",
 	"publisher": "michthebrand",
 	"repository": {
-		"url": "https://github.com/mobily-responsive/public"
+		"url": "https://github.com/michthebrandofficial/mobily-responsive"
 	},
 	"license": "BSD-3-Clause",
 	"scripts": {

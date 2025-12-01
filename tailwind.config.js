@@ -28,8 +28,6 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        Rubik: ["Rubik", "sans-serif"],
-        Helvetica_Neue: ["Helvetica_Neue", "Arial"],
         Switzer: ["Switzer", "sans-serif"],
         Open_Sans: ["Open_Sans", "sans-serif"],
       },
