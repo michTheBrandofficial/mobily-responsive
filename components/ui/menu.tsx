@@ -158,7 +158,7 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
             ref={containerRef}
             key={"menu"}
             color={'#ffffff'}
-            mixingPercentage={50}
+            mixingPercentage={97}
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             exit={{
@@ -218,7 +218,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
       whileTap={{ scale: 0.9 }}
       {...omit(props, "onTap")}
       onTap={() => {
-        console.log('onTap and whileTap handled for Enter key press')
         props.onTap?.(() => setOpen(false));
       }}
       onKeyUp={(e) => {

@@ -112,7 +112,7 @@ const TopNavbar: React.FC = () => {
   return (
     <section
       className={cn(
-        "tws-w-screen tws-max-w-[384px] tws-border tws-border-gray-100/40 tws-rounded-full tws-items-center tws-justify-between tws-gap-3 tws-mt-1 tws-p-2 tws-bg-[#474844] tws-relative ",
+        "tws-w-screen tws-max-w-[384px] tws-border tws-border-gray-100/40 tws-rounded-full tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-bg-[#474844] tws-relative ",
         classMemo,
       )}
     >

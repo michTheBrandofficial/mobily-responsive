@@ -12,7 +12,7 @@ export const containerStyles = {
 
 export const maxHeightMap = {
   fullscreen: " tws-max-h-[100vh] ",
-  minimize: " tws-max-h-[93.6vh] ",
+  minimize: " tws-max-h-[92.2vh] ",
 } as const;
 
 type DeviceFrameHeightStore = {

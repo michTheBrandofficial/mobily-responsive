@@ -261,16 +261,16 @@ const Application: FC = () => {
             position: "relative",
           }}
         >
-          <section className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-flex-col tws-items-center tws-justify-between ">
+          <section className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-flex-col tws-items-center tws-justify-between tws-py-1 ">
             <TopNavbar />
             <div className="tws-flex-grow">
-              <DeviceComponent key={device} />;
+              <DeviceComponent key={device} />
             </div>
             <Button
               onTap={() => {
                 setIsFullscreen(false);
                 // go back to normal height
-                setDeviceFrameHeightClass(" tws-max-h-[93.6vh] ");
+                setDeviceFrameHeightClass(" tws-max-h-[92.2vh] ");
               }}
               className={cn(
                 `tws-p-2 tws-border-[#44433E] tws-bg-[#474844] tws-rounded-full tws-absolute tws-bottom-1 tws-right-2 tws-z-[1000000000] `,
