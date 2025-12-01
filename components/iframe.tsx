@@ -20,7 +20,7 @@ const Iframe: React.FC<Props> = ({ style = {}, className, src, ...props }) => {
       {loading && <Loaders.IOSSpinner />}
       <iframe
         {...props}
-        src={src}
+        src={src || null}
         onLoad={() => setLoading(false)}
         className={cn("tws-no-scrollbar ", className)}
         allow="clipboard-read; clipboard-write"

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/cn";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
-import { useDevice } from "@/src/stores/device";
+import { useLocalStorage } from "@/src/stores/local-storage";
 import { CheckIcon } from "lucide-react";
 import { FC, useState } from "react";
 import Menu from "./ui/menu";
@@ -19,7 +19,10 @@ const DeviceSelectMenu: FC<Props> = (props) => {
       }),
     ),
   );
-  const { device: selectedDevice, setDevice: setSelectedDevice } = useDevice();
+  const { storage: { lastUsedDevice: selectedDevice }, setStorage } = useLocalStorage()
+  const setSelectedDevice = (device: any) => {
+    setStorage('lastUsedDevice', device)
+  }
   return (
     <Menu transformOrigin="top-right">
       <Menu.Trigger>{props.trigger}</Menu.Trigger>

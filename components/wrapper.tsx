@@ -1,8 +1,8 @@
 import { cn } from "@/lib/cn";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, RefAttributes } from "react";
 import React from "react";
 
-interface Props extends HTMLAttributes<HTMLElement> {}
+interface Props extends HTMLAttributes<HTMLElement>, RefAttributes<HTMLElement> {}
 
 const Wrapper: React.FC<Props> = ({ className, children, ...rest }) => {
   return (

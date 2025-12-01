@@ -27,7 +27,7 @@ const AppScreen = ({ config = "iphone" }: { config: "base" | "iphone" }) => {
     const isAppScreenOpen = deviceScreen === "app-screen";
     const appScreenEl = appScreenRef.current;
     const [xCoordinate, yCoordinate, isInFirstTwoIcons] =
-      useIconCoordinates().iconCoordinates;
+      useIconCoordinates.getState().iconCoordinates;
     if (appScreenEl) {
       const animationOptions: KeyframeAnimationOptions = {
         duration: 1000,

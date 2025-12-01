@@ -3,18 +3,19 @@ import { useModalsBuilder } from "@/lib/modals-builder";
 import { uint8 } from "@/lib/number";
 import { pipe } from "@/lib/pipe";
 import {
-  inlineSwitch,
-  noop,
-  pick,
-  removeLeadingSlash,
-  separateProtocol,
-  sleep,
+    inlineSwitch,
+    noop,
+    pick,
+    removeLeadingSlash,
+    separateProtocol,
+    sleep,
 } from "@/lib/utils";
+import { useDeviceFrameHeight } from "@/src/constants";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
-import { useDevice } from "@/src/stores/device";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import { useFullscreen } from "@/src/stores/fullscreen";
 import { useIframeSrc } from "@/src/stores/iframe-src";
+import { useLocalStorage } from "@/src/stores/local-storage";
 import { useScreenState } from "@/src/stores/screen-state";
 import { appWindow as simulatorAppWindow } from "@tauri-apps/api/window";
 import { FormikProps, useFormik } from "formik";
@@ -34,7 +35,6 @@ import SearchableSelect from "./ui/inputs/searchable-select";
 import LiquidGlass from "./ui/liquid-glass";
 import Modal, { BaseModalProps } from "./ui/modal";
 import { Typography } from "./ui/typography";
-import { useDeviceFrameHeight } from "@/src/constants";
 
 const AnimatedCheckIcon = motion.create(Check);
 
@@ -52,7 +52,7 @@ const urlValidationSchema = object({
 
 const TopNavbar: React.FC = () => {
   const { setSrc: setIframeSrc, src: iframeSrc } = useIframeSrc();
-  const { device } = useDevice();
+  const { storage: { lastUsedDevice: device } } = useLocalStorage()
   const deviceDisplayName = pick(
     DEVICE_MAPPING[device],
     "displayName",

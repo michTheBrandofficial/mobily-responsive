@@ -12,6 +12,7 @@ const IOSSpinner: React.FC<{ color?: string }> = ({ color }) => {
             if (color) styles.backgroundColor = color;
             return (
               <div
+                key={i}
                 className="tws-w-[4px] tws-h-2 tws-bg-[#A3A3AB] tws-rounded-full tws-fade-animation "
                 style={{
                   transform: `rotate(${45 * i}deg) translateY(${percentage(

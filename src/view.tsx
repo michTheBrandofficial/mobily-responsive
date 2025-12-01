@@ -7,8 +7,6 @@ import { handleDirCreation } from "@/lib/file-handle";
 import { pipe } from "@/lib/pipe";
 import {
     blobToBinary,
-    entries,
-    findAndPipe,
     iife,
     prefixWithSlash,
     px,
@@ -26,6 +24,7 @@ import {
     Dispatch,
     FC,
     SetStateAction,
+    useCallback,
     useEffect,
     useRef,
     useState,
@@ -33,13 +32,13 @@ import {
 import { dataDir, FSOptions, useDeviceFrameHeight } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { useBasePhoneConfig } from "./stores/base-phone-config";
-import { useDevice } from "./stores/device";
 import { useDeviceScreen } from "./stores/device-screen";
 import { useDeviceSettings } from "./stores/device-settings";
 import { useFullscreen } from "./stores/fullscreen";
 import { IframeRefContext } from "./stores/iframe-ref";
 import { IframeSrcContext } from "./stores/iframe-src";
 import { useIphoneConfig } from "./stores/iphone-config";
+import { useLocalStorage } from "./stores/local-storage";
 
 /**
  * @dev fetches icons to save to storage and render on screen.
@@ -147,7 +146,9 @@ const setupPWAConfig = (
         if (isFullScreen) {
           const { basePhoneConfig, setBasePhoneConfig } = useBasePhoneConfig();
           const { iphoneConfig, setIphoneConfig } = useIphoneConfig();
-          const { device } = useDevice();
+          const {
+            storage: { lastUsedDevice: device },
+          } = useLocalStorage();
           setSafeAreaInset((prev) => {
             const { safeAreaInset } = device.includes("iphone")
               ? iphoneConfig
@@ -196,7 +197,9 @@ const Application: FC = () => {
     useDeviceSettings();
   const { setDeviceFrameHeightClass } = useDeviceFrameHeight();
   const { isFullscreen, setIsFullscreen } = useFullscreen();
-  const { device } = useDevice();
+  const {
+    storage: { lastUsedDevice: device },
+  } = useLocalStorage();
   // setup data dir if it is not created;
   useEffect(() => {
     handleDirCreation();
@@ -238,6 +241,9 @@ const Application: FC = () => {
     // set device screen to home
     setDeviceScreen("home-screen");
   }, [device]);
+  const DeviceComponent = useCallback(DEVICE_MAPPING[device].component, [
+    device,
+  ]);
 
   return (
     <IframeSrcContext.Provider
@@ -267,18 +273,7 @@ const Application: FC = () => {
           <section className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-flex-col tws-items-center tws-justify-between ">
             <TopNavbar />
             <div className="tws-flex-grow">
-              {findAndPipe(
-                entries(
-                  DEVICE_MAPPING as Helpers.DeepMutable<typeof DEVICE_MAPPING>,
-                ),
-                ([deviceName]) => deviceName === device,
-                (device) => {
-                  const [_name, config] = device;
-                  const DeviceComponent = config.component;
-                  // @ts-expect-error
-                  return <DeviceComponent />;
-                },
-              )}
+              <DeviceComponent />;
             </div>
             <Button
               onTap={() => {

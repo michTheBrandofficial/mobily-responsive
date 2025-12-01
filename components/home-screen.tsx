@@ -1,18 +1,18 @@
 import Tools from "@/assets/images/tools icon.png";
+import { cn } from "@/lib/cn";
+import { pipe } from "@/lib/pipe";
 import { px } from "@/lib/utils";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import { useIconCoordinates } from "@/src/stores/icon-coordinates";
+import { useIframeSrc } from "@/src/stores/iframe-src";
+import { useIphoneConfig } from "@/src/stores/iphone-config";
+import { useLocalStorage } from "@/src/stores/local-storage";
+import { useQuery } from "@tanstack/react-query";
 import { readBinaryFile, readTextFile } from "@tauri-apps/api/fs";
+import { useEffect, useRef } from "react";
 import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
-import { useIphoneConfig } from "@/src/stores/iphone-config";
-import { useDevice } from "@/src/stores/device";
-import { useIframeSrc } from "@/src/stores/iframe-src";
-import { useEffect, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { pipe } from "@/lib/pipe";
-import { cn } from "@/lib/cn";
 
 const numberIconsInRow = 4;
 
@@ -82,7 +82,7 @@ const HomeScreen: React.FC = () => {
       );
     } else animation?.reverse();
   }, [deviceScreen]);
-  const { device } = useDevice();
+  const { storage: { lastUsedDevice: device } } = useLocalStorage()
   const { iphoneConfig } = useIphoneConfig();
   const isIpad = device.includes("ipad");
   const ipadConfigMemo = pipe(device.includes("ipad"), (isIpad) => {
