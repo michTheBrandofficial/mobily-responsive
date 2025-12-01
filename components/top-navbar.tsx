@@ -9,7 +9,7 @@ import {
   separateProtocol,
   sleep,
 } from "@/lib/utils";
-import { useDeviceFrameHeight } from "@/src/constants";
+import { maxHeightMap, useDeviceFrameHeight } from "@/src/constants";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import { useFullscreen } from "@/src/stores/fullscreen";
@@ -136,7 +136,7 @@ const TopNavbar: React.FC = () => {
           }}
           onTap={() => {
             setIsFullscreen(true);
-            setDeviceFrameHeightClass(" tws-max-h-[100vh] ");
+            setDeviceFrameHeightClass(maxHeightMap.fullscreen);
           }}
           className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#2a6218] !tws-p-0 tws-rounded-full !tws-bg-[#57c957] tws-group "
         >

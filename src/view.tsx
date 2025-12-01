@@ -22,7 +22,7 @@ import {
     useRef,
     useState,
 } from "react";
-import { dataDir, FSOptions, useDeviceFrameHeight } from "./constants";
+import { dataDir, FSOptions, maxHeightMap, useDeviceFrameHeight } from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { useBasePhoneConfig } from "./stores/base-phone-config";
 import { useDeviceScreen } from "./stores/device-screen";
@@ -270,10 +270,10 @@ const Application: FC = () => {
               onTap={() => {
                 setIsFullscreen(false);
                 // go back to normal height
-                setDeviceFrameHeightClass(" tws-max-h-[92.3vh] ");
+                setDeviceFrameHeightClass(maxHeightMap.minimize);
               }}
               className={cn(
-                `tws-p-2 tws-border-[#44433E] tws-bg-[#474844] tws-rounded-full tws-absolute tws-bottom-1 tws-right-2 tws-z-[1000000000] `,
+                `!tws-p-2 !tws-border-[#44433E] !tws-bg-[#474844] !tws-rounded-full tws-absolute tws-bottom-1 tws-right-2 tws-z-[1000000000] `,
                 {
                   "tws-hidden": !isFullscreen,
                 },

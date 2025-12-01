@@ -11,7 +11,7 @@ export const containerStyles = {
 } as const;
 
 export const maxHeightMap = {
-  fullscreen: " tws-max-h-[100vh] ",
+  fullscreen: " tws-max-h-[99.1vh] ",
   minimize: " tws-max-h-[92.3vh] ",
 } as const;
 
