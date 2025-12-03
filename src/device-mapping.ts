@@ -1,17 +1,17 @@
 import { objectKeys } from "@/lib/utils";
 // import IpadProi13 from "./frames/ipad-pro-i13";
-// import Iphone15 from "./frames/iphone-15";
+import Iphone15 from "./frames/iphone-15";
 import Iphone16Pro from "./frames/iphone-16-pro";
 
 export const DEVICE_MAPPING = {
   "iphone-15": {
-    component: Iphone16Pro,
+    component: Iphone15,
     displayName: "iPhone 15",
     type: 'iphone',
     version: "17.0",
     dimensions: {
-      width: 390,
-      height: 844,
+      width: 392,
+      height: 852,
     }
   },
   "iphone-16": {
@@ -20,8 +20,8 @@ export const DEVICE_MAPPING = {
     type: 'iphone',
     version: "18.4",
     dimensions: {
-      width: 393,
-      height: 852,
+      width: 402,
+      height: 874,
     }
   },
   // 'ipad-pro-i13': {
