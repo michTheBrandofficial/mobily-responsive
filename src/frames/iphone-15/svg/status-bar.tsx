@@ -113,7 +113,7 @@ const StatusBar: FC<StatusBarProps> = ({ className, ...rest }) => {
           width="1.9589"
           height="3.91853"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
@@ -134,7 +134,7 @@ const StatusBar: FC<StatusBarProps> = ({ className, ...rest }) => {
           width="3.19425"
           height="3.92506"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend

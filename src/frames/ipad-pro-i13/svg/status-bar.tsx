@@ -1,22 +1,23 @@
+import { cn } from "@/lib/cn";
 import { useTheme } from "@/src/stores/theme";
-import { memo } from "nixix/primitives";
+import { FC, useMemo } from "react";
 
 interface StatusBarProps extends App.SVGProps {
   foreground?: /*dark*/ "#030712" | /*light*/ "#f3f4f6";
   bPercentage?: /*dark*/ "#e2e8f0" | /*light*/ "transparent";
 }
 
-const StatusBar: Nixix.FC<StatusBarProps> = ({
+const StatusBar: FC<StatusBarProps> = ({
   className,
   bPercentage = "#e2e8f0",
   ...rest
-}): someView => {
+}) => {
   const { theme } = useTheme();
-  const { foreground, percentageStroke } = memo(() => {
+  const { foreground, percentageStroke } = useMemo(() => {
     return {
-      foreground: theme.value === "dark" ? "#000" : "white",
+      foreground: theme === "dark" ? "#000" : "white",
       // iOS uses white in 35% opacity, but lets just use white
-      percentageStroke: theme.value === "dark" ? "#000" : "white",
+      percentageStroke: theme === "dark" ? "#000" : "white",
     };
   }, [theme]);
   return (
@@ -26,7 +27,7 @@ const StatusBar: Nixix.FC<StatusBarProps> = ({
       fill="none"
       {...rest}
       viewBox="0 0 1364 32"
-      className={className + " tws-h-fit "}
+      className={cn(className, " tws-h-fit ")}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

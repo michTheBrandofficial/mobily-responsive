@@ -37,6 +37,9 @@ type LocalStorageStore = {
 
 type BooleanString = "true" | "false";
 
+/**
+ * @dev all values here are parsed using JSON.parse()
+ */
 const initialState = pipe(
   () => {
     return [
@@ -52,10 +55,11 @@ const initialState = pipe(
     ] as const;
   },
   ([lastHasBezels, lastAlwaysOnTop, lastUsedDevice]) => {
+
     return {
-      lastHasBezels: JSON.parse(lastHasBezels || "false") as boolean,
+      lastHasBezels: JSON.parse(lastHasBezels || "true") as boolean,
       lastAlwaysOnTop: JSON.parse(lastAlwaysOnTop || "false") as boolean,
-      lastUsedDevice: lastUsedDevice || "iphone-16",
+      lastUsedDevice: JSON.parse(lastUsedDevice) || "iphone-16",
     } as const;
   },
 );
