@@ -10,6 +10,7 @@ import { FC, SVGAttributes, useEffect } from "react";
 import Kbd from "./ui/kbd";
 import Menu from "./ui/menu";
 import Toggle from "./ui/toggle";
+import { EnvVariables } from "@/src/env";
 
 const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (
@@ -59,7 +60,7 @@ interface Props {
 const AppSettingsMenu: FC<Props> = (props) => {
   const { setIphoneConfig, iphoneConfig } = useIphoneConfig();
   const { setStorage, storage } = useLocalStorage();
-  const appWindow = getCurrentWindow()
+  const appWindow = getCurrentWindow();
   useEffect(() => {
     appWindow.setAlwaysOnTop(storage.lastAlwaysOnTop);
   }, []);
@@ -150,6 +151,19 @@ const AppSettingsMenu: FC<Props> = (props) => {
             className="tws-ml-auto tws-size-6 tws-rounded-full"
             src={DevIcon}
           />
+        </Menu.Item>
+        <div className="w-full tws-px-3">
+          <div className="tws-h-[1px] tws-w-full tws-bg-zinc-200" />
+        </div>
+        <Menu.Item
+          noBgColorStates
+          whileHover={undefined}
+          whileTap={undefined}
+          onTap={undefined}
+          className="!tws-py-2"
+        >
+          <span className=" tws-text-blue-400">Version</span>
+          <span>v{EnvVariables.VITE_MOBILY_RESPONSIVE_VERSION}</span>
         </Menu.Item>
       </Menu.Content>
     </Menu>

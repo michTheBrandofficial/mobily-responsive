@@ -37,6 +37,7 @@ import { IframeRefContext } from "./stores/iframe-ref";
 import { IframeSrcContext } from "./stores/iframe-src";
 import { useIphoneConfig } from "./stores/iphone-config";
 import { useLocalStorage } from "./stores/local-storage";
+import { registerAppWideHotKeys } from "./hot-keys-config";
 
 /**
  * @dev fetches icons to save to storage and render on screen.
@@ -229,6 +230,8 @@ const Application: FC = () => {
     // set device screen to home
     setDeviceScreen("home-screen");
   }, [device]);
+  // register all app wide hot keys
+  registerAppWideHotKeys()
   const DeviceComponent = DEVICE_MAPPING[device].component;
 
   return (

@@ -1,8 +1,8 @@
-import { Device } from "./device-mapping";
-import { useFullscreen } from "./stores/fullscreen";
+import { BaseDirectory, ReadDirOptions } from "@tauri-apps/plugin-fs";
 import { Dispatch } from "react";
 import { create } from "zustand/react";
-import { ReadDirOptions, ReadFileOptions, BaseDirectory } from "@tauri-apps/plugin-fs";
+import { Device } from "./device-mapping";
+import { useFullscreen } from "./stores/fullscreen";
 
 export const containerStyles = {
   overflow: "hidden",
