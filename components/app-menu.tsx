@@ -1,16 +1,24 @@
 import DevIcon from "@/assets/images/developer-icon.jpg";
 import { cn } from "@/lib/cn";
+import { pipe } from "@/lib/pipe";
 import { sleep } from "@/lib/utils";
+import { EnvVariables } from "@/src/env";
+import { userFacingHotKeysConfig } from "@/src/hot-keys-config";
 import { useIphoneConfig } from "@/src/stores/iphone-config";
 import { useLocalStorage } from "@/src/stores/local-storage";
 import { useTheme } from "@/src/stores/theme";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { CheckIcon, ChevronDown, ChevronUp } from "lucide-react";
-import { FC, SVGAttributes, useEffect } from "react";
+import {
+  CheckIcon,
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  CommandIcon,
+} from "lucide-react";
+import { FC, Fragment, SVGAttributes, useEffect } from "react";
 import Kbd from "./ui/kbd";
 import Menu from "./ui/menu";
 import Toggle from "./ui/toggle";
-import { EnvVariables } from "@/src/env";
 
 const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (
@@ -117,7 +125,6 @@ const AppSettingsMenu: FC<Props> = (props) => {
             />
             Fullscreen
           </div>
-          {/*<Kbd className="!tws-text-sm !tws-p-1 !tws-pt-2 !tws-leading-none">⌘</Kbd>*/}
           <Kbd className="!tws-text-sm !tws-p-1 !tws-leading-none">F11</Kbd>
         </Menu.Item>
         <Menu.Item
@@ -138,33 +145,44 @@ const AppSettingsMenu: FC<Props> = (props) => {
           </div>
           <ThemeDropdown />
         </Menu.Item>
-        <Menu.Item
-          onTap={async (close) => {
-            close();
-            await sleep(400);
-            window.open("https://x.com/mich_thedev", "_blank");
-          }}
-          className="!tws-py-2"
-        >
-          About Developer
-          <img
-            className="tws-ml-auto tws-size-6 tws-rounded-full"
-            src={DevIcon}
-          />
-        </Menu.Item>
-        <div className="w-full tws-px-3">
-          <div className="tws-h-[1px] tws-w-full tws-bg-zinc-200" />
-        </div>
-        <Menu.Item
-          noBgColorStates
-          whileHover={undefined}
-          whileTap={undefined}
-          onTap={undefined}
-          className="!tws-py-2"
-        >
-          <span className=" tws-text-blue-400">Version</span>
-          <span>v{EnvVariables.VITE_MOBILY_RESPONSIVE_VERSION}</span>
-        </Menu.Item>
+        <HotKeysMenu />
+        <Menu transformOrigin="top-right" className="tws-w-full">
+          <Menu.Trigger className="tws-w-full">
+            <Menu.Item onTap={undefined} className="!tws-py-2 tws-text-sky-600">
+              About
+              <ChevronRight size={14} />
+            </Menu.Item>
+          </Menu.Trigger>
+          <Menu.Content className="tws-min-h-fit tws-max-h-48 tws-min-w-[240px] tws-right-3 tws-top-8 ">
+            <Menu.Item
+              onTap={async (close) => {
+                close();
+                await sleep(400);
+                window.open("https://x.com/mich_thedev", "_blank");
+              }}
+              className="!tws-py-2 "
+            >
+              About Developer
+              <img
+                className="tws-ml-auto tws-size-6 tws-rounded-full"
+                src={DevIcon}
+              />
+            </Menu.Item>
+            <div className="w-full tws-px-3">
+              <div className="tws-h-[1px] tws-w-full tws-bg-zinc-200" />
+            </div>
+            <Menu.Item
+              noBgColorStates
+              whileHover={undefined}
+              whileTap={undefined}
+              onTap={undefined}
+              className="!tws-py-2"
+            >
+              <span className=" tws-text-blue-400">Version</span>
+              <span>v{EnvVariables.VITE_MOBILY_RESPONSIVE_VERSION}</span>
+            </Menu.Item>
+          </Menu.Content>
+        </Menu>
       </Menu.Content>
     </Menu>
   );
@@ -214,6 +232,59 @@ const ThemeDropdown = () => {
             </div>
           </Menu.Item>
         ))}
+      </Menu.Content>
+    </Menu>
+  );
+};
+
+const HotKeysMenu = () => {
+  return (
+    <Menu transformOrigin="top-right" className="tws-w-full">
+      <Menu.Trigger className="tws-w-full">
+        <Menu.Item onTap={undefined} className="!tws-py-2">
+          <div className="tws-flex tws-items-center tws-gap-x-2">
+            <CommandIcon size={18} />
+            Hot keys
+          </div>
+          <ChevronRight size={14} />
+        </Menu.Item>
+      </Menu.Trigger>
+      <Menu.Content className="tws-min-h-fit tws-max-h-48 tws-overflow-y-auto tws-thin-scrollbar tws-min-w-[244px] tws-right-3 tws-top-8 ">
+        {pipe(Object.values(userFacingHotKeysConfig), (allUserHotKeys) =>
+          allUserHotKeys.map((hotKey, index) => {
+            return (
+              <Fragment key={hotKey.raw.concat(index.toString())}>
+                <Menu.Item
+                  noBgColorStates
+                  whileHover={undefined}
+                  whileTap={undefined}
+                  onTap={undefined}
+                  className="!tws-py-2 tws-min-w-full"
+                >
+                  {hotKey.label}
+                  {hotKey.keys.length === 1 ? (
+                    <Kbd className="!tws-text-sm !tws-p-1 !tws-leading-none">
+                      {hotKey.keys[0]}
+                    </Kbd>
+                  ) : (
+                    <Kbd.Group>
+                      {hotKey.keys.map((key, index) => (
+                        <Fragment key={index}>
+                          <Kbd className="!tws-text-sm !tws-p-1 !tws-leading-none">
+                            {key}
+                          </Kbd>
+                          {!(index + 1 === hotKey.keys.length) && (
+                            <span>+</span>
+                          )}
+                        </Fragment>
+                      ))}
+                    </Kbd.Group>
+                  )}
+                </Menu.Item>
+              </Fragment>
+            );
+          }),
+        )}
       </Menu.Content>
     </Menu>
   );
