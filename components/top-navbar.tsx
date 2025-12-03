@@ -113,32 +113,26 @@ const TopNavbar: React.FC = () => {
     >
       <div className="tws-p-2 tws-px-3 tws-flex tws-items-center tws-gap-x-2.5 tws-rounded-full">
         <Button
-          whileHover={{
-            background: "#460804",
-          }}
+          whileHover={undefined}
           onTap={() => simulatorAppWindow.close()}
-          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#460804] !tws-p-0 tws-rounded-full !tws-bg-[#ef6562] tws-group "
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#460804] !tws-p-0 tws-rounded-full !tws-bg-[#ef6562] hover:!tws-bg-red-500 tws-transition-colors tws-duration-150 tws-group "
         >
           <XIcon className="tws-size-3 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
         </Button>
         <Button
-          whileHover={{
-            background: "#90591d",
-          }}
+          whileHover={undefined}
           onTap={() => simulatorAppWindow.minimize()}
-          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#90591d] !tws-p-0 tws-rounded-full !tws-bg-[#eec14a] tws-group "
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#90591d] !tws-p-0 tws-rounded-full !tws-bg-[#eec14a] hover:!tws-bg-yellow-500 tws-transition-colors tws-duration-150 tws-group "
         >
           <MinusIcon className="tws-size-3 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
         </Button>
         <Button
-          whileHover={{
-            background: "#90591d",
-          }}
+          whileHover={undefined}
           onTap={() => {
             setIsFullscreen(true);
             setDeviceFrameHeightClass(maxHeightMap.fullscreen);
           }}
-          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#2a6218] !tws-p-0 tws-rounded-full !tws-bg-[#57c957] tws-group "
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#2a6218] !tws-p-0 tws-rounded-full !tws-bg-[#57c957] hover:!tws-bg-green-500 tws-transition-colors tws-duration-150 tws-group "
         >
           <Maximize2Icon className="tws-size-2 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
         </Button>
