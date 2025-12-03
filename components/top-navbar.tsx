@@ -16,7 +16,7 @@ import { useFullscreen } from "@/src/stores/fullscreen";
 import { useIframeSrc } from "@/src/stores/iframe-src";
 import { useLocalStorage } from "@/src/stores/local-storage";
 import { useScreenState } from "@/src/stores/screen-state";
-import { appWindow as simulatorAppWindow } from "@tauri-apps/api/window";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { FormikProps, useFormik } from "formik";
 import { Check, Maximize2Icon, MinusIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
@@ -51,6 +51,7 @@ const urlValidationSchema = object({
 
 const TopNavbar: React.FC = () => {
   const { setSrc: setIframeSrc, src: iframeSrc } = useIframeSrc();
+  const simulatorAppWindow = getCurrentWindow()
   const {
     storage: { lastUsedDevice: device },
   } = useLocalStorage();

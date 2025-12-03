@@ -4,7 +4,7 @@ import { sleep } from "@/lib/utils";
 import { useIphoneConfig } from "@/src/stores/iphone-config";
 import { useLocalStorage } from "@/src/stores/local-storage";
 import { useTheme } from "@/src/stores/theme";
-import { appWindow } from "@tauri-apps/api/window";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { CheckIcon, ChevronDown, ChevronUp } from "lucide-react";
 import { FC, SVGAttributes, useEffect } from "react";
 import Kbd from "./ui/kbd";
@@ -59,6 +59,7 @@ interface Props {
 const AppSettingsMenu: FC<Props> = (props) => {
   const { setIphoneConfig, iphoneConfig } = useIphoneConfig();
   const { setStorage, storage } = useLocalStorage();
+  const appWindow = getCurrentWindow()
   useEffect(() => {
     appWindow.setAlwaysOnTop(storage.lastAlwaysOnTop);
   }, []);
