@@ -7,22 +7,27 @@ import { handleDirCreation } from "@/lib/file-handle";
 import { pipe } from "@/lib/pipe";
 import { blobToBinary, iife, prefixWithSlash, px, sleep } from "@/lib/utils";
 import {
-    BaseDirectory,
-    exists,
-    readTextFile,
-    writeBinaryFile,
-    writeFile,
-} from "@tauri-apps/api/fs";
+  BaseDirectory,
+  exists,
+  readTextFile,
+  writeTextFile,
+  writeFile,
+} from "@tauri-apps/plugin-fs";
 import { err, ok, Result } from "neverthrow";
 import {
-    Dispatch,
-    FC,
-    SetStateAction,
-    useEffect,
-    useRef,
-    useState,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
-import { dataDir, FSOptions, maxHeightMap, useDeviceFrameHeight } from "./constants";
+import {
+  dataDir,
+  FSOptions,
+  maxHeightMap,
+  useDeviceFrameHeight,
+} from "./constants";
 import { DEVICE_MAPPING } from "./device-mapping";
 import { useBasePhoneConfig } from "./stores/base-phone-config";
 import { useDeviceScreen } from "./stores/device-screen";
@@ -77,13 +82,7 @@ const storeAppHomeScreenData = async (
   )}`;
   const iconFilePath = `${dataDir}/AppIcons/${iconFileName}.png` as const;
   const binary = await blobToBinary(blob);
-  await writeBinaryFile(
-    {
-      contents: binary,
-      path: iconFilePath,
-    },
-    FSOptions,
-  );
+  await writeFile(iconFilePath, binary, FSOptions);
   const iconsJsonFilePath = `${dataDir}/icons.json`;
   if (await exists(iconsJsonFilePath, FSOptions)) {
     const jsonFile = await readTextFile(iconsJsonFilePath, FSOptions);
@@ -95,28 +94,24 @@ const storeAppHomeScreenData = async (
         icon: iconFilePath,
         origin,
       };
-      await writeFile(
-        {
-          contents: JSON.stringify(fileAsJsonObject),
-          path: `${dataDir}/icons.json`,
-        },
+      await writeTextFile(
+        `${dataDir}/icons.json`,
+        JSON.stringify(fileAsJsonObject),
         FSOptions,
       );
     }
   } else {
-    await writeFile(
+    await writeTextFile(
+      `${dataDir}/icons.json`,
+      JSON.stringify({
+        [iconFileName]: {
+          name,
+          icon: iconFilePath,
+          origin,
+        },
+      }),
       {
-        contents: JSON.stringify({
-          [iconFileName]: {
-            name,
-            icon: iconFilePath,
-            origin,
-          },
-        }),
-        path: `${dataDir}/icons.json`,
-      },
-      {
-        dir: BaseDirectory.AppLocalData,
+        baseDir: BaseDirectory.AppLocalData,
       },
     );
   }

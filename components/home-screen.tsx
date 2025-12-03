@@ -8,7 +8,7 @@ import { useIframeSrc } from "@/src/stores/iframe-src";
 import { useIphoneConfig } from "@/src/stores/iphone-config";
 import { useLocalStorage } from "@/src/stores/local-storage";
 import { useQuery } from "@tanstack/react-query";
-import { readBinaryFile, readTextFile } from "@tauri-apps/api/fs";
+import { readFile, readTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useRef } from "react";
 import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
@@ -40,8 +40,8 @@ const HomeScreen: React.FC = () => {
           JSON.parse(textResponse);
         const iconValues = Object.values(iconFileObject);
         for (const icon of iconValues) {
-          const val = await readBinaryFile(icon.icon, FSOptions).then(
-            (val) => new Blob([val as any]),
+          const val = await readFile(icon.icon, FSOptions).then(
+            (val) => new Blob([val]),
           );
           icon.icon = URL.createObjectURL(val);
         }

@@ -1,8 +1,8 @@
-import { BaseDirectory } from "@tauri-apps/api/fs";
 import { Device } from "./device-mapping";
 import { useFullscreen } from "./stores/fullscreen";
 import { Dispatch } from "react";
 import { create } from "zustand/react";
+import { ReadDirOptions, ReadFileOptions, BaseDirectory } from "@tauri-apps/plugin-fs";
 
 export const containerStyles = {
   overflow: "hidden",
@@ -41,8 +41,8 @@ export const AppLocalData = BaseDirectory.AppLocalData;
 export const dataDir = `./MobilyResponsiveData`;
 
 export const FSOptions = {
-  dir: AppLocalData,
-} as const;
+  baseDir: AppLocalData,
+} satisfies ReadDirOptions
 
 export const homeScreenIconScale = 1.4;
 

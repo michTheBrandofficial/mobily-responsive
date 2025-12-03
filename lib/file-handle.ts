@@ -1,14 +1,14 @@
-import { createDir, exists } from "@tauri-apps/api/fs";
+import { exists, mkdir } from "@tauri-apps/plugin-fs";
 import { AppLocalData, dataDir } from "~/constants";
 
 export const handleDirCreation = async () => {
   const makeDir = async (dirPath: string) => {
     const doesDirExist = await exists(dirPath, {
-      dir: AppLocalData
+      baseDir: AppLocalData
     })
     if (!doesDirExist)
-      await createDir(dirPath, {
-        dir: AppLocalData,
+      await mkdir(dirPath, {
+        baseDir: AppLocalData,
         recursive: true
       });
   };
