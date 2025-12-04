@@ -2,12 +2,12 @@ import { cn } from "@/lib/cn";
 import { uint8 } from "@/lib/number";
 import { pipe } from "@/lib/pipe";
 import {
-  inlineSwitch,
-  noop,
-  pick,
-  removeLeadingSlash,
-  separateProtocol,
-  sleep,
+    inlineSwitch,
+    noop,
+    pick,
+    removeLeadingSlash,
+    separateProtocol,
+    sleep
 } from "@/lib/utils";
 import { maxHeightMap, useDeviceFrameHeight } from "@/src/constants";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
@@ -51,7 +51,7 @@ const urlValidationSchema = object({
 
 const TopNavbar: React.FC = () => {
   const { setSrc: setIframeSrc, src: iframeSrc } = useIframeSrc();
-  const simulatorAppWindow = getCurrentWindow()
+  const simulatorAppWindow = getCurrentWindow();
   const {
     storage: { lastUsedDevice: device },
   } = useLocalStorage();
@@ -61,12 +61,9 @@ const TopNavbar: React.FC = () => {
     "version",
   );
   const versionMemo = pipe(DEVICE_MAPPING[device], ({ type, version }) => {
-    return inlineSwitch(
-      type,
-      /*["ipad", `iPadOS ${version}`]*/ {
-        default: `iOS ${version}`,
-      },
-    );
+    return inlineSwitch(type, ["ipad", `iPadOS ${version}`], {
+      default: `iOS ${version}`,
+    });
   });
   const { isFullscreen, setIsFullscreen } = useFullscreen();
   const { setScreenState } = useScreenState();
@@ -108,7 +105,8 @@ const TopNavbar: React.FC = () => {
   return (
     <section
       className={cn(
-        "tws-w-screen tws-max-w-[384px] tws-border tws-border-gray-100/40 tws-rounded-full tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-bg-[#474844] tws-relative ",
+        `tws-w-screen tws-max-w-[384px] tws-rounded-full tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-pr-2.5 tws-relative `,
+        `tws-bg-[#474844] tws-shadow-[1px_0px_1px_1px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,0.8)] `,
         classMemo,
       )}
     >
@@ -116,14 +114,14 @@ const TopNavbar: React.FC = () => {
         <Button
           whileHover={undefined}
           onTap={() => simulatorAppWindow.close()}
-          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#460804] !tws-p-0 tws-rounded-full !tws-bg-[#ef6562] hover:!tws-bg-red-500 tws-transition-colors tws-duration-150 tws-group "
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#460804] !tws-p-0 tws-rounded-full !tws-bg-red-400 hover:!tws-bg-red-500 tws-transition-colors tws-duration-150 tws-group "
         >
           <XIcon className="tws-size-3 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
         </Button>
         <Button
           whileHover={undefined}
           onTap={() => simulatorAppWindow.minimize()}
-          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#90591d] !tws-p-0 tws-rounded-full !tws-bg-[#eec14a] hover:!tws-bg-yellow-500 tws-transition-colors tws-duration-150 tws-group "
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#90591d] !tws-p-0 tws-rounded-full !tws-bg-yellow-400 hover:!tws-bg-yellow-500 tws-transition-colors tws-duration-150 tws-group "
         >
           <MinusIcon className="tws-size-3 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
         </Button>
@@ -133,16 +131,16 @@ const TopNavbar: React.FC = () => {
             setIsFullscreen(true);
             setDeviceFrameHeightClass(maxHeightMap.fullscreen);
           }}
-          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#2a6218] !tws-p-0 tws-rounded-full !tws-bg-[#57c957] hover:!tws-bg-green-500 tws-transition-colors tws-duration-150 tws-group "
+          className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#2a6218] !tws-p-0 tws-rounded-full !tws-bg-green-400 hover:!tws-bg-green-500 tws-transition-colors tws-duration-150 tws-group "
         >
           <Maximize2Icon className="tws-size-2 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
         </Button>
       </div>
       <div className="tws-flex tws-flex-col tws-justify-center tws-text-xs -tws-space-y-0.5 ">
-        <p className="tws-text-[#ECEDE9] tws-font-bold ">
+        <p className="tws-text-white tws-font-bold ">
           {deviceDisplayName.displayName}
         </p>
-        <p className="tws-text-[#B0B0AD] tws-font-medium ">
+        <p className="tws-text-stone-400 tws-font-medium ">
           {versionMemo as any}
         </p>
       </div>
@@ -324,9 +322,9 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
                 </Button>
                 <Button
                   onTap={async () => {
-                    closePopover()
-                    await sleep(300)
-                    onSave()
+                    closePopover();
+                    await sleep(300);
+                    onSave();
                   }}
                   disabled={!formik.isValid}
                   className="!tws-rounded-full tws-w-full tws-py-3.5"

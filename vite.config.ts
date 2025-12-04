@@ -39,7 +39,4 @@ export default defineConfig({
       ignored: ["**/src-tauri/**"],
     },
   },
-  optimizeDeps: {
-    force: true,
-  },
 });
