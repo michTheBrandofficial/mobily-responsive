@@ -19,6 +19,8 @@ import { FC, Fragment, SVGAttributes, useEffect } from "react";
 import Kbd from "./ui/kbd";
 import Menu from "./ui/menu";
 import Toggle from "./ui/toggle";
+import { getVersion } from "@tauri-apps/api/app";
+import { useQuery } from "@tanstack/react-query";
 
 const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (
@@ -38,7 +40,7 @@ const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
   );
 };
 
-const FullscreenIcon = (props: SVGAttributes<SVGSVGElement>) => {
+export const FullscreenIcon = (props: SVGAttributes<SVGSVGElement>) => {
   return (
     <svg
       width="16"
@@ -69,6 +71,10 @@ const AppSettingsMenu: FC<Props> = (props) => {
   const { setIphoneConfig, iphoneConfig } = useIphoneConfig();
   const { setStorage, storage } = useLocalStorage();
   const appWindow = getCurrentWindow();
+  const { data: version } = useQuery({
+    queryKey: ['app-version'],
+    queryFn: getVersion
+  })
   useEffect(() => {
     appWindow.setAlwaysOnTop(storage.lastAlwaysOnTop);
   }, []);
@@ -108,24 +114,6 @@ const AppSettingsMenu: FC<Props> = (props) => {
               });
             }}
           />
-        </Menu.Item>
-        <Menu.Item
-          whileHover={undefined}
-          whileTap={undefined}
-          onTap={undefined}
-          noBgColorStates
-        >
-          <div className="tws-flex tws-items-center tws-gap-x-2">
-            <FullscreenIcon
-              fill="#020003"
-              stroke={""}
-              strokeWidth={6}
-              width={18}
-              height={18}
-            />
-            Fullscreen
-          </div>
-          <Kbd className="!tws-text-sm !tws-p-1 !tws-leading-none">F11</Kbd>
         </Menu.Item>
         <Menu.Item
           whileHover={undefined}
@@ -179,7 +167,7 @@ const AppSettingsMenu: FC<Props> = (props) => {
               className="!tws-py-2"
             >
               <span className=" tws-text-blue-400">Version</span>
-              <span>v{EnvVariables.VITE_MOBILY_RESPONSIVE_VERSION}</span>
+              <span>v{version}</span>
             </Menu.Item>
           </Menu.Content>
         </Menu>
