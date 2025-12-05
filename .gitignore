@@ -13,6 +13,7 @@ dist-ssr
 *.local
 
 shell.sh
+mv-release.sh
 shell.ps1
 
 # Editor directories and files
