@@ -34,6 +34,7 @@ import SearchableSelect from "./ui/inputs/searchable-select";
 import LiquidGlass from "./ui/liquid-glass";
 import Popover from "./ui/popover";
 import { Typography } from "./ui/typography";
+import { Squircle } from "@cornerkit/react";
 
 const AnimatedCheckIcon = motion.create(Check);
 
@@ -103,10 +104,17 @@ const TopNavbar: React.FC = () => {
 	});
 
 	return (
-		<section
+		<Squircle
+			as={"section"}
+			radius={28}
+			smoothing={1}
+			border={{
+				color: "#e7e5e499",
+				width: 0.8,
+			}}
 			className={cn(
-				`tws-w-screen tws-max-w-[354px] tws-h-[48px] tws-rounded-full tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-pr-2.5 tws-relative `,
-				`tws-bg-[#1E1E1E] tws-shadow-[1px_0px_1px_1px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,1)] `,
+				`tws-w-screen tws-max-w-[354px] tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-pb-2 tws-pr-2.5 tws-relative `,
+				`tws-bg-[#1E1E1E] tws-shadow-[1px_0px_30px_30px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,1)] `,
 				classMemo,
 			)}
 		>
@@ -182,7 +190,7 @@ const TopNavbar: React.FC = () => {
 					trigger={<Settings className={"tws-size-[18px] tws-fill-white"} />}
 				/>
 			</LiquidGlass.div>
-		</section>
+		</Squircle>
 	);
 };
 
