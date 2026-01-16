@@ -214,7 +214,7 @@ const HotKeysMenu = () => {
 					<ChevronRight size={14} />
 				</Menu.Item>
 			</Menu.Trigger>
-			<Menu.Content className="tws-min-h-fit tws-max-h-48 tws-bg-white/80 tws-overflow-y-auto tws-thin-scrollbar tws-min-w-[244px] tws-right-3 tws-top-8 ">
+			<Menu.Content className="tws-min-h-fit tws-max-h-48 tws-bg-white/80 tws-overflow-y-auto tws-thin-scrollbar tws-right-3 tws-top-8 ">
 				{pipe(Object.values(userFacingHotKeysConfig), (allUserHotKeys) =>
 					allUserHotKeys.map((hotKey, index) => {
 						return (
@@ -224,7 +224,7 @@ const HotKeysMenu = () => {
 									whileHover={undefined}
 									whileTap={undefined}
 									onTap={undefined}
-									className="!tws-py-2 tws-min-w-full"
+									className="tws-mb-1.5 last:tws-mb-0 tws-min-w-full"
 								>
 									{hotKey.label}
 									{hotKey.keys.length === 1 ? (
