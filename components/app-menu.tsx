@@ -80,7 +80,7 @@ const AppSettingsMenu: FC<Props> = (props) => {
 	return (
 		<Menu transformOrigin="top-right">
 			<Menu.Trigger>{props.trigger}</Menu.Trigger>
-			<Menu.Content className="tws-min-h-fit tws-min-w-[220px] !tws-bg-white/80  -tws-right-2 tws-top-8 ">
+			<Menu.Content className="tws-min-h-fit tws-min-w-[220px] !tws-bg-white/80  -tws-right-2 tws-top-8 tws-py-2 ">
 				<Menu.Item
 					whileHover={undefined}
 					whileTap={undefined}
@@ -135,7 +135,7 @@ const AppSettingsMenu: FC<Props> = (props) => {
 				<HotKeysMenu />
 				<Menu transformOrigin="top-right" className="tws-w-full">
 					<Menu.Trigger className="tws-w-full">
-						<Menu.Item onTap={undefined} className="!tws-py-2 tws-text-sky-600">
+						<Menu.Item onTap={undefined} className="tws-text-sky-600">
 							About
 							<ChevronRight size={14} />
 						</Menu.Item>
@@ -228,7 +228,7 @@ const HotKeysMenu = () => {
 	return (
 		<Menu transformOrigin="top-right" className="tws-w-full">
 			<Menu.Trigger className="tws-w-full">
-				<Menu.Item onTap={undefined} className="!tws-py-2">
+				<Menu.Item onTap={undefined}>
 					<div className="tws-flex tws-items-center tws-gap-x-2">
 						<CommandIcon size={16} />
 						Hot keys

@@ -171,7 +171,7 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
 							scale: 0.5,
 							opacity: 0,
 							transition: {
-								duration: 0.12,
+								duration: 0.15,
 								ease: "easeIn",
 							},
 						}}
