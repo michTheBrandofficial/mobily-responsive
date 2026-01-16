@@ -29,7 +29,7 @@ const Toggle: React.FC<ToggleProps> = ({ checked, onChange, ...rest }) => {
 				/>
 				<div
 					className={cn(
-						"tws-w-[50.4px] tws-h-[21.6px] tws-bg-[#bbbbbd] peer-focus:tws-outline-none tws-rounded-full peer peer-checked:tws-bg-[#34c759]  ",
+						"tws-w-[50.4px] tws-h-[21.6px] tws-bg-[#bbbbbd] peer-focus:tws-outline-none tws-rounded-full peer peer-checked:tws-bg-sky-500  ",
 						"after:tws-absolute after:tws-z-40 after:tws-h-[19.4px] after:tws-w-[31.5px] after:tws-top-[0.9px] after:tws-left-[1.8px] after:tws-bg-white after:tws-rounded-full after:tws-transition-all after:tws-duration-300 after:tws-ease-in-out peer-checked:after:tws-translate-x-[16.2px]",
 					)}
 				>

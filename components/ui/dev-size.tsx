@@ -54,7 +54,7 @@ const DevSizeComponent = <Tag extends keyof HTMLElements>({
 	);
 };
 
-export const devSize = new Proxy({} as DevToolsHtmlElements, {
+export const devsize = new Proxy({} as DevToolsHtmlElements, {
 	get(_, property) {
 		const tag = property as string;
 

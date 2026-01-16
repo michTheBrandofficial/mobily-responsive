@@ -7,19 +7,14 @@ import { useIphoneConfig } from "@/src/stores/iphone-config";
 import { useLocalStorage } from "@/src/stores/local-storage";
 import { useTheme } from "@/src/stores/theme";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import {
-	CheckIcon,
-	ChevronDown,
-	ChevronRight,
-	ChevronUp,
-	CommandIcon,
-} from "lucide-react";
+import { ChevronRight, CommandIcon } from "lucide-react";
 import { FC, Fragment, SVGAttributes, useEffect } from "react";
 import Kbd from "./ui/kbd";
 import Menu from "./ui/menu";
 import Toggle from "./ui/toggle";
 import { getVersion } from "@tauri-apps/api/app";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "motion/react";
 
 const ThemeIcon = (props: SVGAttributes<SVGSVGElement>) => {
 	return (
@@ -130,7 +125,7 @@ const AppSettingsMenu: FC<Props> = (props) => {
 						/>
 						Theme
 					</div>
-					<ThemeDropdown />
+					<ThemeTab />
 				</Menu.Item>
 				<HotKeysMenu />
 				<Menu transformOrigin="top-right" className="tws-w-full">
@@ -175,52 +170,35 @@ const AppSettingsMenu: FC<Props> = (props) => {
 	);
 };
 
-const options = [
-	{ label: "Light", value: "light" },
-	{ label: "Dark", value: "dark" },
-];
-
 /**
  * @dev this controls it's own state.
  */
-const ThemeDropdown = () => {
+const ThemeTab = () => {
 	const { theme, setTheme } = useTheme();
+	/**
+	 * setTheme(option.value as "light");
+		await sleep(300);
+		close();
+	 */
 	return (
-		<Menu transformOrigin="top-right">
-			<Menu.Trigger>
-				<div className="tws-text-zinc-900 tws-text-sm tws-flex tws-items-center tws-gap-x-1.5 ">
-					{options.find((opt) => opt.value === theme)?.label || "Light"}
-					<div className="tws-w-fit tws-flex tws-flex-col -tws-space-y-[7px]  ">
-						<ChevronUp size={14} />
-						<ChevronDown size={14} />
-					</div>
-				</div>
-			</Menu.Trigger>
-			<Menu.Content className="tws-min-h-fit  -tws-right-2 tws-top-8 ">
-				{options.map((option) => (
-					<Menu.Item
-						key={option.value}
-						isActive={theme === option.value}
-						className="tws-pr-2.5 !tws-py-2"
-						onTap={async (close) => {
-							setTheme(option.value as "light");
-							await sleep(300);
-							close();
-						}}
-					>
-						<div className="tws-flex tws-gap-x-2 tws-items-center">
-							<CheckIcon
-								size={16}
-								className={cn("tws-mt-1 ", {
-									"tws-hidden": !(theme === option.value),
-								})}
-							/>
-							{option.label}
-						</div>
-					</Menu.Item>
-				))}
-			</Menu.Content>
-		</Menu>
+		<motion.div
+			onTap={() => {
+				setTheme(theme === "light" ? "dark" : "light");
+			}}
+			className={cn(
+				"tws-w-fit tws-h-fit tws-bg-[#bbbbbd] tws-font-normal tws-rounded-full ",
+				"tws-grid tws-grid-cols-2 tws-relative ",
+				"after:tws-absolute after:tws-z-10 after:tws-h-full after:tws-w-1/2 after:tws-bg-white after:tws-rounded-full after:tws-transition-all after:tws-duration-[200] after:tws-ease-in-out",
+				{ "after:tws-translate-x-full": theme === "dark" },
+			)}
+		>
+			<div className="tws-text-white tws-relative tws-z-20 tws-px-2.5 tws-py-1.5 tws-text-xs tws-mix-blend-difference">
+				Light
+			</div>
+			<div className="tws-text-white tws-relative tws-z-20 tws-px-2.5 tws-py-1.5 tws-text-xs tws-mix-blend-difference">
+				Dark
+			</div>
+		</motion.div>
 	);
 };
 
