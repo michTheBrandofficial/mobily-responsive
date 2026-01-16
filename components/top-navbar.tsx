@@ -109,11 +109,11 @@ const TopNavbar: React.FC = () => {
 			radius={28}
 			smoothing={1}
 			border={{
-				color: "#e7e5e499",
+				color: "#1e1e1e",
 				width: 0.8,
 			}}
 			className={cn(
-				`tws-w-screen tws-max-w-[354px] tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-pb-2 tws-pr-2.5 tws-relative `,
+				`tws-w-screen tws-max-w-[354px] tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-pb-2 tws-pr-2.5 tws-relative tws-z-[500] `,
 				`tws-bg-[#1E1E1E] tws-shadow-[1px_0px_30px_30px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,1)] `,
 				classMemo,
 			)}

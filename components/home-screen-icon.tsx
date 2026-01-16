@@ -1,6 +1,5 @@
 import React, { MouseEventHandler } from "react";
 import Tools from "@/assets/images/tools icon.png";
-import { motion } from "motion/react";
 import { Squircle } from "@cornerkit/react";
 import { cn } from "@/lib/cn";
 import { devSize } from "./ui/dev-size";
