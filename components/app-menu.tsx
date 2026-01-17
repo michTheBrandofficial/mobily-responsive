@@ -225,7 +225,7 @@ const HotKeysMenu = () => {
 									whileHover={undefined}
 									whileTap={undefined}
 									onTap={undefined}
-									className="tws-mb-1.5 last:tws-mb-0 tws-min-w-full"
+									className="tws-mb-1.5 last:tws-mb-0 tws-min-w-full !tws-cursor-auto"
 								>
 									{hotKey.label}
 									{hotKey.keys.length === 1 ? (
