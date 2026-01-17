@@ -233,27 +233,24 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 				}
 				transition={{
 					delay: 0.9,
+					duration: 0.2,
 				}}
 			>
 				{props.trigger}
 			</Popover.Trigger>
-			<Popover.Content className="tws-max-w-80 tws-top-[200%] -tws-right-[300%] ">
+			<Popover.Content className="tws-max-w-72 tws-bg-white/80 tws-top-[200%] -tws-right-[300%] tws-p-4 tws-pt-3.5 ">
 				{(closePopover) => {
 					return (
-						<LiquidGlass.div
-							className="tws-p-5 tws-pt-6 tws-w-fit tws-rounded-[48px]  "
-							color={"#fff"}
-							mixingPercentage={97}
-						>
-							<div className="tws-flex tws-flex-col tws-gap-y-1.5 tws-px-1 ">
-								<Typography.h5 className="tws-text-lg tws-font-Switzer tws-text-zinc-900">
+						<div>
+							<div className="tws-flex tws-flex-col tws-px-1 ">
+								<Typography.p className="tws-text-base tws-font-semibold tws-font-Switzer tws-text-zinc-900 tws-mb-1 ">
 									Add URL
-								</Typography.h5>
-								<Typography.p className="tws-text-base tws-leading-[26px] tws-w-full tws-font-Switzer tws-text-wrap tws-font-normal tws-text-zinc-900">
+								</Typography.p>
+								<Typography.p className="tws-text-sm tws-leading-6 tws-w-full tws-font-Switzer tws-text-wrap tws-font-normal tws-text-zinc-900">
 									Enter your site's URL to preview it on this device.
 								</Typography.p>
 							</div>
-							<div className="tws-w-[280px] tws-h-fit tws-py-4 tws-px-6 tws-mt-6 tws-bg-zinc-300 tws-rounded-[32px] ">
+							<div className="tws-min-w-[240px] tws-h-fit tws-py-2 tws-px-4 tws-mt-6 tws-bg-zinc-300 tws-rounded-[18px] ">
 								<SearchableSelect
 									bottomBorder
 									required
@@ -319,15 +316,15 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 									onChange={(e) => {
 										formik.setFieldValue("url", e.target.value);
 									}}
-									className="tws-caret-zinc-950 "
+									className="tws-caret-zinc-950  "
 									name="url"
 									placeholder="Url e.g acme.com"
 								/>
 							</div>
-							<div className="tws-mt-6 tws-flex tws-items-center tws-gap-x-3 ">
+							<div className="tws-mt-4 tws-flex tws-items-center tws-gap-x-2.5 ">
 								<Button
 									onTap={closePopover}
-									className="!tws-rounded-full !/tws-bg-[#bfb9c9] !tws-bg-zinc-300 tws-w-full tws-py-3.5"
+									className="!tws-rounded-full !/tws-bg-[#bfb9c9] !tws-bg-zinc-300 tws-w-full tws-py-2"
 									variant="dormant"
 								>
 									Cancel
@@ -339,12 +336,12 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 										onSave();
 									}}
 									disabled={!formik.isValid}
-									className="!tws-rounded-full tws-w-full tws-py-3.5"
+									className="!tws-rounded-full tws-w-full tws-py-2"
 								>
 									Ok
 								</Button>
 							</div>
-						</LiquidGlass.div>
+						</div>
 					);
 				}}
 			</Popover.Content>

@@ -162,8 +162,6 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
 					<motion.div
 						ref={containerRef}
 						key={"menu"}
-						color={"#ffffff"}
-						// mixingPercentage={97}
 						initial={{ scale: 0.5 }}
 						animate={{
 							scale: 1,

@@ -1,8 +1,8 @@
-import React, { MouseEventHandler } from "react";
 import Tools from "@/assets/images/tools icon.png";
-import { Squircle } from "@cornerkit/react";
 import { cn } from "@/lib/cn";
-import { devsize } from "./ui/dev-size";
+import { Squircle } from "@cornerkit/react";
+import { motion } from "motion/react";
+import React, { MouseEventHandler } from "react";
 
 const HomeScreenIcon: React.FC<{
 	icon: {
@@ -14,7 +14,7 @@ const HomeScreenIcon: React.FC<{
 	const isUntitled = icon === Tools;
 
 	return (
-		<devsize.div
+		<motion.div
 			whileTap={{ scale: 0.95 }}
 			onClick={rest.onClick}
 			className={cn(
@@ -47,7 +47,7 @@ const HomeScreenIcon: React.FC<{
 			>
 				{name.length > 10 ? name.slice(0, 10).concat("...") : name}
 			</p>
-		</devsize.div>
+		</motion.div>
 	);
 };
 
