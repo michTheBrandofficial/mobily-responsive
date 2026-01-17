@@ -1,12 +1,12 @@
 {
 	"name": "mobily-responsive",
 	"displayName": "Mobily Responsive",
-	"description": "A Tool For Simulating Popular Devices",
-	"version": "0.7.0",
+	"description": "Simulate popular devices for web development.",
+	"version": "0.8.2",
 	"author": "Charles Ikechukwu <michthebrand@gmail.com>",
 	"publisher": "michthebrand",
 	"repository": {
-		"url": "https://github.com/mobily-responsive/public"
+		"url": "https://github.com/michthebrandofficial/mobily-responsive"
 	},
 	"license": "BSD-3-Clause",
 	"scripts": {
@@ -18,20 +18,37 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@tauri-apps/api": "^1.5.6",
+		"@cornerkit/react": "^1.0.1",
+		"@tailwindcss/container-queries": "^0.1.1",
+		"@tanstack/react-query": "^5.90.6",
+		"@tauri-apps/api": "^2.9.1",
+		"@tauri-apps/plugin-fs": "^2.4.4",
+		"@tauri-apps/plugin-process": "^2.3.1",
+		"@tauri-apps/plugin-updater": "^2.9.0",
+		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"nanoid": "^5.0.7",
-		"nixix": "^3.1.6",
-		"tailwind-merge": "^2.3.0"
+		"formik": "^2.4.9",
+		"lucide-react": "^0.554.0",
+		"motion": "^12.23.22",
+		"nanoid": "^5.1.5",
+		"neverthrow": "^8.2.0",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0",
+		"react-hotkeys-hook": "^5.2.1",
+		"tailwind-merge": "^2.6.0",
+		"yup": "^1.7.1",
+		"zustand": "^5.0.8"
 	},
 	"devDependencies": {
-		"@tauri-apps/cli": "^1.5.14",
-		"@types/node": "^20.14.11",
-		"autoprefixer": "^10.4.19",
-		"postcss": "^8.4.39",
-		"tailwindcss": "^3.4.4",
-		"typescript": "^5.5.2",
-		"vite": "^5.3.2",
-		"vite-jsconfig-paths": "^2.0.1"
+		"@tauri-apps/cli": "^2.9.5",
+		"@types/node": "^20.19.10",
+		"@types/react": "^19.2.2",
+		"@types/react-dom": "^19.2.1",
+		"@vitejs/plugin-react": "^5.0.4",
+		"autoprefixer": "^10.4.21",
+		"postcss": "^8.5.6",
+		"tailwindcss": "^3.4.9",
+		"typescript": "^5.9.3",
+		"vite": "^7.1.9"
 	}
 }

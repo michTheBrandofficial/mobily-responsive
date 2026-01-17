@@ -1,16 +1,15 @@
 import AppScreen from "@/components/app-screen";
 import Wrapper from "@/components/wrapper";
 import { percentage, pick, px } from "@/lib/utils";
-import { concat, memo, ref } from "nixix/primitives";
-import { Container } from "nixix/view-components";
 import { containerStyles } from "~/constants";
 import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
 import HomeScreen from "@/components/home-screen";
 import { useScreenState } from "@/src/stores/screen-state";
+import { FC, memo, useMemo, useRef } from "react";
+import { cn } from "@/lib/cn";
 
-type Props = App.DeviceProps;
 
 const dimensions = {
   w: 1032,
@@ -29,8 +28,8 @@ const clothoidRadiusRatio = 20 / dimensions.w;
 
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const;
 
-const IpadProi13: Nixix.FC<Props> = ({ iframeSrc }): someView => {
-  const wrapperRef = ref<HTMLElement>();
+const IpadProi13: FC = () => {
+  const wrapperRef = useRef<HTMLElement>(null);
   const { iphoneConfig } = useIphoneConfig();
   setupResizeEffect(wrapperRef, {
     deviceBarRatios,
@@ -40,28 +39,27 @@ const IpadProi13: Nixix.FC<Props> = ({ iframeSrc }): someView => {
     virtualHomeButtonRatio,
     safeAreaInsetRatio,
   });
-  // 
-  const hasBezelsClassMemo = memo(() => {
-    // no bezel less display here
-    return ' '
-    //return iphoneConfig.hasBezels!.value ? " " : " tws-invisible ";
-  }, [iphoneConfig.hasBezels!]);
   const { screenState } = useScreenState();
-  const backgroundMemo = memo(() => {
-    switch (screenState.value) {
+  const backgroundMemo = useMemo(() => {
+    switch (screenState) {
       case "after-app-launch":
         return `tws-wallpaper-after-app-launch`;
       case "before-close-app":
-        return `tws-wallpaper-ipad-pro-i13`;
+        return `tws-wallpaper-iphone-16-pro`;
       default:
-        return `tws-wallpaper-ipad-pro-i13`;
+        return `tws-wallpaper-iphone-16-pro`;
     }
   }, [screenState]);
   return (
-    <Wrapper bind:ref={wrapperRef}>
-      <DeviceFrame height={dimensions.h} className={hasBezelsClassMemo} />
-      <Container
-        className={concat`tws-h-auto tws-w-auto ${backgroundMemo} `}
+    <Wrapper ref={wrapperRef}>
+      <DeviceFrame
+        height={dimensions.h}
+        className={cn("", {
+          "tws-invisible": iphoneConfig.hasBezels === false,
+        })}
+      />
+      <div
+        className={cn(`tws-h-auto tws-w-auto `, backgroundMemo)}
         style={{
           ...pick(iphoneConfig, "width", "height"),
           ...containerStyles,
@@ -69,7 +67,7 @@ const IpadProi13: Nixix.FC<Props> = ({ iframeSrc }): someView => {
           backgroundSize: "cover",
         }}
       >
-        <Container
+        <div
           style={{
             paddingTop: iphoneConfig.safeAreaInset,
             width: percentage(100),
@@ -86,12 +84,12 @@ const IpadProi13: Nixix.FC<Props> = ({ iframeSrc }): someView => {
               zIndex: 900,
             }}
           />
-          <HomeScreen iframeSrc={iframeSrc} />
-          <AppScreen config="iphone" iframeSrc={iframeSrc} />
-        </Container>
-      </Container>
+          <HomeScreen />
+          <AppScreen config="iphone" />
+        </div>
+      </div>
     </Wrapper>
   );
 };
 
-export default IpadProi13;
+export default memo(IpadProi13);

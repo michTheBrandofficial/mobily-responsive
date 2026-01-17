@@ -1,35 +1,28 @@
 import { cn } from "@/lib/cn";
 import { percentage } from "@/lib/utils";
-import { Show } from "nixix/hoc";
-import { Signal, signal } from "nixix/primitives";
+import React, { useState } from "react";
 import Loaders from "./loaders";
 
-interface Props extends Nixix.IframeHTMLAttributes<HTMLIFrameElement> {
-  src: Signal<string>;
+interface Props extends React.IframeHTMLAttributes<HTMLIFrameElement> {
+  src: string;
+  ref?: React.Ref<HTMLIFrameElement>;
 }
 
 /**
  * The height and width of this iframe is 100%;
  * It also has tws-no-scroll on it
  */
-const Iframe: Nixix.FC<Props> = ({
-  style = {},
-  className,
-  src,
-  ...props
-}): someView => {
-  const [loading] = signal<boolean>(true);
+const Iframe: React.FC<Props> = ({ style = {}, className, src, ...props }) => {
+  const [loading, setLoading] = useState<boolean>(true);
 
   return (
     <>
-      <Show when={() => loading.value}>
-        {(open) => (open ? <Loaders.IOSSpinner /> : "")}
-      </Show>
+      {loading && <Loaders.IOSSpinner />}
       <iframe
         {...props}
-        src={src}
-        on:load={() => (loading.value = false)}
-        className={cn("tws-no-scroll  ", className)}
+        src={src || undefined}
+        onLoad={() => setLoading(false)}
+        className={cn("tws-no-scrollbar ", className)}
         allow="clipboard-read; clipboard-write"
         style={{
           ...style,

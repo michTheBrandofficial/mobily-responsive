@@ -12,7 +12,9 @@ dist
 dist-ssr
 *.local
 
-bash.sh
+shell.sh
+mv-release.sh
+shell.ps1
 
 # Editor directories and files
 !.vscode/extensions.json
@@ -23,3 +25,5 @@ bash.sh
 *.njsproj
 *.sln
 *.sw?
+
+*.env

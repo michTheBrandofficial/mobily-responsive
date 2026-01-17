@@ -1,16 +1,25 @@
-import { store } from "nixix/primitives";
+import { Dispatch } from "react";
+import { create } from "zustand/react";
 
 type Settings = {
-	theme_color: "white" | "transparent" | (string & {});
+  theme_color: "white" | "transparent" | (string & {});
 };
 
-export const useDeviceSettings = (function () {
-	const [deviceSettings, setDeviceSettings] = store<Settings>({
-		theme_color: "white",
-	});
-	return () => ({
-		deviceSettings,
-		setDeviceSettings,
-	});
-})();
+type DeviceSettings = {
+  settings: Settings;
+  setSettings: Dispatch<Settings>;
+};
 
+const defaultSettings: Settings = {
+  theme_color: "white",
+};
+
+export const useDeviceSettings = create<DeviceSettings>((set, get) => ({
+  settings: defaultSettings,
+  setSettings: (settings) => {
+    set({
+      ...get(),
+      settings,
+    });
+  },
+}));

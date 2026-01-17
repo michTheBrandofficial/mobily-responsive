@@ -1,8 +1,6 @@
-import nixix from "nixix/vite-plugin";
+import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
-// @ts-ignore
-import viteJsconfigPaths from "vite-jsconfig-paths";
 
 function resolve(string: string) {
   return path.resolve(__dirname, string);
@@ -10,11 +8,7 @@ function resolve(string: string) {
 
 export default defineConfig({
   plugins: [
-    viteJsconfigPaths(),
-    nixix({
-      projectRoot: "src/main.tsx",
-      hmr: true,
-    }),
+    react(),
   ],
   resolve: {
     alias: {
@@ -29,6 +23,8 @@ export default defineConfig({
         entryFileNames: "assets/index.js",
       },
     },
+    // allow our js bundle to be 1MB
+    chunkSizeWarningLimit: 1000
   },
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
@@ -42,8 +38,5 @@ export default defineConfig({
       // 3. tell vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
     },
-  },
-  optimizeDeps: {
-    force: true,
   },
 });

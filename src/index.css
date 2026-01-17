@@ -3,90 +3,179 @@
 @tailwind components;
 
 @layer base {
-  @font-face {
-    font-family: Rubik;
-    src: url('../assets/fonts/Rubik/Rubik-VariableFont_wght.ttf');
-  }
-  @font-face {
-    font-family: Helvetica_Neue;
-    src: url('../assets/fonts/Helvetica Neue/HelveticaNeueBold.otf');
-  }
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 900;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Black.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 800;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Heavy.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 700;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Bold.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 600;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Semibold.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 500;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Medium.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 400;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Regular.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 300;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Light.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 200;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Ultralight.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 100;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Thin.otf");
+	}
+	@font-face {
+		font-family: SF_Pro;
+		src: url("../assets/fonts/SF Pro/SF-Pro.ttf");
+	}
+
+	:root {
+		font-synthesis: none;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		font-family: SF_Pro_Display;
+		--muted: 210 40% 96.1%;
+		--muted-foreground: 215.4 16.3% 46.9%;
+	}
 }
 
 @layer components {
-  /* wallpapers */
-  .tws-no-scroll {
-    scrollbar-width: none;
-  }
+	.tws-grid-cols-4-60 {
+		grid-template-columns: repeat(4, minmax(0, 60px));
+	}
 
-  .tws-no-scroll::-webkit-scrollbar {
-    width: 0px;
-  }
+	/* ipad grid */
+	.tws-grid-cols-6-60 {
+		grid-template-columns: repeat(6, minmax(0, 60px));
+	}
 
-  .tws-grid-cols-4-60 {
-    grid-template-columns: repeat(4, minmax(0, 60px));
-  }
+	:root {
+		scrollbar-width: none;
+	}
 
-  /* ipad grid */
-  .tws-grid-cols-6-60 {
-    grid-template-columns: repeat(6, minmax(0, 60px));
-  }
+	:root::-webkit-scrollbar {
+		width: 0px;
+	}
 
-  :root {
-    scrollbar-width: none;
-  }
+	.tws-shadow-select {
+		box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+	}
 
-  :root::-webkit-scrollbar {
-    width: 0px;
-  }
+	.tws-blur-32 {
+		backdrop-filter: blur(32px);
+	}
 
-  .tws-shadow-select {
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, .25);
-  }
+	.tws-shadow-all {
+		box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+	}
 
+	.tws-shadow-sidebar {
+		box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.25);
+	}
 
-  .tws-blur-32 {
-    backdrop-filter: blur(32px);
-  }
+	.tws-blue-bordered {
+		@apply tws-border-[2px] tws-shadow-select tws-border-[#0000FF]/30 tws-bg-[#F5F5F5] dark:tws-bg-[#242124] dark:tws-border-stone-600;
+	}
 
-  .tws-shadow-all {
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, .25);
-  }
+	.data-closed[data-state] {
+		transition: all 200ms ease-in-out;
+		display: none;
+	}
 
-  .tws-shadow-sidebar {
-    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, .25);
-  }
+	.data-closed[data-state="closed"] {
+		opacity: 0;
+		transform: translateY(50%);
+	}
 
-  .tws-blue-bordered {
-    @apply tws-border-[2px] tws-shadow-select tws-border-[#0000FF]/30 tws-bg-[#F5F5F5] dark:tws-bg-[#242124] dark:tws-border-stone-600
-  }
+	.centered-absolute {
+		@apply tws-top-[50%] tws-left-[50%];
+		transform: translate(-50%, -50%);
+	}
 
-  .data-closed[data-state] {
-    transition: all 200ms ease-in-out; 
-    display: none;
-  }
+	.tws-fade-animation {
+		animation: fade 1s linear infinite;
+	}
 
-  .data-closed[data-state="closed"] {
-    opacity: 0;
-    transform: translateY(50%);
-  }
+	@keyframes fade {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0.25;
+		}
+	}
 
-  .centered-absolute {
-    @apply tws-top-[50%] tws-left-[50%];
-    transform: translate(-50%, -50%);
-  }
+	.tws-kbd {
+		--kbd-box-shadow:
+			inset 0 -0.05em 0.5em #00005506, inset 0 0.05em #fffffff2,
+			inset 0 0.25em 0.5em #00005506, inset 0 -0.05em #00002f26,
+			0 0 0 0.05em #0009321f, 0 0.08em 0.17em #00062e32;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		font-weight: normal;
+		vertical-align: text-top;
+		white-space: nowrap;
+		user-select: none;
 
-  .tws-fade-animation {
-    animation: fade 1s linear infinite;;
-  }
+		position: relative;
 
-  @keyframes fade {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0.25;
-    }
-  }
+		--radius-factor: 1;
+		--letter-spacing: 0.05em;
+		--default-letter-spacing: 0.05em;
+		--gray-12: #1c2024;
+		--gray-1: #fcfcfd;
 
+		font-size: 0.75em;
+		min-width: 1.75em;
+		line-height: 1.7em;
+		box-sizing: border-box;
+		padding-left: 0.5em;
+		padding-right: 0.5em;
+		padding-bottom: 0.05em;
+		word-spacing: -0.1em;
+		border-radius: calc(var(--radius-factor) * 0.35em);
+		letter-spacing: var(--letter-spacing, var(--default-letter-spacing));
+
+		/* Make sure that the height is not stretched in a Flex/Grid layout */
+		height: fit-content;
+
+		color: var(--gray-12);
+		background-color: var(--gray-1);
+		box-shadow: var(--kbd-box-shadow);
+		transition:
+			box-shadow 120ms,
+			background-color 120ms;
+	}
+
+	/* dev tools size display */
+	.tws-size-display {
+		@apply tws-relative after:tws-absolute after:tws-left-0 after:tws-top-0 after:tws-size-full after:tws-block after:tws-rounded after:tws-border-2 after:tws-border-red-500 before:tws-absolute before:tws-left-1/2 before:-tws-translate-x-1/2 before:-tws-top-4 before:tws-h-4 before:tws-w-fit before:tws-px-2 before:tws-content-[attr(data-el-size)] before:tws-block before:tws-rounded-t before:tws-bg-red-500 before:tws-text-white before:tws-text-[10px] before:!tws-font-SF_Pro_Display;
+	}
 }

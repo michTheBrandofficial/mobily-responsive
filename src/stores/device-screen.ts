@@ -1,8 +1,17 @@
-import { signal } from "nixix/primitives";
+import { Dispatch } from "react";
+import { create } from "zustand/react";
 
-export const useDeviceScreen = function () {
- const [deviceScreen, setDeviceScreen] = signal<'home-screen' | 'app-screen'>('home-screen');
-  return () => ({
-    deviceScreen, setDeviceScreen
-  })  
-}()
+type DeviceScreen = {
+  deviceScreen: 'app-screen' | 'home-screen';
+  setDeviceScreen: Dispatch<DeviceScreen['deviceScreen']>;
+};
+
+export const useDeviceScreen = create<DeviceScreen>((set, get) => ({
+  deviceScreen: 'home-screen',
+  setDeviceScreen: (screen) => {
+    set({
+      ...get(),
+      deviceScreen: screen
+    });
+  },
+}));

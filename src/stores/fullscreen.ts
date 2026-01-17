@@ -1,4 +1,5 @@
-import { signal } from "nixix/primitives";
+import { Dispatch } from "react";
+import { create } from "zustand/react";
 
 const LOCALSTORAGE_FULLSCREEN_KEY = "MobilyResponsive_fullscreen";
 
@@ -11,18 +12,17 @@ const lastFullscreen = ((): "true" | "false" => {
   else return lastUsed;
 })();
 
-export const useFullscreen = (function () {
-  const [isFullscreen, setIsFullscreen] = signal(lastFullscreen === "true");
-  return () => {
-    return {
+type FullscreenStore = {
+  isFullscreen: boolean;
+  setIsFullscreen: Dispatch<boolean>;
+};
+
+export const useFullscreen = create<FullscreenStore>((set, get) => ({
+  isFullscreen: lastFullscreen === "true",
+  setIsFullscreen: (isFullscreen) => {
+    set({
+      ...get(),
       isFullscreen,
-      setIsFullscreen: (isFullscreen: boolean) => {
-        localStorage.setItem(
-          LOCALSTORAGE_FULLSCREEN_KEY,
-          isFullscreen ? "true" : "false"
-        );
-        setIsFullscreen(isFullscreen);
-      },
-    };
-  };
-})();
+    });
+  },
+}));

@@ -1,6 +1,6 @@
-import { FC, SVGAttributes } from "nixix";
+import { FC, SVGAttributes } from "react";
 
-export const SearchIcon: FC<SVGAttributes<SVGSVGElement>> = (props): someView => {
+export const SearchIcon: FC<SVGAttributes<SVGSVGElement>> = (props) => {
   return (
     <svg
       width="12"

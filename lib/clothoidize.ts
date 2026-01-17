@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 const clothoidize = (function () {
 	var t = {
 		'0.00': [0, 0],
