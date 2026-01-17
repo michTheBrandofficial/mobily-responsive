@@ -29,8 +29,8 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				Switzer: ["Switzer", "sans-serif"],
-				Open_Sans: ["Open_Sans", "sans-serif"],
+				SF_Pro_Display: ["SF_Pro_Display", "sans-serif"],
+				SF_Pro: ["SF_Pro", "sans-serif"],
 			},
 			backgroundColor: {
 				"sidebar-button": "#939393",

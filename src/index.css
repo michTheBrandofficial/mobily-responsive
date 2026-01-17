@@ -4,12 +4,53 @@
 
 @layer base {
 	@font-face {
-		font-family: Open_Sans;
-		src: url("../assets/fonts/Open_Sans/OpenSans-Variable.ttf");
+		font-family: SF_Pro_Display;
+		font-weight: 900;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Black.otf");
 	}
 	@font-face {
-		font-family: Switzer;
-		src: url("../assets/fonts/Switzer/Switzer-Variable.ttf");
+		font-family: SF_Pro_Display;
+		font-weight: 800;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Heavy.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 700;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Bold.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 600;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Semibold.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 500;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Medium.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 400;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Regular.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 300;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Light.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 200;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Ultralight.otf");
+	}
+	@font-face {
+		font-family: SF_Pro_Display;
+		font-weight: 100;
+		src: url("../assets/fonts/SF Pro/SF-Pro-Display-Thin.otf");
+	}
+	@font-face {
+		font-family: SF_Pro;
+		src: url("../assets/fonts/SF Pro/SF-Pro.ttf");
 	}
 
 	:root {
@@ -17,7 +58,7 @@
 		text-rendering: optimizeLegibility;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		font-family: Switzer;
+		font-family: SF_Pro_Display;
 		--muted: 210 40% 96.1%;
 		--muted-foreground: 215.4 16.3% 46.9%;
 	}
@@ -135,6 +176,6 @@
 
 	/* dev tools size display */
 	.tws-size-display {
-		@apply tws-relative after:tws-absolute after:tws-left-0 after:tws-top-0 after:tws-size-full after:tws-block after:tws-rounded after:tws-border-2 after:tws-border-red-500 before:tws-absolute before:tws-left-1/2 before:-tws-translate-x-1/2 before:-tws-top-4 before:tws-h-4 before:tws-w-fit before:tws-px-2 before:tws-content-[attr(data-el-size)] before:tws-block before:tws-rounded-t before:tws-bg-red-500 before:tws-text-white before:tws-text-[10px] before:!tws-font-Open_Sans;
+		@apply tws-relative after:tws-absolute after:tws-left-0 after:tws-top-0 after:tws-size-full after:tws-block after:tws-rounded after:tws-border-2 after:tws-border-red-500 before:tws-absolute before:tws-left-1/2 before:-tws-translate-x-1/2 before:-tws-top-4 before:tws-h-4 before:tws-w-fit before:tws-px-2 before:tws-content-[attr(data-el-size)] before:tws-block before:tws-rounded-t before:tws-bg-red-500 before:tws-text-white before:tws-text-[10px] before:!tws-font-SF_Pro_Display;
 	}
 }

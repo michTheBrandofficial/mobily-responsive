@@ -43,7 +43,7 @@ const HomeScreenIcon: React.FC<{
 				/>
 			)}
 			<p
-				className={`/tws-text-white tws-min-w-[75px] tws-overflow-visible tws-text-center tws-text-[#474844] tws-text-[11px] tws-whitespace-nowrap tws-max-w-full tws-font-Switzer tws-font-normal `}
+				className={`/tws-text-white tws-min-w-[75px] tws-overflow-visible tws-text-center tws-text-[#474844] tws-text-[11px] tws-whitespace-nowrap tws-max-w-full tws-font-SF_Pro_Display tws-font-medium `}
 			>
 				{name.length > 10 ? name.slice(0, 10).concat("...") : name}
 			</p>

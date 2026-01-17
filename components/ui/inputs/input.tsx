@@ -27,7 +27,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
 	return (
 		<div
 			className={cn(
-				"tws-flex tws-font-Switzer tws-flex-col tws-relative ",
+				"tws-flex tws-font-SF_Pro_Display tws-flex-col tws-relative ",
 				{
 					"tws-opacity-[.4]": props.disabled,
 					"tws-border-b-2 tws-border-b-[#ccc]": Boolean(props.bottomBorder),
@@ -107,7 +107,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = (props) => {
 	return (
 		<div
 			className={cn(
-				"tws-flex tws-font-Switzer tws-flex-col tws-relative ",
+				"tws-flex tws-font-SF_Pro_Displayfont-SF_Pro_Display tws-flex-col tws-relative ",
 				{
 					"tws-opacity-[.4]": props.disabled,
 					"tws-border-b-2 tws-border-b-[#ccc]": Boolean(props.bottomBorder),

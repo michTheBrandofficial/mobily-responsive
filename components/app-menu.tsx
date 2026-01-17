@@ -81,7 +81,7 @@ const AppSettingsMenu: FC<Props> = (props) => {
 					whileTap={undefined}
 					onTap={undefined}
 					noBgColorStates
-					className="tws-cursor-auto"
+					className="tws-cursor-auto font"
 				>
 					Always on top
 					<Toggle
