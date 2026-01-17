@@ -50,7 +50,7 @@ const DeviceSelectMenu: FC<Props> = (props) => {
 								/>
 								{device.label}
 							</div>
-							<span className="tws-text-xs tws-px-2 tws-py-1 tws-rounded-full tws-bg-green-50/50 tws-text-green-500 tws-font-medium ">
+							<span className="tws-text-xs tws-px-2 tws-py-1 tws-rounded-full tws-bg-sky-50/50 tws-text-sky-500 tws-font-normal ">
 								{device.dimensions.width}x{device.dimensions.height}
 							</span>
 						</Menu.Item>
