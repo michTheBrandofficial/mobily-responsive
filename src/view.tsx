@@ -38,6 +38,30 @@ import { IframeSrcContext } from "./stores/iframe-src";
 import { useIphoneConfig } from "./stores/iphone-config";
 import { useLocalStorage } from "./stores/local-storage";
 import { registerAppWideHotKeys } from "./hot-keys-config";
+import { check } from "@tauri-apps/plugin-updater";
+import { relaunch } from "@tauri-apps/plugin-process";
+
+async function checkForUpdates() {
+	const update = await check();
+
+	if (update) {
+		console.log(
+			`Update available: ${update.version}, from ${update.date} using ${update.body}`,
+		);
+
+		// sleep so that we can see if the update is successful in devtools
+		// Download and install
+		await update.downloadAndInstall();
+		console.log("download and install done ✅☑️");
+		await sleep(20000);
+
+		// Restart the app
+		await relaunch();
+	}
+}
+
+// Check on app start
+checkForUpdates();
 
 /**
  * @dev fetches icons to save to storage and render on screen.
