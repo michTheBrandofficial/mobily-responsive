@@ -81,6 +81,7 @@ const AppSettingsMenu: FC<Props> = (props) => {
 					whileTap={undefined}
 					onTap={undefined}
 					noBgColorStates
+					className="tws-cursor-auto"
 				>
 					Always on top
 					<Toggle
@@ -96,6 +97,7 @@ const AppSettingsMenu: FC<Props> = (props) => {
 					whileTap={undefined}
 					onTap={undefined}
 					noBgColorStates
+					className="tws-cursor-auto"
 				>
 					Show bezels
 					<Toggle
@@ -114,6 +116,7 @@ const AppSettingsMenu: FC<Props> = (props) => {
 					whileTap={undefined}
 					onTap={undefined}
 					noBgColorStates
+					className="tws-cursor-auto"
 				>
 					<div className="tws-flex tws-items-center tws-gap-x-2 tws-text-sm">
 						<ThemeIcon
@@ -129,20 +132,19 @@ const AppSettingsMenu: FC<Props> = (props) => {
 				</Menu.Item>
 				<HotKeysMenu />
 				<Menu transformOrigin="top-right" className="tws-w-full">
-					<Menu.Trigger className="tws-w-full">
-						<Menu.Item onTap={undefined} className="tws-text-sky-600">
+					<Menu.Trigger noHover className="tws-w-full">
+						<Menu.Item onTap={undefined} className="tws-text-sky-700">
 							About
 							<ChevronRight size={14} />
 						</Menu.Item>
 					</Menu.Trigger>
-					<Menu.Content className="tws-min-h-fit tws-max-h-48 tws-min-w-[240px] tws-right-3 tws-top-8 ">
+					<Menu.Content className="tws-min-h-fit tws-max-h-48 tws-bg-white/80 tws-right-3 tws-top-8 tws-rounded-[18px] tws-py-2 ">
 						<Menu.Item
 							onTap={async (close) => {
 								close();
 								await sleep(400);
 								window.open("https://x.com/mich_thedev", "_blank");
 							}}
-							className="!tws-py-2 "
 						>
 							About Developer
 							<img
@@ -151,14 +153,13 @@ const AppSettingsMenu: FC<Props> = (props) => {
 							/>
 						</Menu.Item>
 						<div className="w-full tws-px-3">
-							<div className="tws-h-[1px] tws-w-full tws-bg-zinc-200" />
+							<div className="tws-h-[1px] tws-w-full tws-bg-zinc-400" />
 						</div>
 						<Menu.Item
 							noBgColorStates
 							whileHover={undefined}
 							whileTap={undefined}
 							onTap={undefined}
-							className="!tws-py-2"
 						>
 							<span className=" tws-text-blue-400">Version</span>
 							<span>v{version}</span>
@@ -205,7 +206,7 @@ const ThemeTab = () => {
 const HotKeysMenu = () => {
 	return (
 		<Menu transformOrigin="top-right" className="tws-w-full">
-			<Menu.Trigger className="tws-w-full">
+			<Menu.Trigger noHover className="tws-w-full">
 				<Menu.Item onTap={undefined}>
 					<div className="tws-flex tws-items-center tws-gap-x-2">
 						<CommandIcon size={16} />

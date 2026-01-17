@@ -82,12 +82,17 @@ type Props = {
 	className?: string;
 };
 
+type MenuTriggerProps = Pick<Props, "children" | "className"> & {
+	noHover?: boolean;
+};
+
 /**
  * @dev wraps the children in <div> and adds the menu class
  */
-const MenuTrigger: React.FC<Pick<Props, "children" | "className">> = ({
+const MenuTrigger: React.FC<MenuTriggerProps> = ({
 	children,
 	className,
+	noHover = false,
 }) => {
 	const { setOpen, open } = useMenu();
 	const [shouldHaveHighZIndex, setShouldHaveHighZIndex] = useState(false);
@@ -97,7 +102,7 @@ const MenuTrigger: React.FC<Pick<Props, "children" | "className">> = ({
 	return (
 		<motion.div
 			whileTap={{ scale: 0.95 }}
-			whileHover={{ scale: 1.05 }}
+			whileHover={noHover ? undefined : { scale: 1.05 }}
 			className={cn(
 				"tws-w-fit tws-h-fit tws-relative tws-p-0 tws-bg-transparent tws-text-inherit tws-cursor-pointer ",
 				className,
@@ -260,7 +265,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 				"lg-menu-item focus:tws-outline-none tws-rounded-[22px] tws-cursor-pointer tws-transition-colors tws-duration-150",
 				{
 					active: isActive,
-					"focus:tws-bg-zinc-200/50 hover:tws-bg-zinc-200/50": !noBgColorStates,
+					"focus:tws-bg-white hover:tws-bg-white": !noBgColorStates,
 				},
 			)}
 		>
