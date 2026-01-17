@@ -13,6 +13,7 @@ import { useEffect, useRef } from "react";
 import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
+import { Squircle } from "@cornerkit/react";
 
 const numberIconsInRow = 4;
 
@@ -91,7 +92,7 @@ const HomeScreen: React.FC = () => {
 	const ipadConfigMemo = pipe(device.includes("ipad"), (isIpad) => {
 		return {
 			dockIconsClass: isIpad
-				? " !tws-px-4 !tws-py-5 tws-bg-white/15 !tws-w-fit tws-gap-x-5 !tws-rounded-[36px] "
+				? " !tws-px-4 !tws-py-5 tws-bg-white/15 !tws-w-fit tws-gap-x-5 "
 				: "",
 			searchButtonClass: isIpad ? " !tws-bg-white/15 " : "",
 			screenIconsClass: isIpad
@@ -132,24 +133,27 @@ const HomeScreen: React.FC = () => {
 			<section className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] ">
 				<div
 					className={cn(
-						"tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/10 tws-backdrop-blur-[150px] tws-text-[#474844] tws-font-normal tws-font-SF_Pro_Display tws-flex tws-items-center tws-gap-x-1 tws-text-xs",
+						"tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/30 tws-backdrop-blur-[10px] tws-text-[#474844] tws-font-normal tws-font-SF_Pro_Display tws-flex tws-items-center tws-gap-x-1 tws-text-xs",
 						ipadConfigMemo.searchButtonClass,
 					)}
 				>
 					<SearchIcon className={"tws-fill-[#474844] "} /> Search
 				</div>
 				{/* Dock */}
-				<section
-					className={cn(
-						"tws-h-fit tws-w-full tws-bg-[#666666]/15 tws-backdrop-blur-[150px] tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between ",
-						ipadConfigMemo.dockIconsClass,
-					)}
-					style={{
-						borderRadius: px(42),
-					}}
+				<Squircle
+					radius={32}
+					smoothing={0.5}
+					className={cn("tws-h-fit tws-w-full tws-overflow-hidden")}
 				>
-					<DockIcons isIpad={isIpad} />
-				</section>
+					<div
+						className={cn(
+							"tws-bg-[#666666]/30 tws-backdrop-blur-[10px] tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between",
+							ipadConfigMemo.dockIconsClass,
+						)}
+					>
+						<DockIcons isIpad={isIpad} />
+					</div>
+				</Squircle>
 			</section>
 		</section>
 	);

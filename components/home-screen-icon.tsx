@@ -24,9 +24,8 @@ const HomeScreenIcon: React.FC<{
 			{isUntitled ? (
 				<Squircle
 					radius={16}
-					data-el-size
 					className={cn(
-						"tws-size-[54px] @[360px]:tws-size-[60px] tws-bg-white tws-flex tws-items-center tws-justify-center tws-rounded-[inherit] ",
+						"tws-size-[54px] @[282px]:tws-size-[60px] tws-bg-white tws-flex tws-items-center tws-justify-center ",
 					)}
 				>
 					<img
@@ -36,10 +35,13 @@ const HomeScreenIcon: React.FC<{
 					/>
 				</Squircle>
 			) : (
-				<img
+				// squircle here too
+				<Squircle
+					as={"img"}
+					radius={16}
 					src={icon}
 					alt={name}
-					className="tws-w-[60px] tws-h-[60px] tws-rounded-[inherit]  "
+					className="tws-size-[54px] @[282px]:tws-size-[60px]  "
 				/>
 			)}
 			<p
