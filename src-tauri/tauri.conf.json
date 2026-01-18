@@ -31,7 +31,7 @@
 		"updater": {
 			"active": true,
 			"endpoints": [
-				"https://github.com/michthebrandofficial/mobily-responsive/releases/latest/download/latest.json"
+				"https://github.com/michthebrandofficial/mobily-responsive/releases/download/latest/latest.json"
 			],
 			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZFRURCOUIyQkYxOUQzOUQKUldTZDB4bS9zcm50YmliR3p5N3RnZGRrRmtNNm9aNy94OVJGSVAwTW5HMTdjSXRHNi9naDRQU2kK"
 		}
