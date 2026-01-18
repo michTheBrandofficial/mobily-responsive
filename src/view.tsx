@@ -59,7 +59,6 @@ async function checkForUpdates() {
 		await relaunch();
 	}
 }
-("name");
 // Check on app start
 checkForUpdates();
 
