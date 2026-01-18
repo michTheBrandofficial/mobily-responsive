@@ -16,9 +16,10 @@ import { useFullscreen } from "@/src/stores/fullscreen";
 import { useIframeSrc } from "@/src/stores/iframe-src";
 import { useLocalStorage } from "@/src/stores/local-storage";
 import { useScreenState } from "@/src/stores/screen-state";
+import { Squircle } from "@cornerkit/react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { FormikProps, useFormik } from "formik";
-import { Check, Maximize2Icon, MinusIcon } from "lucide-react";
+import { Check, Maximize2Icon, MinusIcon, XIcon } from "lucide-react";
 import { motion } from "motion/react";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { object, string } from "yup";
@@ -34,7 +35,6 @@ import SearchableSelect from "./ui/inputs/searchable-select";
 import LiquidGlass from "./ui/liquid-glass";
 import Popover from "./ui/popover";
 import { Typography } from "./ui/typography";
-import { Squircle } from "@cornerkit/react";
 
 const AnimatedCheckIcon = motion.create(Check);
 
@@ -119,13 +119,13 @@ const TopNavbar: React.FC = () => {
 			)}
 		>
 			<div className="tws-p-2 tws-px-3 tws-flex tws-items-center tws-gap-x-2.5 tws-rounded-full">
-				{/*<Button
+				<Button
 					whileHover={undefined}
 					onTap={() => simulatorAppWindow.close()}
 					className="tws-size-3.5 tws-flex tws-items-center tws-justify-center !tws-text-[#460804] !tws-p-0 tws-rounded-full !tws-bg-red-400 hover:!tws-bg-red-500 tws-transition-colors tws-duration-150 tws-group "
 				>
 					<XIcon className="tws-size-3 tws-opacity-0 tws-transition-opacity tws-duration-100 group-hover:tws-opacity-100 " />
-				</Button>*/}
+				</Button>
 				<Button
 					whileHover={undefined}
 					onTap={() => simulatorAppWindow.minimize()}
