@@ -33,8 +33,7 @@
 			"endpoints": [
 				"https://github.com/michthebrandofficial/mobily-responsive/releases/latest/download/latest.json"
 			],
-			"dialog": true,
-			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEYyRjM4NEI0Q0Y4MTM0MzIKUldReU5JSFB0SVR6OG90VmxwNDZpNnhLYlhYdCtPQ1ZOR0R4aFNFbVg5NFFDNWtIUmhZK2V2ei8K"
+			"pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZFRURCOUIyQkYxOUQzOUQKUldTZDB4bS9zcm50YmliR3p5N3RnZGRrRmtNNm9aNy94OVJGSVAwTW5HMTdjSXRHNi9naDRQU2kK"
 		}
 	},
 	"identifier": "com.mobily-responsive.dev",
@@ -50,6 +49,7 @@
 			"icons/icon.icns",
 			"icons/icon.ico"
 		],
+		"createUpdaterArtifacts": true,
 		"longDescription": "A desktop application that helps developers test their websites across different device sizes and resolutions. Built with Tauri and React for optimal performance and native integration.",
 		"resources": [],
 		"shortDescription": "A desktop app for testing website responsiveness across different device sizes",
