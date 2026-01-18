@@ -51,7 +51,7 @@ async function checkForUpdates() {
 
 		// sleep so that we can see if the update is successful in devtools
 		// Download and install
-		await update.downloadAndInstall();
+		await update.downloadAndInstall(); // this line is what throws the error.
 		console.log("download and install done ✅☑️");
 		await sleep(20000);
 
