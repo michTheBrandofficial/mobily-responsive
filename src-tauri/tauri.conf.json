@@ -30,6 +30,7 @@
 	"plugins": {
 		"updater": {
 			"active": true,
+			"dialog": false,
 			"endpoints": [
 				"https://github.com/michthebrandofficial/mobily-responsive/releases/latest/download/latest.json"
 			],
