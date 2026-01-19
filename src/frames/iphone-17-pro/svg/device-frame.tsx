@@ -2,9 +2,7 @@ import { devsize } from "@/components/ui/dev-size";
 import { cn } from "@/lib/cn";
 import { FC } from "react";
 
-interface Props extends App.SVGProps {
-	height: number;
-}
+interface Props extends App.SVGProps {}
 
 const controlsShadows = {
 	// inner shadow with x -4, y 0, blur 5 spread -1 and color black opacity .95
@@ -28,7 +26,7 @@ const controlsShadows = {
 // scale of things from design is 3 so we divide by 3
 const Controls: FC<Props> = () => {
 	return (
-		<div className="tws-space-y-1 ">
+		<>
 			{/* control silence */}
 			<devsize.div
 				className={cn(
@@ -64,7 +62,7 @@ const Controls: FC<Props> = () => {
 					controlsShadows.controlSideButton,
 				)}
 			/>
-		</div>
+		</>
 	);
 };
 
@@ -110,6 +108,7 @@ const DeviceFrame: FC<Props> = () => {
 					</div>
 				</div>
 			</div>
+			<Controls />
 		</div>
 	);
 };
