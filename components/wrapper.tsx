@@ -1,5 +1,5 @@
 import { cn } from "@/lib/cn";
-import { HTMLMotionProps } from "motion/react";
+import { HTMLMotionProps, motion } from "motion/react";
 import React, { RefAttributes } from "react";
 
 interface Props
@@ -7,7 +7,7 @@ interface Props
 
 const Wrapper: React.FC<Props> = ({ className, children, ...rest }) => {
 	return (
-		<section
+		<motion.section
 			{...rest}
 			initial={{ opacity: 0 }}
 			animate={{
@@ -23,7 +23,7 @@ const Wrapper: React.FC<Props> = ({ className, children, ...rest }) => {
 		>
 			{/*@ts-ignore*/}
 			{children}
-		</section>
+		</motion.section>
 	);
 };
 

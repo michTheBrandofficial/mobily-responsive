@@ -283,7 +283,11 @@ const Application: FC = () => {
 						position: "relative",
 					}}
 				>
-					<section className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-3 tws-flex-col tws-items-center tws-justify-between tws-py-1.5 ">
+					<section
+						className={cn(
+							"tws-h-screen tws-w-full tws-pl-0 tws-flex tws-gap-y-3 tws-flex-col tws-items-center tws-justify-between tws-py-1.5 ",
+						)}
+					>
 						<TopNavbar />
 						<div className="tws-flex-grow tws-w-full tws-flex tws-items-center tws-justify-center ">
 							<DeviceComponent key={device} />

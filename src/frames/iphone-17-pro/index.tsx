@@ -52,7 +52,7 @@ const Iphone17Pro: FC = () => {
 	return (
 		<Wrapper
 			ref={wrapperRef}
-			className="tws-w-full tws-h-full tws-flex tws-items-center tws-justify-center "
+			className="tws-w-fit tws-h-full tws-flex tws-items-center tws-justify-center "
 		>
 			<DeviceFrame
 				height={dimensions.h}

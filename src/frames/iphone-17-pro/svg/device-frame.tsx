@@ -25,37 +25,41 @@ const Controls: FC<Props> = () => {
 			{/* control silence */}
 			<div
 				className={cn(
-					"tws-w-[1px] tws-h-[24px] tws-rounded-l-[1px] tws-bg-[#2C2B31] ",
+					"tws-w-[1px] tws-rounded-l-[1px] tws-bg-[#2C2B31] ",
 					// shadow for depth
 					controlsShadows.controlSilence,
-					"tws-absolute -tws-left-[3px] tws-top-[112px] ",
+					"tws-absolute -tws-left-[2px] ",
+					"tws-h-[calc(24_/_646_*_var(--container-height))] tws-top-[calc(112_/_646_*_var(--container-height))]",
 				)}
 			/>
 			{/* control volume up */}
 			<div
 				className={cn(
-					"tws-w-[1px] tws-h-[45px] tws-rounded-l-[1px] tws-bg-[#2C2B31] ",
+					"tws-w-[1px] tws-rounded-l-[1px] tws-bg-[#2C2B31] ",
 					// shadow for depth
 					controlsShadows.controlVolumeUp(),
-					"tws-absolute -tws-left-[3px] tws-top-[155px] ",
+					"tws-absolute -tws-left-[2px]",
+					"tws-h-[calc(45_/_646_*_var(--container-height))] tws-top-[calc(155_/_646_*_var(--container-height))]",
 				)}
 			/>
 			{/* control volume down */}
 			<div
 				className={cn(
-					"tws-w-[1px] tws-h-[45px] tws-rounded-l-[1px] tws-bg-[#2C2B31] ",
+					"tws-w-[1px] tws-rounded-l-[1px] tws-bg-[#2C2B31] ",
 					// shadow for depth
 					controlsShadows.controlVolumeDown(),
-					"tws-absolute -tws-left-[3px] tws-top-[212px] ",
+					"tws-absolute -tws-left-[2px]",
+					"tws-h-[calc(45_/_646_*_var(--container-height))] tws-top-[calc(212_/_646_*_var(--container-height))]",
 				)}
 			/>
 			{/* control side button */}
 			<devsize.div
 				className={cn(
-					"tws-w-[1px] tws-h-[72px] tws-rounded-r-[1px] tws-bg-[#2C2B31] ",
+					"tws-w-[1px] tws-rounded-r-[1px] tws-bg-[#2C2B31] ",
 					// shadow for depth
 					controlsShadows.controlSideButton,
-					"tws-absolute -tws-right-[3px] tws-top-[calc(185px)] ",
+					"tws-absolute -tws-right-[2px] ",
+					"tws-h-[calc(72_/_646_*_var(--container-height))] tws-top-[calc(185_/_646_*_var(--container-height))]",
 				)}
 			/>
 		</>
@@ -64,13 +68,14 @@ const Controls: FC<Props> = () => {
 
 const DeviceFrame: FC<Props> = () => {
 	return (
-		<devsize.div
+		<div
 			id="main-container"
-			className="tws-w-fit tws-h-full tws-relative tws-aspect-[655/1363] tws-flex tws-items-center tws-justify-center [container-type:inline-size] "
+			className="tws-w-fit tws-h-full tws-relative tws-aspect-[655/1363] tws-flex tws-items-center tws-justify-center [container-type:size] "
 			style={{
 				// @ts-ignore
 				// Set based on parent container (which wraps touchable-screen)
-				"--base-radius": "calc(90 / 310 * 100cqw)",
+				"--base-radius": "calc(90 / 310 * 100cqi)",
+				"--container-height": "100cqb",
 			}}
 		>
 			<div
@@ -79,6 +84,7 @@ const DeviceFrame: FC<Props> = () => {
 					`tws-shadow-[0px_0px_1px_0.8px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,0.8)] `,
 				)}
 				style={{
+					// @ts-ignore
 					cornerShape: "superellipse(1.85)",
 				}}
 			>
@@ -89,6 +95,7 @@ const DeviceFrame: FC<Props> = () => {
 						"tws-rounded-[calc(var(--base-radius)+33px/3)] ",
 					)}
 					style={{
+						// @ts-ignore
 						cornerShape: "inherit",
 					}}
 				>
@@ -99,6 +106,7 @@ const DeviceFrame: FC<Props> = () => {
 							"tws-rounded-[calc(var(--base-radius)+20px/3)] ",
 						)}
 						style={{
+							// @ts-ignore
 							cornerShape: "inherit",
 						}}
 					>
@@ -110,6 +118,7 @@ const DeviceFrame: FC<Props> = () => {
 								"tws-rounded-[calc(var(--base-radius))] ",
 							)}
 							style={{
+								// @ts-ignore
 								cornerShape: "inherit",
 							}}
 						></div>
@@ -117,7 +126,7 @@ const DeviceFrame: FC<Props> = () => {
 				</div>
 			</div>
 			<Controls />
-		</devsize.div>
+		</div>
 	);
 };
 
