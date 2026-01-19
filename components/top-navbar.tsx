@@ -238,7 +238,7 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 			>
 				{props.trigger}
 			</Popover.Trigger>
-			<Popover.Content className="tws-max-w-72 tws-bg-white/80 tws-top-[200%] -tws-right-[300%] tws-p-4 tws-pt-3.5 ">
+			<Popover.Content className="tws-max-w-72 tws-bg-white/80 tws-top-[200%] -tws-right-[200%] tws-p-4 tws-pt-3.5 ">
 				{(closePopover) => {
 					return (
 						<div>
@@ -246,11 +246,11 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 								<Typography.p className="tws-text-base tws-font-semibold tws-font-SF_Pro_Display tws-text-zinc-900 tws-mb-1 ">
 									Add URL
 								</Typography.p>
-								<Typography.p className="tws-text-sm tws-leading-6 tws-w-full tws-font-Switzer tws-text-wrap tws-font-normal tws-text-zinc-900">
+								<Typography.p className="tws-text-sm tws-leading-5 tws-w-full tws-font-Switzer tws-text-wrap tws-font-normal tws-text-zinc-900">
 									Enter your site's URL to preview it on this device.
 								</Typography.p>
 							</div>
-							<div className="tws-min-w-[240px] tws-h-fit tws-py-2 tws-px-4 tws-mt-6 tws-bg-zinc-300 tws-rounded-[18px] ">
+							<div className="tws-min-w-[220px] tws-h-fit tws-py-2 tws-px-4 tws-mt-6 tws-bg-zinc-300 tws-rounded-[18px] ">
 								<SearchableSelect
 									bottomBorder
 									required
@@ -324,7 +324,7 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 							<div className="tws-mt-4 tws-flex tws-items-center tws-gap-x-2.5 ">
 								<Button
 									onTap={closePopover}
-									className="!tws-rounded-full !/tws-bg-[#bfb9c9] !tws-bg-zinc-300 tws-w-full tws-py-2"
+									className="!tws-rounded-[14px] !/tws-bg-[#bfb9c9] !tws-bg-zinc-300 tws-w-full !tws-py-2"
 									variant="dormant"
 								>
 									Cancel
@@ -336,7 +336,7 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 										onSave();
 									}}
 									disabled={!formik.isValid}
-									className="!tws-rounded-full tws-w-full tws-py-2"
+									className="!tws-rounded-[14px] tws-w-full !tws-py-2"
 								>
 									Ok
 								</Button>
