@@ -27,7 +27,7 @@ const clothoidRadiusRatio = 58 / dimensions.w;
 
 const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const;
 
-const Iphone16Pro: FC = () => {
+const Iphone17Pro: FC = () => {
 	const wrapperRef = useRef<HTMLElement>(null);
 	const { iphoneConfig } = useIphoneConfig();
 	setupResizeEffect(wrapperRef, {
@@ -50,7 +50,7 @@ const Iphone16Pro: FC = () => {
 		}
 	}, [screenState]);
 	return (
-		<Wrapper ref={wrapperRef} className=" ">
+		<Wrapper ref={wrapperRef} className="tws-w-full tws-h-full ">
 			<DeviceFrame
 				height={dimensions.h}
 				className={cn("", {
@@ -58,7 +58,7 @@ const Iphone16Pro: FC = () => {
 				})}
 			/>
 			<div
-				className={cn(`tws-h-auto tws-w-auto tws-hidden `, backgroundMemo)}
+				className={cn(`tws-h-auto tws-w-auto  tws-hidden`, backgroundMemo)}
 				style={{
 					...pick(iphoneConfig, "width", "height"),
 					...containerStyles,
@@ -91,4 +91,4 @@ const Iphone16Pro: FC = () => {
 	);
 };
 
-export default memo(Iphone16Pro);
+export default memo(Iphone17Pro);

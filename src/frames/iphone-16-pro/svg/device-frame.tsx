@@ -4,23 +4,24 @@ import { FC } from "react";
 import { cn } from "@/lib/cn";
 
 interface Props extends App.SVGProps {
-  height: number;
+	height: number;
 }
 
 const DeviceFrame: FC<Props> = ({ className, height, ...rest }) => {
-  const { deviceFrameHeightClass } = useDeviceFrameHeight()
-  return (
-    <img
-      src={Iphone16ProImage}
-      alt="Iphone 16 Pro Image"
-      style={{
-        ...rest.style,
-        width: "auto",
-        position: "relative",
-      }}
-      className={cn(``, deviceFrameHeightClass, className)}
-    />
-  );
+	const { deviceFrameHeightClass } = useDeviceFrameHeight();
+	return (
+		<img
+			src={Iphone16ProImage}
+			alt="Iphone 16 Pro Image"
+			style={{
+				...rest.style,
+				width: "auto",
+				position: "relative",
+				maxHeight: height,
+			}}
+			className={cn(`tws-h-full `, className)}
+		/>
+	);
 };
 
 export default DeviceFrame;

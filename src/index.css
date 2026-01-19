@@ -174,8 +174,15 @@
 			background-color 120ms;
 	}
 
+	/* supports css corner shape use squircle */
+	@supports (corner-shape: squircle) {
+		.tws-squircle {
+			corner-shape: squircle;
+		}
+	}
+
 	/* dev tools size display */
 	.tws-size-display {
-		@apply tws-relative after:tws-absolute after:tws-left-0 after:tws-top-0 after:tws-size-full after:tws-block after:tws-rounded after:tws-border-2 after:tws-border-red-500 before:tws-absolute before:tws-left-1/2 before:-tws-translate-x-1/2 before:-tws-top-4 before:tws-h-4 before:tws-w-fit before:tws-px-2 before:tws-content-[attr(data-el-size)] before:tws-block before:tws-rounded-t before:tws-bg-red-500 before:tws-text-white before:tws-text-[10px] before:!tws-font-SF_Pro_Display;
+		@apply tws-relative after:tws-absolute after:tws-left-0 after:tws-top-0 after:tws-size-full after:tws-block after:tws-rounded after:tws-border-2 after:tws-border-red-500 after:tws-z-[500] before:tws-z-[500] before:tws-absolute before:tws-left-1/2 before:-tws-translate-x-1/2 before:-tws-top-4 before:tws-h-4 before:tws-w-fit before:tws-px-2 before:tws-content-[attr(data-el-size)] before:tws-block before:tws-rounded-t before:tws-bg-red-500 before:tws-text-white before:tws-text-[10px] before:!tws-font-SF_Pro_Display;
 	}
 }

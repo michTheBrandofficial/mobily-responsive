@@ -1,5 +1,6 @@
 import plugin from "tailwindcss/plugin";
 import containerQueriesPlugin from "@tailwindcss/container-queries";
+import { squircle as squirclePlugin } from "tailwindcss-corner-shape";
 
 const WallPapersConfig = plugin(({ addUtilities }) => {
 	addUtilities({
@@ -75,5 +76,6 @@ export default {
 		}),
 		WallPapersConfig,
 		containerQueriesPlugin,
+		squirclePlugin,
 	],
 };

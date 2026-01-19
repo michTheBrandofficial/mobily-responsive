@@ -283,9 +283,9 @@ const Application: FC = () => {
 						position: "relative",
 					}}
 				>
-					<section className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1 tws-flex-col tws-items-center tws-justify-between tws-py-1 tws-pt-1.5 ">
+					<section className="tws-h-screen tws-w-fit tws-pl-0 tws-flex tws-gap-y-1.5 tws-flex-col tws-items-center tws-justify-between tws-py-1.5 ">
 						<TopNavbar />
-						<div className="tws-flex-grow ">
+						<div className="tws-flex-grow tws-w-full ">
 							<DeviceComponent key={device} />
 						</div>
 						<Button

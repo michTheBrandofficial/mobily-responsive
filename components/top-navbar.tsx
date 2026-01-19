@@ -16,7 +16,6 @@ import { useFullscreen } from "@/src/stores/fullscreen";
 import { useIframeSrc } from "@/src/stores/iframe-src";
 import { useLocalStorage } from "@/src/stores/local-storage";
 import { useScreenState } from "@/src/stores/screen-state";
-import { Squircle } from "@cornerkit/react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { FormikProps, useFormik } from "formik";
 import { Check, Maximize2Icon, MinusIcon, XIcon } from "lucide-react";
@@ -104,17 +103,10 @@ const TopNavbar: React.FC = () => {
 	});
 
 	return (
-		<Squircle
-			as={"section"}
-			radius={28}
-			smoothing={1}
-			border={{
-				color: "#1e1e1e",
-				width: 0.8,
-			}}
+		<section
 			className={cn(
-				`tws-w-screen tws-max-w-[354px] tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-pb-2 tws-pr-2.5 tws-relative tws-z-[500] `,
-				`tws-bg-[#1E1E1E] tws-shadow-[1px_0px_30px_30px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,1)] `,
+				`tws-w-screen tws-max-w-[354px] tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-pb-2 tws-pr-2.5 tws-relative tws-z-[500] tws-rounded-[22px] `,
+				`tws-bg-[#1E1E1E] tws-shadow-[1px_0px_1px_1px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,0.8)] `,
 				classMemo,
 			)}
 		>
@@ -190,7 +182,7 @@ const TopNavbar: React.FC = () => {
 					trigger={<Settings className={"tws-size-[18px] tws-fill-white"} />}
 				/>
 			</LiquidGlass.div>
-		</Squircle>
+		</section>
 	);
 };
 
@@ -238,7 +230,7 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 			>
 				{props.trigger}
 			</Popover.Trigger>
-			<Popover.Content className="tws-max-w-72 tws-bg-white/80 tws-top-[200%] -tws-right-[200%] tws-p-4 tws-pt-3.5 ">
+			<Popover.Content className="tws-max-w-72 tws-bg-white/80 tws-rounded-[28px] tws-top-[200%] -tws-right-[200%] tws-p-4 tws-pt-3.5 ">
 				{(closePopover) => {
 					return (
 						<div>
@@ -250,7 +242,7 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 									Enter your site's URL to preview it on this device.
 								</Typography.p>
 							</div>
-							<div className="tws-min-w-[220px] tws-h-fit tws-py-2 tws-px-4 tws-mt-6 tws-bg-zinc-300 tws-rounded-[18px] ">
+							<div className="tws-min-w-[220px] tws-h-fit tws-py-2 tws-px-4 tws-mt-6 tws-bg-zinc-300 tws-rounded-[24px] ">
 								<SearchableSelect
 									bottomBorder
 									required
@@ -324,7 +316,7 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 							<div className="tws-mt-4 tws-flex tws-items-center tws-gap-x-2.5 ">
 								<Button
 									onTap={closePopover}
-									className="!tws-rounded-[14px] !/tws-bg-[#bfb9c9] !tws-bg-zinc-300 tws-w-full !tws-py-2"
+									className="!tws-rounded-[24px] !/tws-bg-[#bfb9c9] !tws-bg-zinc-300 tws-w-full !tws-py-2"
 									variant="dormant"
 								>
 									Cancel
@@ -336,7 +328,7 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 										onSave();
 									}}
 									disabled={!formik.isValid}
-									className="!tws-rounded-[14px] tws-w-full !tws-py-2"
+									className="!tws-rounded-[24px] tws-w-full !tws-py-2"
 								>
 									Ok
 								</Button>

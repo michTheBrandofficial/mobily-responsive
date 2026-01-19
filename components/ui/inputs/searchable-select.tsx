@@ -304,7 +304,8 @@ const SearchableSelectImpl = <T = {},>({
 							}}
 							className={cn(
 								"tws-absolute tws-z-[10000] tws-rounded-[20px] tws-max-h-60 tws-overflow-y-auto tws-no-scrollbar tws-space-y-2 ",
-								"tws-bg-white/60 tws-backdrop-blur-[13px] tws-shadow-[1px_0px_1px_1px_rgba(231,229,228,0.6),_0px_0px_1px_1px_rgba(0,0,0,.2)] ",
+								"tws-bg-white/60 tws-backdrop-blur-[13px]",
+								"tws-shadow-[1px_0px_1px_1px_rgba(231,229,228,0.6),_0px_0px_1px_1px_rgba(0,0,0,.25)] ",
 								"tws-origin-top-right",
 								"tws-p-2",
 								{ "tws-bottom-14": dropdownPosition === "top" },
@@ -355,7 +356,7 @@ const SelectOption = <T extends {}>({
 			aria-selected={option.isSelected}
 			className={cn(
 				"focus:tws-outline-none focus:tws-bg-white/40 hover:tws-bg-white/60 tws-rounded-[12px]",
-				"tws-px-5 tws-py-2 tws-cursor-pointer tws-transition-colors tws-duration-150 ",
+				"tws-px-5 tws-py-1 tws-cursor-pointer tws-transition-colors tws-duration-150 ",
 				{
 					"tws-bg-white": highlightedOptionIndex === index,
 				},

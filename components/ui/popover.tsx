@@ -187,7 +187,8 @@ const PopoverContent: React.FC<PopoverContentProps> = ({
 						className={cn(
 							className,
 							"tws-min-h-[220px] tws-min-w-[220px] tws-top-[120%] tws-rounded-[20px] tws-absolute tws-z-[100000000] tws-p-1.5 tws-space-y-2 ",
-							"tws-bg-white/60 tws-backdrop-blur-[13px] tws-shadow-[1px_0px_1px_1px_rgba(231,229,228,0.6),_0px_0px_1px_1px_rgba(0,0,0,.2)] ",
+							"tws-bg-white/60 tws-backdrop-blur-[13px]",
+							"tws-shadow-[1px_0px_1px_1px_rgba(231,229,228,0.6),_0px_0px_1px_1px_rgba(0,0,0,.25)] ",
 							{ "tws-origin-center": config.transformOrigin === "center" },
 							{ "tws-origin-top": config.transformOrigin === "top" },
 							{ "tws-origin-bottom": config.transformOrigin === "bottom" },
