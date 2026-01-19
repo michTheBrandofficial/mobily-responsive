@@ -1,6 +1,6 @@
-import { FC } from "react";
-import { cn } from "@/lib/cn";
 import { devsize } from "@/components/ui/dev-size";
+import { cn } from "@/lib/cn";
+import { FC } from "react";
 
 interface Props extends App.SVGProps {
 	height: number;
@@ -70,38 +70,41 @@ const Controls: FC<Props> = () => {
 
 const DeviceFrame: FC<Props> = () => {
 	return (
-		<div className="tws-size-full ">
-			{/* dark frame */}
+		<div
+			id="main-container"
+			className="tws-w-fit tws-h-full tws-aspect-[655/1363] tws-flex tws-items-center tws-justify-center [container-type:inline-size] "
+			style={{
+				// @ts-ignore
+				// Set based on parent container (which wraps touchable-screen)
+				"--base-radius": "calc(98 / 310 * 100cqw)",
+			}}
+		>
 			<div
 				className={cn(
-					"tws-h-full tws-w-fit tws-aspect-[201/437] tws-items-center tws-justify-center tws-flex ",
-					"tws-rounded-[calc(240px/3)] ",
-					"tws-p-[calc(1.5px)] tws-bg-[#898987]",
-					// shadow
-					"tws-shadow-[inset_0px_0px_2px_1px_rgba(0,0,0)]",
+					"tws-h-full tws-w-fit tws-rounded-[calc(var(--base-radius)+35px/3)] ",
+					`tws-shadow-[0px_0px_1px_0.8px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,0.8)] `,
 				)}
 			>
-				{/* dark frame */}
+				{/* Dark frame */}
 				<div
 					className={cn(
-						"tws-h-full tws-w-full tws-items-center tws-justify-center tws-flex ",
-						"tws-rounded-[calc(230px/3)] ",
-						"tws-border-[calc(15px/3)] tws-border-[#2C2B31]",
+						"tws-h-full tws-w-fit tws-p-[calc(13px/3)] tws-bg-[#2C2B31] ",
+						"tws-rounded-[calc(var(--base-radius)+33px/3)] ",
 					)}
 				>
-					{/* black bezel */}
+					{/* Black Bezel */}
 					<div
 						className={cn(
-							"tws-h-full tws-w-full tws-items-center tws-justify-center tws-flex ",
-							"tws-rounded-[calc(210px/3)] ",
-							"tws-border-[calc(20px/3)] tws-border-[#060100]",
+							"tws-h-full tws-w-fit tws-p-[calc(20px/3)] tws-bg-[#060100] ",
+							"tws-rounded-[calc(var(--base-radius)+20px/3)] ",
 						)}
 					>
 						{/* device touchable screen */}
 						<div
+							id="touchable-screen"
 							className={cn(
 								"tws-h-full tws-w-fit tws-aspect-[201/437] tws-max-w-[402px] tws-max-h-[874px] tws-bg-white ",
-								"tws-rounded-[calc(190px/3)] ",
+								"tws-rounded-[calc(var(--base-radius))] ",
 							)}
 						></div>
 					</div>
