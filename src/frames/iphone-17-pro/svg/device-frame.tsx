@@ -72,7 +72,7 @@ const DeviceFrame: FC<Props> = () => {
 	return (
 		<div
 			id="main-container"
-			className="tws-w-fit tws-h-full tws-aspect-[655/1363] tws-flex tws-items-center tws-justify-center [container-type:inline-size] "
+			className="tws-w-fit tws-h-full tws-relative tws-aspect-[655/1363] tws-flex tws-items-center tws-justify-center [container-type:inline-size] "
 			style={{
 				// @ts-ignore
 				// Set based on parent container (which wraps touchable-screen)

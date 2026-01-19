@@ -105,9 +105,9 @@ const TopNavbar: React.FC = () => {
 	return (
 		<section
 			className={cn(
-				`tws-w-screen tws-max-w-[354px] tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-pb-2 tws-pr-2.5 tws-relative tws-z-[500] tws-rounded-[22px] `,
+				`tws-w-screen tws-max-w-[354px] tws-items-center tws-justify-between tws-gap-3 tws-p-2 tws-pb-2 tws-pr-2.5 tws-relative tws-z-[500] tws-rounded-full `,
 				`tws-bg-[#1E1E1E] `,
-				`tws-shadow-[1px_0px_1px_1px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,0.8)] `,
+				`tws-shadow-[0px_0px_1px_0.5px_rgba(231,229,228,0.6),_0px_0px_1px_2px_rgba(0,0,0,0.6)] `,
 				classMemo,
 			)}
 		>
