@@ -99,8 +99,11 @@ const AppSettingsMenu: FC<Props> = (props) => {
 					noBgColorStates
 					className="tws-cursor-auto"
 				>
-					Show bezels
+					<span className="tws-opacity-50 tws-cursor-not-allowed">
+						Show bezels
+					</span>
 					<Toggle
+						disabled
 						checked={storage.lastHasBezels}
 						onChange={(checked) => {
 							setStorage("lastHasBezels", checked);

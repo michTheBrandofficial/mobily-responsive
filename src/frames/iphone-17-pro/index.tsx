@@ -54,12 +54,7 @@ const Iphone17Pro: FC = () => {
 			ref={wrapperRef}
 			className="tws-w-fit tws-h-full tws-flex tws-items-center tws-justify-center "
 		>
-			<DeviceFrame
-				height={dimensions.h}
-				className={cn("", {
-					"tws-invisible": iphoneConfig.hasBezels === false,
-				})}
-			/>
+			<DeviceFrame />
 			<div
 				className={cn(`tws-h-auto tws-w-auto  tws-hidden`, backgroundMemo)}
 				style={{

@@ -24,7 +24,11 @@ const Toggle: React.FC<ToggleProps> = ({ checked, onChange, ...rest }) => {
 					type="checkbox"
 					checked={checked}
 					disabled={rest.disabled}
-					onChange={(e) => onChange(e.target.checked)}
+					onChange={(e) => {
+						if (!rest.disabled) {
+							onChange(e.target.checked);
+						}
+					}}
 					className="tws-sr-only tws-peer focus:tws-outline-none active:tws-outline-none"
 				/>
 				<div

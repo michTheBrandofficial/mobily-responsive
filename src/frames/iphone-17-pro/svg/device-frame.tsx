@@ -1,8 +1,9 @@
-import { devsize } from "@/components/ui/dev-size";
 import { cn } from "@/lib/cn";
 import { FC } from "react";
 
-interface Props extends App.SVGProps {}
+interface Props extends App.SVGProps {
+	children?: React.ReactNode;
+}
 
 const controlsShadows = {
 	controlSilence: `tws-shadow-[-1px_0px_1px_0.3px_rgba(231,229,228,0.6),_-1px_0px_1px_1.5px_rgba(0,0,0,0.8)] `,
@@ -53,7 +54,7 @@ const Controls: FC<Props> = () => {
 				)}
 			/>
 			{/* control side button */}
-			<devsize.div
+			<div
 				className={cn(
 					"tws-w-[1px] tws-rounded-r-[1px] tws-bg-[#2C2B31] ",
 					// shadow for depth
@@ -66,7 +67,7 @@ const Controls: FC<Props> = () => {
 	);
 };
 
-const DeviceFrame: FC<Props> = () => {
+const DeviceFrame: FC<Props> = ({ children }) => {
 	return (
 		<div
 			id="main-container"
@@ -114,14 +115,16 @@ const DeviceFrame: FC<Props> = () => {
 						<div
 							id="touchable-screen"
 							className={cn(
-								"tws-h-full tws-w-fit tws-aspect-[201/437] tws-max-w-[402px] tws-max-h-[874px] tws-bg-white ",
+								"tws-h-full tws-w-fit tws-aspect-[201/437] tws-max-w-[402px] tws-max-h-[874px] tws-bg-white tws-relative ",
 								"tws-rounded-[calc(var(--base-radius))] ",
 							)}
 							style={{
 								// @ts-ignore
 								cornerShape: "inherit",
 							}}
-						></div>
+						>
+							{children}
+						</div>
 					</div>
 				</div>
 			</div>
