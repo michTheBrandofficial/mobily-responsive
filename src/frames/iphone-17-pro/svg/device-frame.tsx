@@ -68,6 +68,8 @@ const Controls: FC<Props> = () => {
 };
 
 const DeviceFrame: FC<Props> = ({ children }) => {
+	const noBezels = false;
+
 	return (
 		<div
 			id="main-container"
@@ -105,6 +107,9 @@ const DeviceFrame: FC<Props> = ({ children }) => {
 						className={cn(
 							"tws-h-full tws-w-fit tws-p-[calc(20px/3)] tws-bg-[#060100] ",
 							"tws-rounded-[calc(var(--base-radius)+20px/3)] ",
+							{
+								"tws-invisible": noBezels,
+							},
 						)}
 						style={{
 							// @ts-ignore
@@ -115,7 +120,7 @@ const DeviceFrame: FC<Props> = ({ children }) => {
 						<div
 							id="touchable-screen"
 							className={cn(
-								"tws-h-full tws-w-fit tws-aspect-[201/437] tws-max-w-[402px] tws-max-h-[874px] tws-bg-white tws-relative ",
+								"tws-h-full tws-w-fit tws-aspect-[201/437] tws-max-w-[402px] tws-max-h-[874px] tws-bg-white tws-relative tws-overflow-hidden ",
 								"tws-rounded-[calc(var(--base-radius))] ",
 							)}
 							style={{

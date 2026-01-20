@@ -5,10 +5,13 @@ import { squircle as squirclePlugin } from "tailwindcss-corner-shape";
 const WallPapersConfig = plugin(({ addUtilities }) => {
 	addUtilities({
 		".wallpaper-iphone-15": {
-			background: `url(../assets/images/iphone-15-wallpaper.jpg)`,
+			background: `url(../assets/images/iphone-15-wallpaper.jpg) no-repeat`,
 		},
 		".wallpaper-iphone-16-pro": {
 			background: `url(../assets/images/iphone-16-pro-wallpaper.jpg)`,
+		},
+		".wallpaper-iphone-17-pro": {
+			background: `url(../assets/images/iphone-17-pro-wallpaper.jpg)`,
 		},
 		".wallpaper-ipad-pro-i13": {
 			background: `url(../assets/images/ipad-pro-i13-wallpaper.jpg)`,

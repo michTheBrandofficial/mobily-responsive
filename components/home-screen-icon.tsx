@@ -1,6 +1,5 @@
 import Tools from "@/assets/images/tools icon.png";
 import { cn } from "@/lib/cn";
-import { Squircle } from "@cornerkit/react";
 import { motion } from "motion/react";
 import React, { MouseEventHandler } from "react";
 
@@ -22,26 +21,23 @@ const HomeScreenIcon: React.FC<{
 			)}
 		>
 			{isUntitled ? (
-				<Squircle
-					radius={16}
+				<div
 					className={cn(
-						"tws-size-[54px] @[282px]:tws-size-[60px] tws-bg-white tws-flex tws-items-center tws-justify-center ",
+						"tws-size-[50px] tws-rounded-[28px] @[300px]:tws-size-[54px] tws-bg-white tws-flex tws-items-center tws-justify-center ",
 					)}
 				>
 					<img
 						src={Tools}
 						alt={"Untitled"}
-						className="tws-h-[62%] tws-w-[62%] tws-rounded-[inherit] "
+						className="tws-size-[70%] tws-rounded-[inherit] "
 					/>
-				</Squircle>
+				</div>
 			) : (
 				// squircle here too
-				<Squircle
-					as={"img"}
-					radius={16}
+				<img
 					src={icon}
 					alt={name}
-					className="tws-size-[54px] @[282px]:tws-size-[60px]  "
+					className="tws-size-[50px] tws-rounded-[28px] tws-overflow-hidden @[300px]:tws-size-[54px] "
 				/>
 			)}
 			<p

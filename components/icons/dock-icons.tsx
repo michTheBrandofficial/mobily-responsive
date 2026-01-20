@@ -981,28 +981,22 @@ const DockIcons = (props: { isIpad: boolean }) => {
 	return (
 		<>
 			{[<Phone />, <Photos />, <Settings />, <FaceTime />].map((Icon, i) => (
-				<Squircle
+				<div
 					key={i}
-					radius={16}
-					className={
-						"tws-size-[54px] @[282px]:tws-size-[60px] tws-flex tws-items-center tws-justify-center "
-					}
+					className="tws-size-[50px] tws-rounded-[28px] tws-overflow-hidden @[300px]:tws-size-[54px] tws-flex tws-items-center tws-justify-center "
 				>
 					{Icon}
-				</Squircle>
+				</div>
 			))}
 			<Activity mode={props.isIpad ? "visible" : "hidden"}>
 				<>
 					{[<Wallet />, <ICloud />].map((Icon, i) => (
-						<Squircle
+						<div
 							key={i}
-							radius={16}
-							className={
-								"tws-size-[54px] @[282px]:tws-size-[60px] tws-flex tws-items-center tws-justify-center "
-							}
+							className="tws-size-[50px] tws-rounded-[28px] tws-overflow-hidden @[300px]:tws-size-[54px] tws-flex tws-items-center tws-justify-center "
 						>
 							{Icon}
-						</Squircle>
+						</div>
 					))}
 				</>
 			</Activity>

@@ -2,10 +2,9 @@ import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
 import { cn } from "@/lib/cn";
-import { percentage, pick, px } from "@/lib/utils";
+import { px } from "@/lib/utils";
 import { useScreenState } from "@/src/stores/screen-state";
 import { FC, memo, useMemo, useRef } from "react";
-import { containerStyles } from "~/constants";
 import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
@@ -44,9 +43,9 @@ const Iphone17Pro: FC = () => {
 			case "after-app-launch":
 				return `tws-wallpaper-after-app-launch`;
 			case "before-close-app":
-				return `tws-wallpaper-iphone-16-pro`;
+				return `tws-wallpaper-iphone-17-pro`;
 			default:
-				return `tws-wallpaper-iphone-16-pro`;
+				return `tws-wallpaper-iphone-17-pro`;
 		}
 	}, [screenState]);
 	return (
@@ -54,37 +53,28 @@ const Iphone17Pro: FC = () => {
 			ref={wrapperRef}
 			className="tws-w-fit tws-h-full tws-flex tws-items-center tws-justify-center "
 		>
-			<DeviceFrame />
-			<div
-				className={cn(`tws-h-auto tws-w-auto  tws-hidden`, backgroundMemo)}
-				style={{
-					...pick(iphoneConfig, "width", "height"),
-					...containerStyles,
-					clipPath: iphoneConfig.clothoidRadius,
-					backgroundSize: "cover",
-				}}
-			>
-				<div
-					style={{
-						paddingTop: iphoneConfig.safeAreaInset,
-						width: percentage(100),
-						height: percentage(100),
-						overflow: "hidden",
-						position: "relative",
-					}}
-				>
-					<StatusBar
+			<DeviceFrame>
+				<div className={cn(`tws-size-full tws-bg-cover `, backgroundMemo)}>
+					<div
+						className="tws-relative tws-size-full "
 						style={{
-							width: iphoneConfig.width,
-							position: "absolute",
-							top: px(0),
-							zIndex: 900,
+							paddingTop: iphoneConfig.safeAreaInset,
+							position: "relative",
 						}}
-					/>
-					<HomeScreen />
-					<AppScreen config="iphone" />
+					>
+						<StatusBar
+							className="tws-z-[900] "
+							style={{
+								width: "100%",
+								position: "absolute",
+								top: px(0),
+							}}
+						/>
+						<HomeScreen />
+						<AppScreen config="iphone" />
+					</div>
 				</div>
-			</div>
+			</DeviceFrame>
 		</Wrapper>
 	);
 };

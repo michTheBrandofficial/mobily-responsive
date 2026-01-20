@@ -58,7 +58,7 @@ const Iphone16Pro: FC = () => {
 				})}
 			/>
 			<div
-				className={cn(`tws-h-auto tws-w-auto tws-hidden `, backgroundMemo)}
+				className={cn(`tws-h-auto tws-w-auto `, backgroundMemo)}
 				style={{
 					...pick(iphoneConfig, "width", "height"),
 					...containerStyles,

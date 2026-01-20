@@ -14,6 +14,7 @@ import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
 import { Squircle } from "@cornerkit/react";
+import { devsize } from "./ui/dev-size";
 
 const numberIconsInRow = 4;
 
@@ -105,7 +106,7 @@ const HomeScreen: React.FC = () => {
 			style={{
 				paddingTop: `${90 - parseInt(`${iphoneConfig.safeAreaInset}`)}px`,
 			}}
-			className="tws-h-full tws-w-full tws-flex tws-flex-col tws-justify-between tws-font-SF_Pro_Display tws-tracking-wide tws-@container"
+			className="tws-h-full tws-w-full tws-flex tws-flex-col tws-justify-between tws-font-SF_Pro_Display tws-tracking-wide tws-@container "
 		>
 			<section
 				className={cn(
@@ -140,20 +141,23 @@ const HomeScreen: React.FC = () => {
 					<SearchIcon className={"tws-fill-[#474844] "} /> Search
 				</div>
 				{/* Dock */}
-				<Squircle
-					radius={32}
-					smoothing={0.5}
-					className={cn("tws-h-fit tws-w-full tws-overflow-hidden")}
+				<div
+					className={cn(
+						"tws-h-fit tws-w-full tws-rounded-[120px] tws-overflow-hidden ",
+					)}
+					style={{
+						// @ts-ignore
+						cornerShape: "superellipse(1.5)",
+					}}
 				>
 					<div
 						className={cn(
 							"tws-bg-[#666666]/30 tws-backdrop-blur-[10px] tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between",
-							ipadConfigMemo.dockIconsClass,
 						)}
 					>
 						<DockIcons isIpad={isIpad} />
 					</div>
-				</Squircle>
+				</div>
 			</section>
 		</section>
 	);
