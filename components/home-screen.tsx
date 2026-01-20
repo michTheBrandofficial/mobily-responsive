@@ -13,8 +13,6 @@ import { useEffect, useRef } from "react";
 import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
-import { Squircle } from "@cornerkit/react";
-import { devsize } from "./ui/dev-size";
 
 const numberIconsInRow = 4;
 

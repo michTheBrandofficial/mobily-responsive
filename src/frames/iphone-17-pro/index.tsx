@@ -1,10 +1,10 @@
+import Wallpaper from "@/assets/images/iphone-17-pro-wallpaper.jpg";
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
 import { cn } from "@/lib/cn";
 import { px } from "@/lib/utils";
-import { useScreenState } from "@/src/stores/screen-state";
-import { FC, memo, useMemo, useRef } from "react";
+import { FC, memo, useRef } from "react";
 import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
@@ -37,24 +37,18 @@ const Iphone17Pro: FC = () => {
 		virtualHomeButtonRatio,
 		safeAreaInsetRatio,
 	});
-	const { screenState } = useScreenState();
-	const backgroundMemo = useMemo(() => {
-		switch (screenState) {
-			case "after-app-launch":
-				return `tws-wallpaper-after-app-launch`;
-			case "before-close-app":
-				return `tws-wallpaper-iphone-17-pro`;
-			default:
-				return `tws-wallpaper-iphone-17-pro`;
-		}
-	}, [screenState]);
 	return (
 		<Wrapper
 			ref={wrapperRef}
 			className="tws-w-fit tws-h-full tws-flex tws-items-center tws-justify-center "
 		>
 			<DeviceFrame>
-				<div className={cn(`tws-size-full tws-bg-cover `, backgroundMemo)}>
+				<img
+					src={Wallpaper}
+					alt="iPhone 17 Pro"
+					className="tws-absolute tws-top-0 tws-left-0"
+				/>
+				<div className={cn(`tws-size-full tws-relative tws-z-10 `)}>
 					<div
 						className="tws-relative tws-size-full "
 						style={{
