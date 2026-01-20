@@ -76,9 +76,9 @@ const HomeScreen: React.FC = () => {
 					},
 				],
 				{
-					duration: 1000,
+					duration: 300,
 					fill: "forwards",
-					easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+					easing: "ease-out",
 				},
 			);
 		} else animation.current?.reverse();
