@@ -14,6 +14,7 @@ const Wrapper: React.FC<Props> = ({ className, children, ...rest }) => {
 				opacity: 1,
 				transition: {
 					delay: 0.3,
+					duration: 0.2,
 				},
 			}}
 			className={cn(
