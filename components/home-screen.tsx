@@ -5,7 +5,6 @@ import { px } from "@/lib/utils";
 import { useDeviceScreen } from "@/src/stores/device-screen";
 import { useIconCoordinates } from "@/src/stores/icon-coordinates";
 import { useIframeSrc } from "@/src/stores/iframe-src";
-import { useIphoneConfig } from "@/src/stores/iphone-config";
 import { useLocalStorage } from "@/src/stores/local-storage";
 import { useQuery } from "@tanstack/react-query";
 import { readFile, readTextFile } from "@tauri-apps/plugin-fs";
@@ -16,7 +15,13 @@ import DockIcons, { SearchIcon } from "./icons/dock-icons";
 
 const numberIconsInRow = 4;
 
-const HomeScreen: React.FC = () => {
+type HomeScreenProps = {
+	topPadding?:
+		| "tws-pt-[calc(32px_+_0.15_*_var(--screen-container-width))] "
+		| (string & {});
+};
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ topPadding }) => {
 	const { setSrc } = useIframeSrc();
 	const { deviceScreen, setDeviceScreen } = useDeviceScreen();
 	const homeScreenIconRef = useRef<HTMLDivElement>(null);
@@ -86,7 +91,6 @@ const HomeScreen: React.FC = () => {
 	const {
 		storage: { lastUsedDevice: device },
 	} = useLocalStorage();
-	const { iphoneConfig } = useIphoneConfig();
 	const isIpad = device.includes("ipad");
 	const ipadConfigMemo = pipe(device.includes("ipad"), (isIpad) => {
 		return {
@@ -101,10 +105,10 @@ const HomeScreen: React.FC = () => {
 	});
 	return (
 		<section
-			style={{
-				paddingTop: `${90 - parseInt(`${iphoneConfig.safeAreaInset}`)}px`,
-			}}
-			className="tws-h-full tws-w-full tws-flex tws-flex-col tws-justify-between tws-font-SF_Pro_Display tws-tracking-wide tws-@container "
+			className={cn(
+				"tws-h-full tws-w-full tws-flex tws-flex-col tws-justify-between tws-font-SF_Pro_Display tws-tracking-wide tws-@container ",
+				topPadding || "",
+			)}
 		>
 			<section
 				className={cn(
