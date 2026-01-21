@@ -1,6 +1,6 @@
 import MinimizeFullscreen from "@/components/icons/minimize";
 import TopNavbar from "@/components/top-navbar";
-import { Button } from "@/components/ui/buttons";
+import { Button, LiquidGlassButton } from "@/components/ui/buttons";
 import { cn } from "@/lib/cn";
 import { ErrorMatcher } from "@/lib/error-matcher";
 import { handleDirCreation } from "@/lib/file-handle";
@@ -40,6 +40,7 @@ import { useLocalStorage } from "./stores/local-storage";
 import { registerAppWideHotKeys } from "./hot-keys-config";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
+import { uint8 } from "@/lib/number";
 
 async function checkForUpdates() {
 	const update = await check();
@@ -292,21 +293,25 @@ const Application: FC = () => {
 						<div className="tws-flex-grow tws-w-full tws-flex tws-items-center tws-justify-center ">
 							<DeviceComponent key={device} />
 						</div>
-						<Button
+						<LiquidGlassButton
 							onTap={() => {
 								setIsFullscreen(false);
 								// go back to normal height
 								setDeviceFrameHeightClass(maxHeightMap.minimize);
 							}}
+							color={"#474844"}
+							tint={[uint8(255), uint8(255), uint8(255)]}
+							tintOpacity={0.13}
+							mixingPercentage={60}
 							className={cn(
-								`!tws-p-2 !tws-border-[#44433E] !tws-bg-[#474844] !tws-rounded-full tws-absolute tws-bottom-1 tws-right-2 tws-z-[1000000000] `,
+								`!tws-p-2 !tws-rounded-full tws-absolute tws-bottom-1 tws-right-1 tws-z-[100000] `,
 								{
 									"tws-hidden": !isFullscreen,
 								},
 							)}
 						>
 							<MinimizeFullscreen width={12} height={12} fill="white" />
-						</Button>
+						</LiquidGlassButton>
 					</section>
 				</section>
 			</IframeRefContext.Provider>
