@@ -236,7 +236,7 @@ const UrlInputPopover: React.FC<UrlInputPopoverProps> = (props) => {
 					return (
 						<div>
 							<div className="tws-flex tws-flex-col tws-px-1 ">
-								<Typography.p className="tws-text-base tws-font-semibold tws-font-SF_Pro_Display tws-text-zinc-900 tws-mb-1 ">
+								<Typography.p className="tws-text-base tws-font-semibold tws-font-Inter tws-text-zinc-900 tws-mb-1 ">
 									Add URL
 								</Typography.p>
 								<Typography.p className="tws-text-sm tws-leading-5 tws-w-full tws-font-Switzer tws-text-wrap tws-font-normal tws-text-zinc-900">

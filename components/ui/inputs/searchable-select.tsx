@@ -197,7 +197,7 @@ const SearchableSelectImpl = <T = {},>({
 			>
 				<div
 					className={cn(
-						"tws-flex tws-items-center tws-justify-between tws-font-SF_Pro_Display ",
+						"tws-flex tws-items-center tws-justify-between tws-font-Inter ",
 						{
 							"tws-opacity-[.4]": rest.disabled,
 							"tws-border-b-2 tws-border-b-[#E6E6E6]": Boolean(
