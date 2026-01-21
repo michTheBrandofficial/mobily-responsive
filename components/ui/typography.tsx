@@ -5,14 +5,14 @@ import { forwardRef } from "react";
 const typographyVariants = cva("", {
 	variants: {
 		variant: {
-			h1: "tws-scroll-m-20 tws-text-paragraph tws-font-Inter tws-text-4xl tws-font-extrabold tws-tracking-tight lg:tws-text-5xl",
-			h2: "tws-scroll-m-20 tws-text-paragraph tws-font-Inter tws-text-3xl tws-font-semibold tws-tracking-tight",
-			h3: "tws-scroll-m-20 tws-text-paragraph tws-font-Inter tws-text-2xl tws-font-semibold tws-tracking-tight",
-			h4: "tws-scroll-m-20 tws-text-paragraph tws-font-Inter tws-text-xl tws-font-semibold tws-tracking-tight",
-			h5: "tws-scroll-m-20 tws-text-paragraph tws-font-Inter tws-text-lg tws-font-semibold tws-tracking-tight",
-			p: "tws-leading-7 tws-font-medium tws-font-Inter",
-			pre: "tws-leading-7 tws-font-medium tws-font-Inter",
-			span: "tws-font-medium tws-font-Inter",
+			h1: "tws-scroll-m-20 tws-text-paragraph tws-font-SF_Pro_Display tws-text-4xl tws-font-extrabold tws-tracking-tight lg:tws-text-5xl",
+			h2: "tws-scroll-m-20 tws-text-paragraph tws-font-SF_Pro_Display tws-text-3xl tws-font-semibold tws-tracking-tight",
+			h3: "tws-scroll-m-20 tws-text-paragraph tws-font-SF_Pro_Display tws-text-2xl tws-font-semibold tws-tracking-tight",
+			h4: "tws-scroll-m-20 tws-text-paragraph tws-font-SF_Pro_Display tws-text-xl tws-font-semibold tws-tracking-tight",
+			h5: "tws-scroll-m-20 tws-text-paragraph tws-font-SF_Pro_Display tws-text-lg tws-font-semibold tws-tracking-tight",
+			p: "tws-leading-7 tws-font-medium tws-font-SF_Pro_Display",
+			pre: "tws-leading-7 tws-font-medium tws-font-SF_Pro_Display",
+			span: "tws-font-medium tws-font-SF_Pro_Display",
 		},
 	},
 	defaultVariants: {

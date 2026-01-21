@@ -33,7 +33,8 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				Inter: ["Inter", "sans-serif"],
+				SF_Pro_Display: ["SF_Pro_Display", "sans-serif"],
+				SF_Pro: ["SF_Pro", "sans-serif"],
 			},
 			backgroundColor: {
 				"sidebar-button": "#939393",

@@ -1,6 +1,6 @@
 import MinimizeFullscreen from "@/components/icons/minimize";
 import TopNavbar from "@/components/top-navbar";
-import { Button, LiquidGlassButton } from "@/components/ui/buttons";
+import { LiquidGlassButton } from "@/components/ui/buttons";
 import { cn } from "@/lib/cn";
 import { ErrorMatcher } from "@/lib/error-matcher";
 import { handleDirCreation } from "@/lib/file-handle";
@@ -42,7 +42,7 @@ import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { uint8 } from "@/lib/number";
 
-async function checkForUpdates() {
+export async function checkForUpdates() {
 	const update = await check();
 
 	if (update) {
@@ -60,8 +60,7 @@ async function checkForUpdates() {
 		await relaunch();
 	}
 }
-// Check on app start
-checkForUpdates();
+// dont check for updates here
 
 /**
  * @dev fetches icons to save to storage and render on screen.
