@@ -11,9 +11,16 @@ import { useDeviceSettings } from "@/src/stores/device-settings";
 import { useIframeSrc } from "@/src/stores/iframe-src";
 import { useEffect, useRef } from "react";
 import { useIframeRef } from "@/src/stores/iframe-ref";
+import { cn } from "@/lib/cn";
 
 // default canfig is iphone
-const AppScreen = ({ config = "iphone" }: { config: "base" | "iphone" }) => {
+const AppScreen = ({
+	config = "iphone",
+	// topPadding,
+}: {
+	config: "base" | "iphone";
+	topPadding?: string;
+}) => {
 	const { src: iframeSrc } = useIframeSrc();
 	const { ref: iframeRef } = useIframeRef();
 	const appScreenRef = useRef<HTMLDivElement>(null);
@@ -87,38 +94,22 @@ const AppScreen = ({ config = "iphone" }: { config: "base" | "iphone" }) => {
 	return (
 		<div
 			ref={appScreenRef}
-			className=" "
+			className={cn(
+				"tws-size-full tws-absolute tws-z-[800] tws-bg-transparent tws-top-0 tws-left-0 tws-rounded-[var(--radius)] ",
+			)}
 			style={{
-				width: percentage(100),
-				height: percentage(100),
-				clipPath: phoneConfig.clothoidRadius,
-				position: "absolute",
-				zIndex: 800,
-				backgroundColor: "transparent",
-				top: px(0),
-				left: px(0),
 				opacity: 0,
 				scale: 0,
-				paddingTop: phoneConfig.safeAreaInset,
 			}}
 		>
 			<div
+				className={cn("tws-w-full tws-h-[var(--appscreen-padding-height)]")}
 				style={{
 					width: percentage(100),
-					height: phoneConfig.safeAreaInset,
 					backgroundColor: deviceSettings.theme_color,
-					position: "absolute",
-					top: px(0),
 				}}
 			/>
-			<div
-				className="tws-peer "
-				style={{
-					height: percentage(100),
-					width: percentage(100),
-					backgroundColor: "white",
-				}}
-			>
+			<div className="tws-peer tws-size-full tws-bg-white ">
 				<Iframe src={iframeSrc} ref={iframeRef} />
 			</div>
 			<div

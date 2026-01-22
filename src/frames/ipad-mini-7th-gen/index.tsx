@@ -23,10 +23,24 @@ const IpadMini7thGen: FC = () => {
 					style={{
 						// @ts-ignore
 						"--screen-container-width": "100cqi",
+						/**
+						 * @dev padding to ignore safe area (status bar)
+						 * @dev the product of the screen container width and the status bar height / status bar width
+						 */
+						"--appscreen-padding-height":
+							"calc(0.04 * var(--screen-container-width))",
+						/**
+						 * @dev padding to ignore safe area (status bar) in home screen
+						 * @dev the product of the screen container width and the status bar height / status bar width + arbitrary padding value for icons
+						 */
+						"--homescreen-padding-height":
+							"calc(52px + 0.04 * var(--screen-container-width))",
 					}}
 				>
 					<StatusBar className="tws-z-[900] tws-w-full tws-absolute tws-top-0 " />
-					<HomeScreen topPadding="tws-pt-[calc(32px_+_0.15_*_var(--screen-container-width))] " />
+					<HomeScreen
+						topPadding={"tws-pt-[var(--homescreen-padding-height)] "}
+					/>
 					<AppScreen config="iphone" />
 				</div>
 			</DeviceFrame>

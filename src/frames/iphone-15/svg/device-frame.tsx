@@ -121,7 +121,7 @@ const DeviceFrame: FC<Props> = ({ children }) => {
 							id="touchable-screen"
 							className={cn(
 								"tws-h-full tws-w-fit tws-aspect-[393/852] tws-max-w-[393px] tws-max-h-[852px] tws-bg-black tws-relative tws-overflow-hidden ",
-								"tws-rounded-[calc(var(--base-radius))] ",
+								"[--radius:calc(var(--base-radius))] tws-rounded-[var(--radius)] ",
 							)}
 							style={{
 								// @ts-ignore
