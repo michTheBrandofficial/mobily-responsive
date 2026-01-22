@@ -1,4 +1,4 @@
-import Wallpaper from "@/assets/images/iphone-15-wallpaper.jpg";
+import Wallpaper from "@/assets/images/ipad-mini-7th-gen-wallpaper.jpg";
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";

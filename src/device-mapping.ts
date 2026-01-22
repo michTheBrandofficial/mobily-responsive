@@ -28,7 +28,7 @@ export const DEVICE_MAPPING = {
 		component: ipadMini7thGen,
 		displayName: "iPad Mini",
 		type: "ipad",
-		version: "18.2",
+		version: "26.1",
 		dimensions: {
 			width: 744,
 			height: 1133,
