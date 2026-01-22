@@ -25,7 +25,7 @@ const IpadMini7thGen: FC = () => {
 						"--screen-container-width": "100cqi",
 					}}
 				>
-					<StatusBar className="tws-z-[900] tws-hidden tws-w-full tws-absolute tws-top-0 " />
+					<StatusBar className="tws-z-[900] tws-w-full tws-absolute tws-top-0 " />
 					<HomeScreen topPadding="tws-pt-[calc(32px_+_0.15_*_var(--screen-container-width))] " />
 					<AppScreen config="iphone" />
 				</div>

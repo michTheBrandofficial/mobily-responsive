@@ -12,6 +12,7 @@ import { useEffect, useRef } from "react";
 import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
+import LiquidGlass from "./ui/liquid-glass";
 
 const numberIconsInRow = 4;
 
@@ -97,7 +98,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ topPadding }) => {
 			dockIconsClass: isIpad
 				? " !tws-px-4 !tws-py-5 tws-bg-white/15 !tws-w-fit tws-gap-x-5 "
 				: "",
-			searchButtonClass: isIpad ? " !tws-bg-white/15 " : "",
 			screenIconsClass: isIpad
 				? " !tws-max-w-[826px] !tws-grid-cols-6-60  "
 				: "",
@@ -134,32 +134,37 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ topPadding }) => {
 			</section>
 			{/* Search buttons and device dock */}
 			<section className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] ">
-				<div
+				<LiquidGlass.div
+					color={"#fff"}
+					mixingPercentage={0}
+					tintOpacity={0.7}
+					tint={"use-color"}
 					className={cn(
-						"tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-bg-[#666666]/30 tws-backdrop-blur-[10px] tws-text-[#474844] tws-font-normal tws-font-SF_Pro_Display tws-flex tws-items-center tws-gap-x-1 tws-text-xs",
-						ipadConfigMemo.searchButtonClass,
+						"tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-text-[#474844] tws-font-normal tws-font-SF_Pro_Display tws-flex tws-items-center tws-gap-x-1 tws-text-xs",
+						{
+							"tws-hidden": isIpad,
+						},
 					)}
 				>
 					<SearchIcon className={"tws-fill-[#474844] "} /> Search
-				</div>
+				</LiquidGlass.div>
 				{/* Dock */}
-				<div
+				<LiquidGlass.div
+					color={"#fff"}
+					mixingPercentage={0}
+					tintOpacity={0.7}
+					tint={"use-color"}
 					className={cn(
-						"tws-h-fit tws-w-full tws-rounded-[120px] tws-overflow-hidden ",
+						"tws-h-fit tws-w-full @[600px]/main-container:tws-w-fit @[600px]/main-container:tws-gap-x-4 tws-rounded-[120px] tws-overflow-hidden ",
+						" tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between",
 					)}
 					style={{
 						// @ts-ignore
 						cornerShape: "superellipse(1.5)",
 					}}
 				>
-					<div
-						className={cn(
-							"tws-bg-[#666666]/30 tws-backdrop-blur-[10px] tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between",
-						)}
-					>
-						<DockIcons isIpad={isIpad} />
-					</div>
-				</div>
+					<DockIcons isIpad={isIpad} />
+				</LiquidGlass.div>
 			</section>
 		</section>
 	);

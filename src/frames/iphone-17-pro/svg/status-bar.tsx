@@ -59,7 +59,7 @@ const StatusBar: FC<StatusBarProps> = ({
 				<path
 					opacity="0.4"
 					d="M1108.52 92.3434V104.57C1110.93 103.534 1112.5 101.125 1112.5 98.4566C1112.5 95.7878 1110.93 93.3789 1108.52 92.3434"
-					fill={foreground}
+					fill={percentageStroke}
 				/>
 				<rect
 					x="1036.52"

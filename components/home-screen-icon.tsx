@@ -17,7 +17,7 @@ const HomeScreenIcon: React.FC<{
 			whileTap={{ scale: 0.95 }}
 			onClick={rest.onClick}
 			className={cn(
-				"tws-w-[60px] tws-h-fit tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer ",
+				"tws-w-[50px] @[300px]:tws-w-[54px] tws-h-fit tws-flex tws-flex-col tws-items-center tws-gap-y-1 tws-cursor-pointer ",
 			)}
 		>
 			{isUntitled ? (
