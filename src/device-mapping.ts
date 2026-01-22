@@ -1,7 +1,7 @@
 import { objectKeys } from "@/lib/utils";
-import IpadProi13 from "./frames/ipad-pro-i13";
 import Iphone15 from "./frames/iphone-15";
 import iphone17Pro from "./frames/iphone-17-pro";
+import ipadMini7thGen from "./frames/ipad-mini-7th-gen";
 
 export const DEVICE_MAPPING = {
 	"iphone-15": {
@@ -24,14 +24,14 @@ export const DEVICE_MAPPING = {
 			height: 874,
 		},
 	},
-	"ipad-pro-i13": {
-		component: IpadProi13,
-		displayName: 'iPad Pro 13"',
+	"ipad-mini-7th-gen": {
+		component: ipadMini7thGen,
+		displayName: "iPad Mini",
 		type: "ipad",
 		version: "18.2",
 		dimensions: {
-			width: 1032,
-			height: 1376,
+			width: 744,
+			height: 1133,
 		},
 	},
 } as const;
