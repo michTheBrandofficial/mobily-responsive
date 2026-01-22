@@ -10,6 +10,7 @@ import { useScreenState } from "@/src/stores/screen-state";
 import { useEffect, useRef } from "react";
 import { useDeviceScreen } from "~/stores/device-screen";
 import Iframe from "./iframe";
+import { useLocalStorage } from "@/src/stores/local-storage";
 
 // default canfig is iphone
 const AppScreen = ({}: { config?: "base" | "iphone"; topPadding?: string }) => {
@@ -20,6 +21,10 @@ const AppScreen = ({}: { config?: "base" | "iphone"; topPadding?: string }) => {
 	const { settings: deviceSettings } = useDeviceSettings();
 	const { setScreenState } = useScreenState();
 	const newIconSize = homeScreenIconScale * 64;
+	const {
+		storage: { lastUsedDevice: device },
+	} = useLocalStorage();
+	const isIpad = device.toLowerCase().includes("ipad");
 	// leave this animation here for reversal;
 	let animation = useRef<Animation | null>(null);
 	useEffect(() => {
@@ -108,7 +113,10 @@ const AppScreen = ({}: { config?: "base" | "iphone"; topPadding?: string }) => {
 				)}
 			>
 				<HomeIndicator
-					className="tws-w-[calc(var(--screen-container-width)*0.35)] "
+					className={cn("", {
+						"tws-w-[calc(var(--screen-container-width)*0.26)]": isIpad,
+						"tws-w-[calc(var(--screen-container-width)*0.35)]": !isIpad,
+					})}
 					style={{
 						backgroundColor: "#080808",
 					}}

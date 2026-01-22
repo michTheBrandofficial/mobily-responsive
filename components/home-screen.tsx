@@ -64,6 +64,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ topPadding }) => {
 
 	// animation for icons
 	useEffect(() => {
+		if (!homeScreenIconRef.current) return;
 		if (deviceScreen === "app-screen") {
 			const { x, y } = homeScreenIconRef.current!.getBoundingClientRect();
 			setIconCoordinates([x, y, isInFirstTwoIcons as true]);

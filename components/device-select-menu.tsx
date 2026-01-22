@@ -1,9 +1,11 @@
 import { cn } from "@/lib/cn";
 import { DEVICE_MAPPING } from "@/src/device-mapping";
 import { useLocalStorage } from "@/src/stores/local-storage";
+import { useDeviceScreen } from "~/stores/device-screen";
 import { CheckIcon } from "lucide-react";
 import { FC, useState } from "react";
 import Menu from "./ui/menu";
+import { sleep } from "@/lib/utils";
 
 interface Props {
 	trigger: React.ReactNode;
@@ -23,6 +25,7 @@ const DeviceSelectMenu: FC<Props> = (props) => {
 		storage: { lastUsedDevice: selectedDevice },
 		setStorage,
 	} = useLocalStorage();
+	const { setDeviceScreen } = useDeviceScreen();
 	const setSelectedDevice = (device: any) => {
 		setStorage("lastUsedDevice", device);
 	};
@@ -37,6 +40,8 @@ const DeviceSelectMenu: FC<Props> = (props) => {
 							className="tws-pr-2.5"
 							key={`${device.value}-${index}`}
 							onTap={async (close) => {
+								setDeviceScreen("home-screen");
+								await sleep(200);
 								setSelectedDevice(device.value);
 								close();
 							}}
