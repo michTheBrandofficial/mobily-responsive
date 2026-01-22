@@ -1,4 +1,3 @@
-import { devsize } from "@/components/ui/dev-size";
 import { cn } from "@/lib/cn";
 import { FC } from "react";
 
@@ -36,18 +35,17 @@ const Controls: FC<Props> = () => {
 					"tws-w-[1px] tws-rounded-r-[1px] tws-bg-[#2C2B31] ",
 					// shadow for depth
 					controlsShadows.controlSideButton(),
-					"tws-absolute -tws-left-[2px] ",
+					"tws-absolute -tws-left-[2px] @[1000px]/main-container:-tws-left-[4px] ",
 					"tws-h-[calc(72_/_646_*_var(--container-height))] tws-top-[calc(60_/_646_*_var(--container-height))]",
 				)}
 			/>
-
 			{/* control volume up */}
 			<div
 				className={cn(
 					"tws-w-[1px] tws-rounded-l-[1px] tws-bg-[#2C2B31] ",
 					// shadow for depth
 					controlsShadows.controlVolumeUp(),
-					"tws-absolute -tws-left-[2px]",
+					"tws-absolute -tws-left-[2px] @[1000px]/main-container:-tws-left-[4.4px] ",
 					"tws-h-[calc(45_/_646_*_var(--container-height))] tws-top-[calc((646-60-90-12)_/_646_*_var(--container-height))]",
 				)}
 			/>
@@ -57,7 +55,7 @@ const Controls: FC<Props> = () => {
 					"tws-w-[1px] tws-rounded-l-[1px] tws-bg-[#2C2B31] ",
 					// shadow for depth
 					controlsShadows.controlVolumeDown(),
-					"tws-absolute -tws-left-[2px]",
+					"tws-absolute -tws-left-[2px] @[1000px]/main-container:-tws-left-[4.4px]",
 					"tws-h-[calc(45_/_646_*_var(--container-height))] tws-top-[calc((646-60-45)_/_646_*_var(--container-height))]",
 				)}
 			/>
@@ -71,7 +69,7 @@ const DeviceFrame: FC<Props> = ({ children }) => {
 	return (
 		<div
 			id="main-container"
-			className="tws-w-fit tws-h-full tws-relative tws-aspect-[947/646] tws-flex tws-items-center tws-justify-center [container-type:size] "
+			className="tws-w-fit tws-h-full tws-relative tws-aspect-[947/646] tws-flex tws-items-center tws-justify-center [container-type:size] [container-name:main-container] "
 			style={{
 				// @ts-ignore
 				// Set based on parent container (which wraps touchable-screen)
