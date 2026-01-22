@@ -1,4 +1,3 @@
-import Tools from "@/assets/images/tools icon.png";
 import { cn } from "@/lib/cn";
 import { pipe } from "@/lib/pipe";
 import { px } from "@/lib/utils";
@@ -13,6 +12,7 @@ import { dataDir, FSOptions, homeScreenIconScale } from "~/constants";
 import HomeScreenIcon from "./home-screen-icon";
 import DockIcons, { SearchIcon } from "./icons/dock-icons";
 import LiquidGlass from "./ui/liquid-glass";
+import YourApp from "@/components/icons/dock-icons-images/Your App.png";
 
 const numberIconsInRow = 4;
 
@@ -30,9 +30,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ topPadding }) => {
 	// leave this animation here for reversal;
 	let animation = useRef<Animation | null>(null);
 	const untitledIcon: App.HomeScreenIconMapping[string] = {
-		name: "Untitled",
+		name: "Your App",
 		origin: "http://localhost:5173",
-		icon: Tools,
+		icon: YourApp,
 	};
 	const { data: homeScreenIcons = [] } = useQuery({
 		queryKey: ["home-screen-icons"],

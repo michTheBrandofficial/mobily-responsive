@@ -1,4 +1,4 @@
-import Tools from "@/assets/images/tools icon.png";
+import YourApp from "@/components/icons/dock-icons-images/Your App.png";
 import { cn } from "@/lib/cn";
 import { motion } from "motion/react";
 import React, { MouseEventHandler } from "react";
@@ -10,7 +10,7 @@ const HomeScreenIcon: React.FC<{
 	};
 	onClick: MouseEventHandler<HTMLDivElement>;
 }> = ({ icon: { icon, name }, ...rest }) => {
-	const isUntitled = icon === Tools;
+	const isUntitled = icon === YourApp;
 
 	return (
 		<motion.div
@@ -21,17 +21,10 @@ const HomeScreenIcon: React.FC<{
 			)}
 		>
 			{isUntitled ? (
-				<div
-					className={cn(
-						"tws-size-[50px] tws-rounded-[28px] @[300px]:tws-size-[54px] tws-bg-white tws-flex tws-items-center tws-justify-center ",
-					)}
-				>
-					<img
-						src={Tools}
-						alt={"Untitled"}
-						className="tws-size-[70%] tws-rounded-[inherit] "
-					/>
-				</div>
+				<img
+					src={YourApp}
+					className="tws-size-[50px] tws-overflow-hidden @[300px]:tws-size-[54px] "
+				/>
 			) : (
 				// squircle here too
 				<img
