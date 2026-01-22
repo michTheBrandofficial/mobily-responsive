@@ -1,26 +1,18 @@
+import { cn } from "@/lib/cn";
 import { percentage, px } from "@/lib/utils";
+import HomeIndicator from "@/src/components/home-indicator";
 import { homeScreenIconScale } from "@/src/constants";
-import { useBasePhoneConfig } from "@/src/stores/base-phone-config";
+import { useDeviceSettings } from "@/src/stores/device-settings";
 import { useIconCoordinates } from "@/src/stores/icon-coordinates";
-import { IphoneConfig, useIphoneConfig } from "@/src/stores/iphone-config";
-import VirtualHomeButton from "~/components/virtual-home-button";
+import { useIframeRef } from "@/src/stores/iframe-ref";
+import { useIframeSrc } from "@/src/stores/iframe-src";
+import { useScreenState } from "@/src/stores/screen-state";
+import { useEffect, useRef } from "react";
 import { useDeviceScreen } from "~/stores/device-screen";
 import Iframe from "./iframe";
-import { useScreenState } from "@/src/stores/screen-state";
-import { useDeviceSettings } from "@/src/stores/device-settings";
-import { useIframeSrc } from "@/src/stores/iframe-src";
-import { useEffect, useRef } from "react";
-import { useIframeRef } from "@/src/stores/iframe-ref";
-import { cn } from "@/lib/cn";
 
 // default canfig is iphone
-const AppScreen = ({
-	config = "iphone",
-	// topPadding,
-}: {
-	config: "base" | "iphone";
-	topPadding?: string;
-}) => {
+const AppScreen = ({}: { config?: "base" | "iphone"; topPadding?: string }) => {
 	const { src: iframeSrc } = useIframeSrc();
 	const { ref: iframeRef } = useIframeRef();
 	const appScreenRef = useRef<HTMLDivElement>(null);
@@ -87,15 +79,11 @@ const AppScreen = ({
 			} else animation.current?.reverse();
 		}
 	}, [deviceScreen]);
-	let phoneConfig: IphoneConfig =
-		config === "base"
-			? useBasePhoneConfig().basePhoneConfig
-			: useIphoneConfig().iphoneConfig;
 	return (
 		<div
 			ref={appScreenRef}
 			className={cn(
-				"tws-size-full tws-absolute tws-z-[800] tws-bg-transparent tws-top-0 tws-left-0 tws-rounded-[var(--radius)] ",
+				"tws-size-full tws-absolute tws-z-[800] tws-bg-transparent tws-top-0 tws-left-0 tws-rounded-[var(--radius)] tws-flex tws-flex-col ",
 			)}
 			style={{
 				opacity: 0,
@@ -109,23 +97,19 @@ const AppScreen = ({
 					backgroundColor: deviceSettings.theme_color,
 				}}
 			/>
-			<div className="tws-peer tws-size-full tws-bg-white ">
+			<div className="tws-peer tws-flex-grow tws-size-full tws-bg-white ">
 				<Iframe src={iframeSrc} ref={iframeRef} />
 			</div>
 			<div
-				className={`tws-flex tws-items-center tws-justify-center tws-transition-transform tws-duration-500 `}
-				style={{
-					width: percentage(100),
-					height: "fit-content",
-					position: "absolute",
-					bottom: phoneConfig.deviceBarRatios.bottom,
-					zIndex: 900,
-				}}
+				// yes, this is the standard home indicator position in iOS and iPadOS
+				className={cn(
+					`tws-flex tws-items-center tws-justify-center tws-transition-transform tws-duration-500 `,
+					"tws-w-full tws-h-fit tws-absolute tws-bottom-1 tws-z-[900]",
+				)}
 			>
-				<VirtualHomeButton
-					className="tws-rounded-full"
+				<HomeIndicator
+					className="tws-w-[calc(var(--screen-container-width)*0.35)] "
 					style={{
-						width: phoneConfig.virtualHomeButtonWidth,
 						backgroundColor: "#080808",
 					}}
 				/>
