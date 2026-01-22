@@ -1,7 +1,6 @@
 import { objectKeys } from "@/lib/utils";
 import IpadProi13 from "./frames/ipad-pro-i13";
 import Iphone15 from "./frames/iphone-15";
-import Iphone16Pro from "./frames/iphone-16-pro";
 import iphone17Pro from "./frames/iphone-17-pro";
 
 export const DEVICE_MAPPING = {
@@ -11,18 +10,8 @@ export const DEVICE_MAPPING = {
 		type: "iphone",
 		version: "18.0",
 		dimensions: {
-			width: 392,
+			width: 393,
 			height: 852,
-		},
-	},
-	"iphone-16": {
-		component: Iphone16Pro,
-		displayName: "iPhone 16",
-		type: "iphone",
-		version: "18.4",
-		dimensions: {
-			width: 402,
-			height: 874,
 		},
 	},
 	"iphone-17-pro": {

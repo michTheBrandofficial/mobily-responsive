@@ -1,94 +1,37 @@
+import Wallpaper from "@/assets/images/iphone-15-wallpaper.jpg";
 import AppScreen from "@/components/app-screen";
 import HomeScreen from "@/components/home-screen";
 import Wrapper from "@/components/wrapper";
 import { cn } from "@/lib/cn";
-import { percentage, pick, px } from "@/lib/utils";
-import { useScreenState } from "@/src/stores/screen-state";
-import { FC, memo, useMemo, useRef } from "react";
-import { containerStyles } from "~/constants";
-import { setupResizeEffect, useIphoneConfig } from "~/stores/iphone-config";
+import { FC, memo } from "react";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
 
-const dimensions = {
-  w: 393,
-  h: 852,
-};
-
-const deviceWidthRatio = 65 / dimensions.w;
-
-const deviceHeightRatio = 73 / dimensions.h;
-
-const safeAreaInsetRatio = 60 / dimensions.h;
-
-const virtualHomeButtonRatio = 115 / dimensions.w;
-
-const clothoidRadiusRatio = 49 / dimensions.w;
-
-const deviceBarRatios = [15 / dimensions.h, 6 / dimensions.h] as const;
-
 const Iphone15: FC = () => {
-  const wrapperRef = useRef<HTMLElement>(null);
-  const { iphoneConfig } = useIphoneConfig();
-  setupResizeEffect(wrapperRef, {
-    deviceBarRatios,
-    deviceHeightRatio,
-    deviceWidthRatio,
-    clothoidRadiusRatio,
-    virtualHomeButtonRatio,
-    safeAreaInsetRatio,
-  });
-  const { screenState } = useScreenState();
-  const backgroundMemo = useMemo(() => {
-    switch (screenState) {
-      case "after-app-launch":
-        return `tws-wallpaper-after-app-launch`;
-      case "before-close-app":
-        return `tws-wallpaper-iphone-16-pro`;
-      default:
-        return `tws-wallpaper-iphone-16-pro`;
-    }
-  }, [screenState]);
-  return (
-    <Wrapper ref={wrapperRef}>
-      <DeviceFrame
-        height={dimensions.h}
-        className={cn("", {
-          "tws-invisible": iphoneConfig.hasBezels === false,
-        })}
-      />
-      <div
-        className={cn(`tws-h-auto tws-w-auto `, backgroundMemo)}
-        style={{
-          ...pick(iphoneConfig, "width", "height"),
-          ...containerStyles,
-          clipPath: iphoneConfig.clothoidRadius,
-          backgroundSize: "cover",
-        }}
-      >
-        <div
-          style={{
-            paddingTop: iphoneConfig.safeAreaInset,
-            width: percentage(100),
-            height: percentage(100),
-            overflow: "hidden",
-            position: "relative",
-          }}
-        >
-          <StatusBar
-            style={{
-              width: iphoneConfig.width,
-              position: "absolute",
-              top: px(0),
-              zIndex: 900,
-            }}
-          />
-          <HomeScreen />
-          <AppScreen config="iphone" />
-        </div>
-      </div>
-    </Wrapper>
-  );
+	return (
+		<Wrapper className="tws-w-fit tws-h-full tws-flex tws-items-center tws-justify-center ">
+			<DeviceFrame>
+				<img
+					src={Wallpaper}
+					alt="iPhone 15"
+					className="tws-absolute tws-top-0 tws-left-0"
+				/>
+				<div
+					className={cn(
+						`tws-size-full tws-relative tws-z-10 [container-type:size] `,
+					)}
+					style={{
+						// @ts-ignore
+						"--screen-container-width": "100cqi",
+					}}
+				>
+					<StatusBar className="tws-z-[900] tws-w-full tws-absolute tws-top-0 " />
+					<HomeScreen topPadding="tws-pt-[calc(32px_+_0.15_*_var(--screen-container-width))] " />
+					<AppScreen config="iphone" />
+				</div>
+			</DeviceFrame>
+		</Wrapper>
+	);
 };
 
 export default memo(Iphone15);
