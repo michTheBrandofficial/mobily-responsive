@@ -19,7 +19,6 @@ import { SearchIcon } from "./icons/search";
 import Settings from "./icons/settings";
 import { Button } from "./ui/buttons";
 import LiquidGlass from "./ui/liquid-glass";
-import { motion } from "motion/react";
 import { useCommandTriggeredModal } from "./command-triggered-hotkeys";
 
 const TopNavbar: React.FC = () => {
@@ -44,6 +43,14 @@ const TopNavbar: React.FC = () => {
 	const { setCommandModal } = useCommandTriggeredModal();
 	const classMemo = isFullscreen ? "tws-hidden" : "tws-flex";
 	const [mixingPercentage, setMixingPercentage] = useState(12);
+	const [startBlur, setStartBlur] = useState(false);
+	useEffect(() => {
+		setStartBlur(true);
+		const timer = setTimeout(() => {
+			setStartBlur(false);
+		}, 200);
+		return () => clearTimeout(timer);
+	}, [deviceScreen]);
 	useEffect(() => {
 		function onBlur() {
 			setMixingPercentage(0);
@@ -117,32 +124,50 @@ const TopNavbar: React.FC = () => {
 				>
 					<Home className={"tws-size-[18px] tws-fill-white"} />
 				</Button>
-
-				<Button
-					onTap={() => {
-						setCommandModal("url-input", true);
-					}}
-					initial={{
-						width: 0,
-						marginLeft: 0,
-					}}
-					animate={{
-						width: deviceScreen === "home-screen" ? 0 : 18,
-						marginLeft: deviceScreen === "home-screen" ? 0 : 16,
-					}}
-					transition={{
-						delay: 0.2,
-					}}
-					className="tws-size-[18px] tws-bg-transparent !tws-p-0"
+				<div
+					className={cn(
+						"tws-relative ",
+						"after:tws-size-[130%] after:tws-block after:tws-absolute after:-tws-left-[2px] after:-tws-top-[3px] after:tws-z-20 after:tws-bg-white/5 after:tws-backdrop- after:tws-backdrop-blur-[2px] after:tws-rounded-full ",
+						"after:tws-transition-opacity after:tws-duration-200 tws-ease-linear after:tws-delay-[-200ms] ",
+						"after:tws-opacity-0 after:tws-pointer-events-none ",
+						{
+							"after:tws-opacity-100 ": startBlur,
+						},
+					)}
 				>
-					<SearchIcon className={"tws-size-full tws-fill-white"} />
-				</Button>
-				{/* device select menu here */}
-				<DeviceSelectMenu
-					trigger={
-						<DeviceFrameIcon className={"tws-size-[18px] tws-text-white "} />
-					}
-				/>
+					<Button
+						onTap={() => {
+							setCommandModal("url-input", true);
+						}}
+						className={cn(
+							"tws-size-[18px] tws-bg-transparent !tws-p-0",
+							"tws-absolute tws-top-0 tws-left-0",
+							{
+								"-tws-z-10 tws-invisible tws-pointer-events-none ":
+									deviceScreen === "home-screen",
+								"tws-z-10": deviceScreen === "app-screen",
+							},
+						)}
+					>
+						<SearchIcon className={"tws-size-full tws-fill-white"} />
+					</Button>
+					{/* device select menu here */}
+					<div
+						className={cn("tws-relative", {
+							"-tws-z-10 tws-invisible tws-pointer-events-none ":
+								deviceScreen === "app-screen",
+							"tws-z-10": deviceScreen === "home-screen",
+						})}
+					>
+						<DeviceSelectMenu
+							trigger={
+								<DeviceFrameIcon
+									className={cn("tws-size-[18px] tws-text-white ")}
+								/>
+							}
+						/>
+					</div>
+				</div>
 				<AppSettingsMenu
 					trigger={<Settings className={"tws-size-[18px] tws-fill-white"} />}
 				/>
@@ -150,7 +175,5 @@ const TopNavbar: React.FC = () => {
 		</section>
 	);
 };
-
-const AnimatedSearchIcon = motion.create(SearchIcon);
 
 export default TopNavbar;
