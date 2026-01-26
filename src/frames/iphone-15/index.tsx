@@ -6,15 +6,20 @@ import { cn } from "@/lib/cn";
 import { FC, memo } from "react";
 import DeviceFrame from "./svg/device-frame";
 import StatusBar from "./svg/status-bar";
+import { useScreenState } from "@/src/stores/screen-state";
 
 const Iphone15: FC = () => {
+	const { screenState } = useScreenState();
+
 	return (
 		<Wrapper className="tws-w-fit tws-h-full tws-flex tws-items-center tws-justify-center ">
 			<DeviceFrame>
 				<img
 					src={Wallpaper}
 					alt="iPhone 15"
-					className="tws-absolute tws-top-0 tws-left-0"
+					className={cn("tws-absolute tws-top-0 tws-left-0", {
+						"tws-invisible": Boolean(screenState === "after-app-launch"),
+					})}
 				/>
 				<div
 					className={cn(
