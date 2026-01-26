@@ -6,6 +6,7 @@ import { CheckIcon } from "lucide-react";
 import { FC, useState } from "react";
 import Menu from "./ui/menu";
 import { sleep } from "@/lib/utils";
+import { useScreenState } from "@/src/stores/screen-state";
 
 interface Props {
 	trigger: React.ReactNode;
@@ -29,6 +30,7 @@ const DeviceSelectMenu: FC<Props> = (props) => {
 	const setSelectedDevice = (device: any) => {
 		setStorage("lastUsedDevice", device);
 	};
+	const { setScreenState } = useScreenState();
 	return (
 		<Menu transformOrigin="top-right">
 			<Menu.Trigger>{props.trigger}</Menu.Trigger>
@@ -40,6 +42,7 @@ const DeviceSelectMenu: FC<Props> = (props) => {
 							className="tws-pr-2.5"
 							key={`${device.value}-${index}`}
 							onTap={async (close) => {
+								setScreenState("before-close-app");
 								setDeviceScreen("home-screen");
 								await sleep(200);
 								setSelectedDevice(device.value);
