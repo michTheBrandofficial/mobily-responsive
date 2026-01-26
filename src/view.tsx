@@ -41,6 +41,8 @@ import { registerAppWideHotKeys } from "./hot-keys-config";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { uint8 } from "@/lib/number";
+import CommandTriggeredModals from "@/components/command-triggered-modals";
+import { useCommandTriggeredModal } from "@/components/command-triggered-hotkeys";
 
 export async function checkForUpdates() {
 	const update = await check();
@@ -209,6 +211,7 @@ const Application: FC = () => {
 		useDeviceSettings();
 	const { setDeviceFrameHeightClass } = useDeviceFrameHeight();
 	const { isFullscreen, setIsFullscreen } = useFullscreen();
+	const { commandModal } = useCommandTriggeredModal();
 	const {
 		storage: { lastUsedDevice: device },
 	} = useLocalStorage();
@@ -289,7 +292,18 @@ const Application: FC = () => {
 						)}
 					>
 						<TopNavbar />
-						<div className="tws-flex-grow tws-w-full tws-flex tws-items-center tws-justify-center ">
+						<CommandTriggeredModals />
+						<div
+							className={cn(
+								"tws-flex-grow tws-w-full tws-flex tws-items-center tws-justify-center ",
+								"tws-transition-opacity tws-duration-[120ms] tws-ease-out ",
+								{
+									"tws-opacity-85": Boolean(
+										Object.values(commandModal).some((modal) => modal.open),
+									),
+								},
+							)}
+						>
 							<DeviceComponent key={device} />
 						</div>
 						<LiquidGlassButton

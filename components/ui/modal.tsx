@@ -1,5 +1,5 @@
 import { cn } from "@/lib/cn";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, HTMLMotionProps, motion } from "motion/react";
 import React, { useMemo } from "react";
 
 export type BaseModalProps = {
@@ -39,7 +39,7 @@ const ModalUnderLay = ({
 						{ "tws-bg-black/25 tws-backdrop-blur-[2px]": !noBlur },
 						{ "tws-bg-transparent": noBlur },
 						className,
-						"!tws-mt-0 tws-w-screen tws-h-screen tws-fixed tws-z-[9999] tws-top-0 tws-left-0 tws-flex tws-items-center tws-justify-center",
+						"!tws-mt-0 tws-w-screen tws-h-screen tws-fixed tws-z-[100000] tws-top-0 tws-left-0 tws-flex tws-items-center tws-justify-center",
 					)}
 					onClick={(e) => {
 						if (e.target === e.currentTarget) props.onClose();
@@ -59,7 +59,14 @@ type Props = {
 	className?: string;
 };
 
-const ModalBody: React.FC<Props> = ({ children, className }) => {
+type ModalBodyProps = Pick<Props, "children" | "className"> &
+	HTMLMotionProps<"section">;
+
+const ModalBody: React.FC<ModalBodyProps> = ({
+	children,
+	className,
+	...props
+}) => {
 	return (
 		<section className={cn("tws-w-fit tws-h-fit tws-px-3 ")}>
 			<motion.section
@@ -74,6 +81,8 @@ const ModalBody: React.FC<Props> = ({ children, className }) => {
 					},
 				}}
 				className={cn(className)}
+				// for override of the default animation
+				{...props}
 			>
 				{children}
 			</motion.section>
