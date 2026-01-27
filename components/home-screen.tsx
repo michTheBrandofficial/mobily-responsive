@@ -31,7 +31,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ topPadding }) => {
 	let animation = useRef<Animation | null>(null);
 	const untitledIcon: App.HomeScreenIconMapping[string] = {
 		name: "Your App",
-		origin: "https://ui.shadcn.com",
+		origin: "http://localhost:5173",
 		icon: YourApp,
 	};
 	const { data: homeScreenIcons = [] } = useQuery({
