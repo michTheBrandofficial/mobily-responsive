@@ -48,7 +48,7 @@ const TopNavbar: React.FC = () => {
 		setStartBlur(true);
 		const timer = setTimeout(() => {
 			setStartBlur(false);
-		}, 200);
+		}, 100);
 		return () => clearTimeout(timer);
 	}, [deviceScreen]);
 	useEffect(() => {
@@ -128,7 +128,7 @@ const TopNavbar: React.FC = () => {
 					className={cn(
 						"tws-relative ",
 						"after:tws-size-[130%] after:tws-block after:tws-absolute after:-tws-left-[2px] after:-tws-top-[3px] after:tws-z-20 after:tws-bg-white/5 after:tws-backdrop- after:tws-backdrop-blur-[2px] after:tws-rounded-full ",
-						"after:tws-transition-opacity after:tws-duration-200 tws-ease-linear after:tws-delay-[-200ms] ",
+						"after:tws-transition-opacity after:tws-duration-100 tws-ease-in-out ",
 						"after:tws-opacity-0 after:tws-pointer-events-none ",
 						{
 							"after:tws-opacity-100 ": startBlur,

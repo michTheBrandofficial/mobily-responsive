@@ -1,5 +1,5 @@
 import { cn } from "@/lib/cn";
-import { percentage, px } from "@/lib/utils";
+import { percentage, px, sleep } from "@/lib/utils";
 import HomeIndicator from "@/src/components/home-indicator";
 import { homeScreenIconScale } from "@/src/constants";
 import { useDeviceSettings } from "@/src/stores/device-settings";
@@ -11,10 +11,12 @@ import { useEffect, useRef } from "react";
 import { useDeviceScreen } from "~/stores/device-screen";
 import Iframe from "./iframe";
 import { useLocalStorage } from "@/src/stores/local-storage";
+import { useHotkeys } from "react-hotkeys-hook";
+import { fileSpecificHotKeysConfig } from "@/src/hot-keys-config";
 
 // default canfig is iphone
 const AppScreen = ({}: { config?: "base" | "iphone"; topPadding?: string }) => {
-	const { src: iframeSrc } = useIframeSrc();
+	const { src: iframeSrc, setSrc: setIframeSrc } = useIframeSrc();
 	const { ref: iframeRef } = useIframeRef();
 	const appScreenRef = useRef<HTMLDivElement>(null);
 	const { deviceScreen } = useDeviceScreen();
@@ -84,6 +86,16 @@ const AppScreen = ({}: { config?: "base" | "iphone"; topPadding?: string }) => {
 			} else animation.current?.reverse();
 		}
 	}, [deviceScreen]);
+
+	// register hot key for reload
+	useHotkeys(fileSpecificHotKeysConfig.reloadUrl.raw, async () => {
+		if (deviceScreen === "app-screen") {
+			const oldSrc = iframeSrc;
+			setIframeSrc("");
+			await sleep(50);
+			setIframeSrc(oldSrc);
+		}
+	});
 	return (
 		<div
 			ref={appScreenRef}

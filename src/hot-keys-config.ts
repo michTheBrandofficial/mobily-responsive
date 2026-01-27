@@ -1,9 +1,20 @@
+import { useCommandTriggeredModal } from "@/components/command-triggered-hotkeys";
 import { useHotkeys } from "react-hotkeys-hook";
 import { maxHeightMap, useDeviceFrameHeight } from "./constants";
 import { useDeviceScreen } from "./stores/device-screen";
 import { useFullscreen } from "./stores/fullscreen";
 import { useScreenState } from "./stores/screen-state";
-import { useCommandTriggeredModal } from "@/components/command-triggered-hotkeys";
+
+export const fileSpecificHotKeysConfig = {
+	/**
+	 * @dev this will be instantiated in the app-screen file
+	 */
+	reloadUrl: {
+		keys: ["Ctrl K", "R"],
+		raw: "ctrl>k>r",
+		label: "Reload",
+	},
+};
 
 export const userFacingHotKeysConfig = {
 	goToHomeScreen: {
@@ -11,6 +22,7 @@ export const userFacingHotKeysConfig = {
 		raw: "ctrl+h",
 		label: "Home",
 	},
+	...fileSpecificHotKeysConfig,
 	changeUrl: {
 		keys: ["Ctrl", "L"],
 		raw: "ctrl+l",
