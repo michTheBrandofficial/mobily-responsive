@@ -8,13 +8,13 @@ export const useModalsBuilder = <
     };
   },
 >(
-  modalConfigs: T,
+  modalConfigs: T
 ) => {
   const [modals, setModals] = useState(modalConfigs);
   const modalFunctions = {
     openModal: <K extends keyof typeof modals>(
       modal: K,
-      payload: Omit<(typeof modals)[K], "open">,
+      payload: Omit<(typeof modals)[K], "open">
     ) => {
       setModals((p) => ({
         ...p,
@@ -27,7 +27,7 @@ export const useModalsBuilder = <
     },
     closeModal: <K extends keyof typeof modals>(
       modal: K,
-      payload?: Omit<(typeof modals)[K], "open">,
+      payload?: Omit<(typeof modals)[K], "open">
     ) => {
       setModals((p) => ({
         ...p,
@@ -39,14 +39,12 @@ export const useModalsBuilder = <
         },
       }));
     },
-    returnClose: function returnClose<K extends keyof typeof modals>(
-      modal: K,
-    ) {
-      return () => this.closeModal(modal)
+    returnClose: function returnClose<K extends keyof typeof modals>(modal: K) {
+      return () => this.closeModal(modal);
     },
     updateModalData: <K extends keyof typeof modals>(
       modal: K,
-      payload: Omit<(typeof modals)[K], "open">,
+      payload: Omit<(typeof modals)[K], "open">
     ) => {
       setModals((p) => ({
         ...p,

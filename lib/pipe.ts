@@ -16,7 +16,11 @@
  */
 function pipe<A>(fn1: A | (() => A)): A;
 function pipe<A, B>(fn1: A | (() => A), fn2: (a: A) => B): B;
-function pipe<A, B, C>(fn1: A | (() => A), fn2: (a: A) => B, fn3: (b: B) => C): C;
+function pipe<A, B, C>(
+  fn1: A | (() => A),
+  fn2: (a: A) => B,
+  fn3: (b: B) => C
+): C;
 function pipe<A, B, C, D>(
   fn1: A | (() => A),
   fn2: (a: A) => B,
@@ -58,14 +62,12 @@ function pipe<A, B, C, D, E, F, G, H>(
   fn8: (g: G) => H
 ): H;
 function pipe(...fns: Array<(arg: any) => any>): any {
-  let first = fns[0]
-  let result = typeof first === 'function' ? (first as () => any)() : first;
+  let first = fns[0];
+  let result = typeof first === "function" ? (first as () => any)() : first;
   for (let i = 1; i < fns.length; i++) {
     result = fns[i]?.(result);
   }
   return result;
 }
 
-export {
-  pipe
-}
+export { pipe };

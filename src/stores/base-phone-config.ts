@@ -62,7 +62,7 @@ type BasePhoneConfigRatios<T = number> = {
 export const setupResizeEffect = <E extends HTMLElement>(
   wrapperRef: RefObject<E | null>,
   resizeEffectConfig: BasePhoneConfigRatios,
-  fn?: (target: E) => void,
+  fn?: (target: E) => void
 ) => {
   const { setBasePhoneConfig } = useBasePhoneConfig();
   const {

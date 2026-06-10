@@ -47,7 +47,7 @@ export const createStyles = <
     [index: string]: Readonly<Props>;
   },
 >(
-  styles: S,
+  styles: S
 ) => styles;
 
 export const pick = <O extends Record<string, any>, K extends keyof O>(
@@ -95,7 +95,7 @@ export const wait = (fn: () => void, delay = 500) => setTimeout(fn, delay);
 
 export const debounce = <T extends VoidFunction | Utilities.FunctionWithArgs>(
   fn: T,
-  delta = 500,
+  delta = 500
 ): T => {
   let timer: any;
   return ((...args: any[]) => {
@@ -155,7 +155,7 @@ export function inlineSwitch<
       }
       return acc;
     },
-    [[], []] as [Default[], CaseArray<Case, Return>[]],
+    [[], []] as [Default[], CaseArray<Case, Return>[]]
   );
 
   for (let i = 0; i < caseArrays.length; i++) {
@@ -180,7 +180,7 @@ export const objectKeys = <T extends Record<string, any>>(obj: T) => {
 };
 
 export function entries<T extends Record<string, any>, K extends keyof T>(
-  obj: T,
+  obj: T
 ) {
   return Object.entries(obj) as [K, T[K]][];
 }
@@ -194,7 +194,7 @@ type FindAndPipePredicate<T> = (value: T, index: number) => unknown;
 export function findAndPipe<T, R>(
   array: T[],
   predicate: FindAndPipePredicate<T>,
-  fn: (value: T) => R,
+  fn: (value: T) => R
 ) {
   const valueInArray = array.find(predicate);
   if (!valueInArray) return undefined;
@@ -264,16 +264,19 @@ export function iife<T>(fn: () => T) {
 }
 
 export function isFunction(value: any): value is Function {
-  return typeof value === 'function';
+  return typeof value === "function";
 }
 
 export function hexToRgbArray(hex: `#${string}`) {
   // Remove the # if present
-  hex = hex.replace(/^#/, '') as typeof hex;
+  hex = hex.replace(/^#/, "") as typeof hex;
 
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
   if (hex.length === 3) {
-    hex = hex.split('').map(char => char + char).join('') as typeof hex;
+    hex = hex
+      .split("")
+      .map((char) => char + char)
+      .join("") as typeof hex;
   }
 
   // Parse the hex values
@@ -291,9 +294,9 @@ export function rgbArrayToHex([r, g, b]: [uint8, uint8, uint8]): `#${string}` {
   const clampedB = Math.max(0, Math.min(255, Math.round(b)));
 
   // Convert to hex and pad with zeros if necessary
-  const hexR = clampedR.toString(16).padStart(2, '0');
-  const hexG = clampedG.toString(16).padStart(2, '0');
-  const hexB = clampedB.toString(16).padStart(2, '0');
+  const hexR = clampedR.toString(16).padStart(2, "0");
+  const hexG = clampedG.toString(16).padStart(2, "0");
+  const hexB = clampedB.toString(16).padStart(2, "0");
 
   return `#${hexR}${hexG}${hexB}` as `#${string}`;
 }
@@ -305,20 +308,22 @@ export function rgbArrayToHex([r, g, b]: [uint8, uint8, uint8]): `#${string}` {
  * @example
  * separateProtocol("https://example.com/path")
  */
-export function separateProtocol(url: string): Result<{ protocol: string; url: string }, 'Protocol not supported'> {
-  if (url.startsWith('https://')) {
+export function separateProtocol(
+  url: string
+): Result<{ protocol: string; url: string }, "Protocol not supported"> {
+  if (url.startsWith("https://")) {
     return ok({
-      protocol: 'https://',
-      url: url.slice(8) // Remove 'https://'
-    })
+      protocol: "https://",
+      url: url.slice(8), // Remove 'https://'
+    });
   }
 
-  if (url.startsWith('http://')) {
+  if (url.startsWith("http://")) {
     return ok({
-      protocol: 'http://',
-      url: url.slice(7) // Remove 'http://'
-    })
+      protocol: "http://",
+      url: url.slice(7), // Remove 'http://'
+    });
   }
 
-  return err('Protocol not supported')
+  return err("Protocol not supported");
 }

@@ -33,7 +33,7 @@ export const useDeviceFrameHeight = create<DeviceFrameHeightStore>(
         deviceFrameHeightClass: frameHeight,
       });
     },
-  }),
+  })
 );
 
 export const AppLocalData = BaseDirectory.AppLocalData;
@@ -42,7 +42,7 @@ export const dataDir = `./MobilyResponsiveData`;
 
 export const FSOptions = {
   baseDir: AppLocalData,
-} satisfies ReadDirOptions
+} satisfies ReadDirOptions;
 
 export const homeScreenIconScale = 1.4;
 

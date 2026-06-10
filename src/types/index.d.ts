@@ -21,7 +21,7 @@ declare global {
     type DisplayableError = {
       message: string;
       details?: string;
-    }
+    };
 
     type WebManifest = {
       display: "fullscreen" | (string & {});

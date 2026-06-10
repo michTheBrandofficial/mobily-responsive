@@ -3,7 +3,7 @@ import { create } from "zustand/react";
 
 type IconCoordinateStore = {
   iconCoordinates: [number, number, true];
-  setIconCoordinates: Dispatch<IconCoordinateStore['iconCoordinates']>;
+  setIconCoordinates: Dispatch<IconCoordinateStore["iconCoordinates"]>;
 };
 
 /**
@@ -14,7 +14,7 @@ export const useIconCoordinates = create<IconCoordinateStore>((set, get) => ({
   setIconCoordinates: (coordinates) => {
     set({
       ...get(),
-      iconCoordinates: coordinates
+      iconCoordinates: coordinates,
     });
   },
 }));

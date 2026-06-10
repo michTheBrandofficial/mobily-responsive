@@ -49,7 +49,7 @@ type IphoneConfigRatios<T = number> = {
 export const setupResizeEffect = <E extends HTMLElement>(
   wrapperRef: RefObject<E | null>,
   resizeEffectConfig: IphoneConfigRatios,
-  fn?: (target: E) => void,
+  fn?: (target: E) => void
 ) => {
   const { iphoneConfig, setIphoneConfig } = useIphoneConfig();
   const {
@@ -62,35 +62,33 @@ export const setupResizeEffect = <E extends HTMLElement>(
   } = resizeEffectConfig;
 
   useEffect(() => {
-    const observer = new ResizeObserver(
-      (entries) => {
-        const [{ target } = {}] = entries;
-        const { width, height } = getDims(getComputedStyle(target!));
-        const { newWidth, newHeight } = iife(() => ({
-          newWidth: width - round(width * deviceWidthRatio),
-          newHeight: height - round(height * deviceHeightRatio),
-        }));
-        setIphoneConfig({
-          ...iphoneConfig,
-          width: px(newWidth),
-          height: px(newHeight),
-          virtualHomeButtonWidth: px(round(width * virtualHomeButtonRatio)),
-          clothoidRadius: clothoidize({
-            format: "minify",
-            precise: 100,
-            radius: round(width * clothoidRadiusRatio),
-            unit: "px",
-          }),
-          borderRadius: px(round(width * clothoidRadiusRatio)),
-          deviceBarRatios: {
-            top: px(round(height * deviceBarRatios[0])),
-            bottom: px(round(height * deviceBarRatios[1])),
-          },
-          safeAreaInset: px(round(height * safeAreaInsetRatio)),
-        });
-        fn?.(wrapperRef.current!);
-      },
-    );
+    const observer = new ResizeObserver((entries) => {
+      const [{ target } = {}] = entries;
+      const { width, height } = getDims(getComputedStyle(target!));
+      const { newWidth, newHeight } = iife(() => ({
+        newWidth: width - round(width * deviceWidthRatio),
+        newHeight: height - round(height * deviceHeightRatio),
+      }));
+      setIphoneConfig({
+        ...iphoneConfig,
+        width: px(newWidth),
+        height: px(newHeight),
+        virtualHomeButtonWidth: px(round(width * virtualHomeButtonRatio)),
+        clothoidRadius: clothoidize({
+          format: "minify",
+          precise: 100,
+          radius: round(width * clothoidRadiusRatio),
+          unit: "px",
+        }),
+        borderRadius: px(round(width * clothoidRadiusRatio)),
+        deviceBarRatios: {
+          top: px(round(height * deviceBarRatios[0])),
+          bottom: px(round(height * deviceBarRatios[1])),
+        },
+        safeAreaInset: px(round(height * safeAreaInsetRatio)),
+      });
+      fn?.(wrapperRef.current!);
+    });
     observer.observe(wrapperRef.current!);
     return () => {
       observer.disconnect();

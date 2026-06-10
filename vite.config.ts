@@ -7,9 +7,7 @@ function resolve(string: string) {
 }
 
 export default defineConfig({
-  plugins: [
-    react(),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       "@": resolve("./"),
@@ -24,7 +22,7 @@ export default defineConfig({
       },
     },
     // allow our js bundle to be 1MB
-    chunkSizeWarningLimit: 1000
+    chunkSizeWarningLimit: 1000,
   },
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

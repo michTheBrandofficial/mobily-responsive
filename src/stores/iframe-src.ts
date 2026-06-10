@@ -4,9 +4,9 @@ type IframeSrcContextType = {
   /**
    * @example http://localhost:5173
    */
-  src: string,
-  setSrc: Dispatch<SetStateAction<string>>
-}
+  src: string;
+  setSrc: Dispatch<SetStateAction<string>>;
+};
 
 const IframeSrcContext = createContext<IframeSrcContextType | null>(null);
 
@@ -18,7 +18,4 @@ const useIframeSrc = () => {
   return iframeSrcContext;
 };
 
-export {
-  IframeSrcContext,
-  useIframeSrc
-}
+export { IframeSrcContext, useIframeSrc };

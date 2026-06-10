@@ -11,5 +11,5 @@ createRoot(document.querySelector<HTMLBodyElement>("body")!).render(
     <QueryClientProvider client={queryClient}>
       <View />
     </QueryClientProvider>
-  </StrictMode>,
+  </StrictMode>
 );

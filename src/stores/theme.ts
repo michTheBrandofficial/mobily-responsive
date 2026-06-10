@@ -11,7 +11,7 @@ const lastUsedTheme = pipe(
   (lastUsed) => {
     if (!lastUsed) return "dark";
     else return lastUsed;
-  },
+  }
 );
 
 type ThemeStore = {
