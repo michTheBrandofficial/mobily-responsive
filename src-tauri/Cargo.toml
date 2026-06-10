@@ -12,16 +12,21 @@ rust-version = "1.60"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2.0", features = [] }
+tauri-build = { version = "2.6.2", features = [] }
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "2.0", features = ["devtools"] }
+tauri = { version = "2.11.2", features = ["devtools"] }
 tauri-plugin-window-state = "2.0"
 tauri-plugin-fs = "2.0"
 tauri-plugin-updater = "2.0"
 quinn-proto = "0.11.14"
+rand = "0.9.3"
+rustls-webpki = "0.103.13"
+tar = "0.4.46"
+bytes = "1.11.1"
+time = "0.3.47"
 
 [target."cfg(windows)".dependencies]
 winapi = { version = "0.3.9", features = ["shellscalingapi"] }
