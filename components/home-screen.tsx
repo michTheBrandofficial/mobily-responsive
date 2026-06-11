@@ -134,14 +134,20 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ topPadding }) => {
         })}
       </section>
       {/* Search buttons and device dock */}
-      <section className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] ">
+      <section className="tws-w-full tws-px-3 tws-pb-3 tws-flex tws-flex-col tws-items-center tws-gap-y-[10px] tws-relative ">
+        <div className="tws-text-3xl tws-font-bold tws-absolute tws-bottom-5 -tws-z-10 ">
+          I am a text oh
+        </div>
         <LiquidGlass.div
           color={"#fff"}
           mixingPercentage={0}
           tintOpacity={0.7}
           tint={"use-color"}
+          drag
+          whileDrag={{ scale: 1.1 }}
           className={cn(
-            "tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-text-[#474844] tws-font-normal tws-font-SF_Pro_Display tws-flex tws-items-center tws-gap-x-1 tws-text-xs",
+            "tws-rounded-full tws-w-fit tws-px-[11px] tws-py-[7px] tws-text-[#474844] tws-font-normal tws-font-SF_Pro_Display tws-flex tws-items-center tws-gap-x-1 tws-text-xs tws-z-10",
+            " tws-fixed tws-top-20 tws-left-10 ",
             {
               "tws-hidden": isIpad,
             }
@@ -150,14 +156,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ topPadding }) => {
           <SearchIcon className={"tws-fill-[#474844] "} /> Search
         </LiquidGlass.div>
         {/* Dock */}
-        <LiquidGlass.div
+        {/*<LiquidGlass.div
           color={"#fff"}
           mixingPercentage={0}
           tintOpacity={0.7}
           tint={"use-color"}
           className={cn(
             "tws-h-fit tws-w-full @[600px]/main-container:tws-w-fit @[600px]/main-container:tws-gap-x-4 tws-rounded-[120px] tws-overflow-hidden ",
-            " tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between"
+            " tws-px-4 tws-py-5 tws-font-medium tws-flex tws-justify-between",
           )}
           style={{
             // @ts-ignore
@@ -165,7 +171,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ topPadding }) => {
           }}
         >
           <DockIcons isIpad={isIpad} />
-        </LiquidGlass.div>
+        </LiquidGlass.div>*/}
       </section>
     </section>
   );

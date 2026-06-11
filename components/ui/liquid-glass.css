@@ -9,7 +9,8 @@
   /*
     this is the mixing percentage meaning: the color contributes that percentage to the final color of the glass
   */
-  --mixing-percentage: 12% --saturation: 150%;
+  --mixing-percentage: 12%;
+  --saturation: 150%;
 }
 
 .liquid-glass {
@@ -146,4 +147,48 @@
         var(--c-dark) calc(var(--glass-reflex-dark) * 8%),
         transparent
       );
+}
+
+/* new implementation */
+
+:root {
+  --glass-frost: 0;
+  --glass-saturation: 1;
+}
+
+.glass-effect {
+  /* might remove the top four */
+  background: light-dark(
+    hsl(0 0% 100% / var(--glass-frost, 0)),
+    hsl(0 0% 0% / var(--glass-frost, 0))
+  );
+  -webkit-backdrop-filter: url(#filter) saturate(var(--glass-saturation, 1));
+  backdrop-filter: url(#filter) saturate(var(--glass-saturation, 1));
+  box-shadow:
+    0 0 2px 1px
+      light-dark(
+        color-mix(in oklch, canvasText, #0000 85%),
+        color-mix(in oklch, canvasText, #0000 65%)
+      )
+      inset,
+    0 0 10px 4px
+      light-dark(
+        color-mix(in oklch, canvasText, #0000 90%),
+        color-mix(in oklch, canvasText, #0000 85%)
+      )
+      inset,
+    0px 4px 16px rgba(17, 17, 26, 0.05),
+    0px 8px 24px rgba(17, 17, 26, 0.05),
+    0px 16px 56px rgba(17, 17, 26, 0.05),
+    0px 4px 16px rgba(17, 17, 26, 0.05) inset,
+    0px 8px 24px rgba(17, 17, 26, 0.05) inset,
+    0px 16px 56px rgba(17, 17, 26, 0.05) inset;
+}
+
+/* the displacement filter */
+.glass-filter {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
 }
