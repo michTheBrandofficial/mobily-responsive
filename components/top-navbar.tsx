@@ -41,7 +41,6 @@ const TopNavbar: React.FC = () => {
   const { setDeviceScreen, deviceScreen } = useDeviceScreen();
   const { setCommandModal } = useCommandTriggeredModal();
   const classMemo = isFullscreen ? "tws-hidden" : "tws-flex";
-  const [controlsBlur, setControlsBlur] = useState(2);
   const [startBlur, setStartBlur] = useState(false);
   useEffect(() => {
     setStartBlur(true);

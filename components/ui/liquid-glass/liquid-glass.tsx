@@ -153,7 +153,7 @@ const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
       <svg
         className="glass-filter"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ touchAction: "none" }}
+        style={{ touchAction: "none", zIndex: -1000, pointerEvents: "none" }}
       >
         <defs style={{ touchAction: "none" }}>
           <filter

@@ -10,6 +10,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 
 type MenuContextType = {
   open: boolean;
@@ -124,6 +125,12 @@ const MenuTrigger: React.FC<MenuTriggerProps> = ({
 
 const MenuContent: React.FC<Props> = ({ children, className }) => {
   const { open, setOpen, config, containerRef } = useMenu();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useEffect(() => {
     // focus on first menu item
     if (!open) return;
@@ -134,31 +141,11 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
       ) ?? containerRef.current?.querySelector<HTMLDivElement>(".lg-menu-item");
     if (firstMenuItem) firstMenuItem.focus();
   }, [open]);
+
   return (
-    <AnimatePresence mode="sync">
-      {open ? (
-        <>
-          <motion.section
-            key={"menu-underlay"}
-            layout
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{
-              opacity: 0,
-              transition: {
-                duration: 0.2,
-              },
-            }}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) setOpen(false);
-            }}
-            className={cn(
-              "tws-fixed tws-h-screen tws-w-screen tws-bg-transparent !tws-mt-0 tws-top-0 tws-left-0 tws-z-[9999]",
-              {
-                "tws-bg-white/25 tws-backdrop-blur-[2px]": !config.noBlur,
-              }
-            )}
-          ></motion.section>
+    <>
+      <AnimatePresence mode="sync">
+        {open ? (
           <motion.div
             ref={containerRef}
             key={"menu"}
@@ -201,11 +188,38 @@ const MenuContent: React.FC<Props> = ({ children, className }) => {
           >
             {children}
           </motion.div>
-        </>
-      ) : (
-        ""
-      )}
-    </AnimatePresence>
+        ) : null}
+      </AnimatePresence>
+      {isMounted &&
+        createPortal(
+          <AnimatePresence mode="sync">
+            {open ? (
+              <motion.section
+                key={"menu-underlay"}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{
+                  opacity: 0,
+                  transition: {
+                    duration: 0.2,
+                  },
+                }}
+                onClick={(e) => {
+                  if (e.target === e.currentTarget) setOpen(false);
+                }}
+                className={cn(
+                  "tws-absolute tws-h-screen tws-w-screen tws-bg-transparent !tws-mt-0 tws-top-0 tws-left-0 tws-z-[900]",
+                  {
+                    "tws-bg-white/25 tws-backdrop-blur-[2px]": !config.noBlur,
+                  }
+                )}
+              />
+            ) : null}
+          </AnimatePresence>,
+          document.body
+        )}
+    </>
   );
 };
 
