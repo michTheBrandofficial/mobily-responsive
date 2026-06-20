@@ -3,7 +3,7 @@ import { uint8 } from "@/lib/number";
 import { HTMLElements, HTMLMotionProps, motion } from "motion/react";
 import * as React from "react";
 import "./liquid-glass.css";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, useRef, useEffect, useState } from "react";
 import { getDisplacementMapDataUri } from "./displacement-map";
 import useMeasure from "../use-measure";
 import { colorToOklch } from "./glass-color";
@@ -105,8 +105,58 @@ const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
 }: LiquidGlassProps & { tag: keyof HTMLElements }) {
   // increment filterId for unique filter IDs in case of multiple instances
   ++filterId;
+
   // Generate displacement map data URI with custom settings
   const [useMeasureRef, { width, height }] = useMeasure<HTMLDivElement>();
+
+  // Cache + threshold + debounce for displacement map
+  const cacheRef = useRef<{
+    width: number;
+    height: number;
+    href: string;
+  } | null>(null);
+  const debounceTimerRef = useRef<any | null>(null);
+  const [displacementHref, setDisplacementHref] = useState("");
+  const THRESHOLD = 10; // only recalc if size changes by 10+ pixels
+
+  useEffect(() => {
+    // Check if change exceeds threshold
+    const needsUpdate =
+      !cacheRef.current ||
+      Math.abs(width - cacheRef.current.width) >= THRESHOLD ||
+      Math.abs(height - cacheRef.current.height) >= THRESHOLD;
+
+    if (!needsUpdate) {
+      console.log("⏭️ Threshold blocked - size change too small");
+      return;
+    }
+
+    // Clear existing debounce timer
+    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+
+    // Debounce: wait 300ms after resize stops
+    debounceTimerRef.current = setTimeout(() => {
+      // Check cache before generating
+      if (
+        cacheRef.current?.width === width &&
+        cacheRef.current?.height === height
+      ) {
+        console.log("🔥 Cache hit - reusing old map");
+        setDisplacementHref(cacheRef.current.href);
+        return;
+      }
+
+      // Generate new displacement map
+      const href = getDisplacementMapDataUri({ width, height });
+      cacheRef.current = { width, height, href };
+      setDisplacementHref(href);
+    }, 300);
+
+    return () => {
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+    };
+  }, [width, height]);
+
   // Create a callback that forwards to both refs
   const mergedRef = useCallback(
     (element: HTMLDivElement | null) => {
@@ -123,10 +173,6 @@ const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
       }
     },
     [useMeasureRef, ref]
-  );
-  const displacementHref = useMemo(
-    () => getDisplacementMapDataUri({ width, height }),
-    [width, height]
   );
 
   // Convert color to OKLCH under the hood
@@ -168,7 +214,7 @@ const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
               height="100%"
               result="map"
               style={{ touchAction: "none" }}
-              href={displacementHref}
+              href={displacementHref || undefined}
             ></feImage>
             <feDisplacementMap
               in="SourceGraphic"
