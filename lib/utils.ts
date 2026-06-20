@@ -1,5 +1,4 @@
 import { CSSProperties } from "react";
-import { pipe } from "./pipe";
 import { uint8 } from "./number";
 import { err, ok, Result } from "neverthrow";
 

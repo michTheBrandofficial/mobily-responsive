@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 import { HTMLMotionProps, motion } from "motion/react";
 import React, { PropsWithChildren } from "react";
-import LiquidGlass, { HexColor, RgbColor } from "./liquid-glass";
+import LiquidGlass, { HexColor, RgbColor } from "./liquid-glass/liquid-glass";
 
 type Variants = "full" | "icon" | "ghost" | "dormant";
 
@@ -60,11 +60,6 @@ interface LiquidGlassButtonProps
     Pick<ButtonProps, "loading" | "variant">,
     React.ComponentPropsWithRef<typeof LiquidGlass.button> {
   color?: HexColor | RgbColor;
-  /**
-   * @dev mixing percentage meaning the percentage of {@link LiquidGlassProps.color} contributed to the glass. Expressed in whole numbers from 0 to 100.
-   * @default 12
-   */
-  mixingPercentage?: number;
 }
 
 /**
@@ -85,6 +80,7 @@ export const LiquidGlassButton: React.FC<LiquidGlassButtonProps> = ({
       whileTap={{ scale: props.disabled ? 1 : 0.9 }}
       whileHover={{ scale: props.disabled ? 1 : 1.05 }}
       {...props}
+      color={variant === "full" ? "#0ea5e9" : "#fff"}
       onTap={
         onTap
           ? (e, info) => {

@@ -1,5 +1,4 @@
 import { cn } from "@/lib/cn";
-import { uint8 } from "@/lib/number";
 import { pipe } from "@/lib/pipe";
 import { inlineSwitch, pick } from "@/lib/utils";
 import { maxHeightMap, useDeviceFrameHeight } from "@/src/constants";
@@ -18,7 +17,7 @@ import Home from "./icons/home";
 import { SearchIcon } from "./icons/search";
 import Settings from "./icons/settings";
 import { Button } from "./ui/buttons";
-import LiquidGlass from "./ui/liquid-glass";
+import LiquidGlass from "./ui/liquid-glass/liquid-glass";
 import { useCommandTriggeredModal } from "./command-triggered-hotkeys";
 
 const TopNavbar: React.FC = () => {
@@ -42,7 +41,7 @@ const TopNavbar: React.FC = () => {
   const { setDeviceScreen, deviceScreen } = useDeviceScreen();
   const { setCommandModal } = useCommandTriggeredModal();
   const classMemo = isFullscreen ? "tws-hidden" : "tws-flex";
-  const [mixingPercentage, setMixingPercentage] = useState(12);
+  const [controlsBlur, setControlsBlur] = useState(2);
   const [startBlur, setStartBlur] = useState(false);
   useEffect(() => {
     setStartBlur(true);
@@ -51,20 +50,20 @@ const TopNavbar: React.FC = () => {
     }, 100);
     return () => clearTimeout(timer);
   }, [deviceScreen]);
-  useEffect(() => {
-    function onBlur() {
-      setMixingPercentage(0);
-    }
-    function onFocus() {
-      setMixingPercentage(2);
-    }
-    window.addEventListener("blur", onBlur);
-    window.addEventListener("focus", onFocus);
-    return () => {
-      window.removeEventListener("blur", onBlur);
-      window.removeEventListener("focus", onFocus);
-    };
-  }, []);
+  // useEffect(() => {
+  //   function onBlur() {
+  //     setControlsBlur(2);
+  //   }
+  //   function onFocus() {
+  //     setControlsBlur(0);
+  //   }
+  //   window.addEventListener("blur", onBlur);
+  //   window.addEventListener("focus", onFocus);
+  //   return () => {
+  //     window.removeEventListener("blur", onBlur);
+  //     window.removeEventListener("focus", onFocus);
+  //   };
+  // }, []);
 
   return (
     <section
@@ -109,12 +108,7 @@ const TopNavbar: React.FC = () => {
           {versionMemo as any}
         </p>
       </div>
-      <LiquidGlass.div
-        className="tws-p-2 tws-px-3 tws-flex tws-ml-auto tws-items-center tws-space-x-4 tws-rounded-full tws-transition-colors tws-duration-200 tws-ease-linear "
-        tint={[uint8(255), uint8(255), uint8(255)]}
-        tintOpacity={0.3}
-        mixingPercentage={mixingPercentage}
-      >
+      <LiquidGlass.div className="tws-p-2 tws-px-3 tws-flex tws-ml-auto tws-items-center tws-space-x-4 tws-rounded-full tws-duration-200 tws-ease-linear ">
         <Button
           onTap={() => {
             setScreenState("before-close-app");

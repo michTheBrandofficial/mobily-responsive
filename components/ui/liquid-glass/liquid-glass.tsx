@@ -1,18 +1,16 @@
 import { cn } from "@/lib/cn";
 import { uint8 } from "@/lib/number";
-import { HTMLElements, HTMLMotionProps } from "motion/react";
+import { HTMLElements, HTMLMotionProps, motion } from "motion/react";
 import * as React from "react";
 import "./liquid-glass.css";
-import { memo, useMemo, useRef } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { getDisplacementMapDataUri } from "./displacement-map";
-import useMeasure from "./use-measure";
+import useMeasure from "../use-measure";
+import { colorToOklch } from "./glass-color";
 
 export type HexColor = `#${string}`;
 
 export type RgbColor = [uint8, uint8, uint8];
-
-// Note: color/tint props are not yet wired in the new implementation
-// They are kept in the interface for backwards compatibility
 
 interface LiquidGlassProps extends Omit<
   HTMLMotionProps<"div">,
@@ -21,43 +19,30 @@ interface LiquidGlassProps extends Omit<
   children?: React.ReactNode;
   color?: HexColor | RgbColor;
   /**
-   * @dev tint is the white tint around the liquid glass,
-   * @default white
-   * @cancustomize to use {@link LiquidGlassProps.color} or custom color
+   * frosted glass 0 - 1
+   * default 0.2
    */
-  tint?: "use-color" | RgbColor;
+  frost?: 0.2 | (number & {});
   /**
-   * @default .07
-   */
-  tintOpacity?: number;
-  mixingPercentage?: number;
-
-  // ========== NEW REFRACTION CONTROLS ==========
-  /**
+   * Color fringing at the edges of the glass, simulating chromatic aberration
    * Red channel displacement scale (horizontal)
-   * Negative = distort left, Positive = distort right
-   * @default -180
-   */
-  refractionRed?: number;
-
-  /**
+   * when Negative = distort left, Positive = distort right
    * Green channel displacement scale
-   * @default -170
-   */
-  refractionGreen?: number;
-
-  /**
    * Blue channel displacement scale
-   * @default -160
+   * @default { red: -12, green: -14, blue: -16 }
+   * It's best to keep these values negative and incremented by 2 for a natural look, but you can experiment with positive values and different increments for unique effects.
    */
-  refractionBlue?: number;
-
+  chromaticAberration?: {
+    red: -12 | (number & {});
+    green: -14 | (number & {});
+    blue: -16 | (number & {});
+  };
   /**
    * Gaussian blur after displacement
+   * @accepts 0 - 1 decimals
    * @default 0
    */
-  refractionBlur?: number;
-
+  blur?: number;
   /**
    * Saturation multiplier for backdrop
    * @default 1
@@ -71,60 +56,97 @@ type LiquidGlassHtmlElements = {
       children?: React.ReactNode;
       color?: HexColor | RgbColor;
       /**
-       * @dev tint is the white tint around the liquid glass,
-       * @default white
-       * @cancustomize to use {@link LiquidGlassProps.color} or custom color
+       * frosted glass 0 - 1
+       * default 0.2
        */
-      tint?: "use-color" | RgbColor;
+      frost?: 0.2 | (number & {});
       /**
-       * @default .07
+       * Color fringing at the edges of the glass, simulating chromatic aberration
+       * Red channel displacement scale (horizontal)
+       * when Negative = distort left, Positive = distort right
+       * Green channel displacement scale
+       * Blue channel displacement scale
+       * @default { red: -12, green: -14, blue: -16 }
+       * It's best to keep these values negative and incremented by 2 for a natural look, but you can experiment with positive values and different increments for unique effects.
        */
-      tintOpacity?: number;
+      chromaticAberration?: {
+        red: -12 | (number & {});
+        green: -14 | (number & {});
+        blue: -16 | (number & {});
+      };
       /**
-       * @dev mixing percentage meaning the percentage of {@link LiquidGlassProps.color} contributed to the glass. Expressed in whole numbers from 0 to 100.
-       * @default 12
+       * Gaussian blur after displacement
+       * @accepts 0 - 1 decimals
+       * @default 0
        */
-      mixingPercentage?: number;
-
-      // Refraction controls
-      refractionRed?: number;
-      refractionGreen?: number;
-      refractionBlue?: number;
-      refractionBlur?: number;
+      blur?: number;
       saturation?: number;
     }
   >;
 };
 
+let filterId = 0;
+
 const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
   children,
   className,
-  refractionRed = -180,
-  refractionGreen = -170,
-  refractionBlue = -160,
-  refractionBlur = 0,
+  tag,
+  color,
+  frost = 0.2,
+  chromaticAberration: {
+    red: refractionRed,
+    green: refractionGreen,
+    blue: refractionBlue,
+  } = { red: -12, green: -14, blue: -16 },
+  blur = 0,
   saturation = 1,
+  ref,
   ...props
 }: LiquidGlassProps & { tag: keyof HTMLElements }) {
+  // increment filterId for unique filter IDs in case of multiple instances
+  ++filterId;
   // Generate displacement map data URI with custom settings
-  const [ref, { width, height }] = useMeasure<HTMLDivElement>();
+  const [useMeasureRef, { width, height }] = useMeasure<HTMLDivElement>();
+  // Create a callback that forwards to both refs
+  const mergedRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      // Forward to useMeasure's ref callback
+      useMeasureRef(element as any);
+
+      // Forward to user's ref if it exists
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(element);
+        } else {
+          ref.current = element;
+        }
+      }
+    },
+    [useMeasureRef, ref]
+  );
   const displacementHref = useMemo(
     () => getDisplacementMapDataUri({ width, height }),
     [width, height]
   );
-  return (
-    // <MotionComponent
-    //   {...props}
-    // {/*{children}*/}
 
-    // @ts-ignore
-    <div
+  // Convert color to OKLCH under the hood
+  const oklchValues = useMemo(() => {
+    if (!color) return { l: 1, c: 0, h: 0 };
+    const [l, c, h] = colorToOklch(color);
+    return { l, c, h };
+  }, [color]);
+
+  const MotionComponent = motion[tag as "div"];
+  const filterValue = `url(#${"filter" + filterId}) saturate(${saturation})`;
+  return (
+    <MotionComponent
       {...props}
-      ref={ref}
+      ref={mergedRef}
       className={cn("glass-effect", className)}
       style={{
-        // @ts-ignore - CSS custom properties
-        "--glass-saturation": saturation,
+        background: `oklch(${oklchValues.l}% ${oklchValues.c} ${oklchValues.h} / ${frost})`,
+        WebkitBackdropFilter: filterValue,
+        backdropFilter: filterValue,
       }}
     >
       {children}
@@ -135,8 +157,8 @@ const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
       >
         <defs style={{ touchAction: "none" }}>
           <filter
-            id="filter"
-            color-interpolation-filters="sRGB"
+            id={"filter" + filterId}
+            colorInterpolationFilters="sRGB"
             style={{ touchAction: "none" }}
           >
             <feImage
@@ -224,14 +246,13 @@ const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
             ></feBlend>
             <feGaussianBlur
               in="output"
-              stdDeviation={refractionBlur}
+              stdDeviation={blur}
               style={{ touchAction: "none" }}
             ></feGaussianBlur>
           </filter>
         </defs>
       </svg>
-    </div>
-    // </MotionComponent>
+    </MotionComponent>
   );
 });
 

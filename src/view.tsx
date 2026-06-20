@@ -40,7 +40,6 @@ import { useLocalStorage } from "./stores/local-storage";
 import { registerAppWideHotKeys } from "./hot-keys-config";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
-import { uint8 } from "@/lib/number";
 import CommandTriggeredModals from "@/components/command-triggered-modals";
 import { useCommandTriggeredModal } from "@/components/command-triggered-hotkeys";
 
@@ -313,9 +312,6 @@ const Application: FC = () => {
                 setDeviceFrameHeightClass(maxHeightMap.minimize);
               }}
               color={"#474844"}
-              tint={[uint8(255), uint8(255), uint8(255)]}
-              tintOpacity={0.13}
-              mixingPercentage={60}
               className={cn(
                 `!tws-p-2 !tws-rounded-full tws-absolute tws-bottom-1 tws-right-1 tws-z-[100000] `,
                 {

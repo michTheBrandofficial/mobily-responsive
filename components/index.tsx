@@ -3,7 +3,7 @@ import { Button } from "./ui/buttons";
 import Menu from "./ui/menu";
 import { Input } from "./ui/inputs/input";
 import { useState } from "react";
-import LiquidGlass from "./ui/liquid-glass";
+import LiquidGlass from "./ui/liquid-glass/liquid-glass";
 import SearchableSelect from "./ui/inputs/searchable-select";
 import { Check } from "lucide-react";
 import { motion } from "motion/react";
@@ -38,7 +38,7 @@ const Components = () => {
           <LiquidGlass.div
             className="tws-p-4 tws-pt-12 tws-w-fit tws-rounded-[48px]  "
             color={"#fff"}
-            mixingPercentage={80}
+            frost={0}
           >
             <div className="tws-w-[280px] tws-h-fit tws-py-4 tws-px-6 tws-bg-[#bfb9c9] tws-rounded-[32px] ">
               <SearchableSelect
@@ -116,10 +116,10 @@ const Components = () => {
 
       <Button.LiquidGlass
         color={"#fff"}
+        frost={0}
         variant="icon"
         onTap={() => modalFunctions.openModal("url", {})}
         className="!tws-rounded-full tws-relative !tws-p-3 "
-        mixingPercentage={12}
       >
         <SearchIcon className="tws-size-5 tws-fill-white " />
       </Button.LiquidGlass>
@@ -130,7 +130,6 @@ const Components = () => {
             color={"#fff"}
             variant="icon"
             className="!tws-rounded-full tws-relative !tws-p-3"
-            mixingPercentage={12}
             // color={[uint8(14), uint8(165), uint8(233)]}
           >
             <Settings className="tws-size-6 tws-fill-white " />
