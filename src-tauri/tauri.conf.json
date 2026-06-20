@@ -6,7 +6,7 @@
     "devUrl": "http://localhost:1420",
     "frontendDist": "../dist"
   },
-  "productName": "Mobily Responsive",
+  "productName": "Left",
   "version": "../package.json",
   "app": {
     "security": {
@@ -37,7 +37,7 @@
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDZFRURCOUIyQkYxOUQzOUQKUldTZDB4bS9zcm50YmliR3p5N3RnZGRrRmtNNm9aNy94OVJGSVAwTW5HMTdjSXRHNi9naDRQU2kK"
     }
   },
-  "identifier": "com.mobily-responsive.dev",
+  "identifier": "com.left.dev",
   "bundle": {
     "active": true,
     "category": "DeveloperTool",
@@ -51,9 +51,9 @@
       "icons/icon.ico"
     ],
     "createUpdaterArtifacts": true,
-    "longDescription": "A desktop application that helps developers test their websites across different device sizes and resolutions. Built with Tauri and React for optimal performance and native integration.",
+    "longDescription": "Time Tracker App",
     "resources": [],
-    "shortDescription": "A desktop app for testing website responsiveness across different device sizes",
+    "shortDescription": "Time Tracker App",
     "targets": "all",
     "windows": {
       "certificateThumbprint": null,
