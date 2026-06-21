@@ -58,8 +58,11 @@ const ButtonImpl: React.FC<ButtonProps> = ({
 interface LiquidGlassButtonProps
   extends
     Pick<ButtonProps, "loading" | "variant">,
-    React.ComponentPropsWithRef<typeof LiquidGlass.button> {
-  color?: HexColor | RgbColor;
+    Omit<React.ComponentPropsWithRef<typeof LiquidGlass.button>, "color"> {
+  /**
+   * can pass null to color for default
+   */
+  color?: HexColor | RgbColor | null;
 }
 
 /**
@@ -73,6 +76,7 @@ export const LiquidGlassButton: React.FC<LiquidGlassButtonProps> = ({
   className,
   onTap,
   loading,
+  color,
   ...props
 }) => {
   return (
@@ -80,7 +84,14 @@ export const LiquidGlassButton: React.FC<LiquidGlassButtonProps> = ({
       whileTap={{ scale: props.disabled ? 1 : 0.9 }}
       whileHover={{ scale: props.disabled ? 1 : 1.05 }}
       {...props}
-      color={variant === "full" ? "#0ea5e9" : "#fff"}
+      // @ts-ignore
+      color={
+        variant === "full"
+          ? (color ?? color === null)
+            ? color
+            : "#0ea5e9"
+          : null
+      }
       onTap={
         onTap
           ? (e, info) => {
@@ -92,9 +103,9 @@ export const LiquidGlassButton: React.FC<LiquidGlassButtonProps> = ({
       className={cn(
         `tws-font-semibold tws-rounded-xl tws-cursor-pointer `,
         {
-          "tws-bg-sky-500 tws-text-white": variant === "full",
-          "tws-px-4 tws-py-3 tws-text-sm": variant !== "icon",
-          "tws-px-2 tws-py-2": variant === "icon",
+          " tws-text-white": variant === "full",
+          // "tws-px-4 tws-py-3 tws-text-sm": variant !== "icon",
+          // "tws-px-2 tws-py-2": variant === "icon",
           "tws-cursor-not-allowed tws-opacity-50": props.disabled,
           "tws-flex tws-items-center tws-gap-x-3 tws-justify-center ": loading,
         },
