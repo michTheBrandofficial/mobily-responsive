@@ -1,8 +1,8 @@
 {
-  "name": "mobily-responsive",
-  "displayName": "Mobily Responsive",
-  "version": "0.8.6",
-  "description": "Simulate popular devices for web development.",
+  "name": "left",
+  "displayName": "Left",
+  "version": "1.0.0",
+  "description": "Time Tracker App.",
   "license": "BSD-3-Clause",
   "author": "Charles Ikechukwu <michthebrand@gmail.com>",
   "repository": {
