@@ -127,7 +127,6 @@ const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
       Math.abs(height - cacheRef.current.height) >= THRESHOLD;
 
     if (!needsUpdate) {
-      console.log("⏭️ Threshold blocked - size change too small");
       return;
     }
 
@@ -141,7 +140,6 @@ const LiquidGlassImplMemoized = memo(function LiquidGlassImpl({
         cacheRef.current?.width === width &&
         cacheRef.current?.height === height
       ) {
-        console.log("🔥 Cache hit - reusing old map");
         setDisplacementHref(cacheRef.current.href);
         return;
       }
